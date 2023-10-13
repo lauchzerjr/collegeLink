@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "es-ftec",
+    "slug": "es-ftec",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
