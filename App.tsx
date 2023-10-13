@@ -1,21 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ThemeProvider, createBox } from "@shopify/restyle";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { ThemeProps, theme } from "./src/theme/theme";
+import { Text } from "react-native";
+
+export const Box = createBox<ThemeProps>();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <ThemeProvider theme={theme}>
       <StatusBar style="auto" />
-    </View>
+      <Box bg="primary" justifyContent="center" alignItems="center" flex={1}>
+        <Text>Restyle done</Text>
+      </Box>
+    </ThemeProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
