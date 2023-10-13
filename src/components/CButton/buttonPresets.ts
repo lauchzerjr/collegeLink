@@ -31,14 +31,14 @@ export const buttonPresets: Record<
   outline: {
     default: {
       container: {
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: 'primary',
       },
       content: 'primary',
     },
     disabled: {
       container: {
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: 'gray4',
       },
       content: 'gray2',
