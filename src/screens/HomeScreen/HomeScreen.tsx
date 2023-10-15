@@ -5,8 +5,15 @@ import { CBox } from "../../components/CBox/CBox";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CText } from "../../components/CText/CText";
 import { CTextInput } from "../../components/CTextInput/CTextInput";
+import { CButton } from "../../components/CButton/CButton";
+import { useApptheme } from "../../hooks/useAppTheme";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigation } from "@react-navigation/native";
 
 export function HomeScreen() {
+  const {signOut} = useAuth()
+  const navigation = useNavigation()
+
   return (
     <CScreen>
       <CBox
@@ -28,6 +35,11 @@ export function HomeScreen() {
         iconLeft={<FontAwesome5 name="search" size={24} color="#005999" />}
         placeholder="Pesquise por curso"
       />
+
+      {/* TESTEEEE */}
+
+      <CButton title="SAIR DO APP" onPress={signOut}/>
+      <CButton title="Ir para tela stack" onPress={() => navigation.navigate('posts')}/>
     </CScreen>
   );
 }

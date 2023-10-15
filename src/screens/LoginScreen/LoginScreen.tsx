@@ -8,10 +8,20 @@ import { CButton } from "../../components/CButton/CButton";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
 import { ScrollView } from "react-native";
+import { useAuth } from "../../hooks/useAuth";
 
 export function LoginScreen() {
   const [createAccount, setCreateAccount] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [name, setName] = React.useState("Junior");
+  const [email, setEmail] = React.useState("lauchzerjr@gmail.com");
+  const [password, setPassword] = React.useState("123456");
+
+  const {
+    createUserWithEmailAndPassword,
+    isLoading,
+    signInWithEmailAndPassword,
+  } = useAuth();
 
   const renderRightIconEye = () => {
     return (
@@ -29,7 +39,7 @@ export function LoginScreen() {
     <ScrollView
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
-      style={{marginBottom: 20}}
+      style={{ marginBottom: 20 }}
     >
       <CScreen>
         <CBox alignItems="center">
@@ -68,6 +78,8 @@ export function LoginScreen() {
             boxProps={{ mb: "s10" }}
             label="Nome"
             placeholder="Digite seu nome"
+            onChangeText={setName}
+            value={name}
           />
         )}
 
@@ -76,6 +88,8 @@ export function LoginScreen() {
           boxProps={{ mb: "s10" }}
           label="E-mail acadêmico"
           placeholder="Digite seu e-mail acadêmico"
+          onChangeText={setEmail}
+          value={email}
         />
 
         <CTextInput
@@ -84,6 +98,8 @@ export function LoginScreen() {
           boxProps={{ mb: "s20" }}
           placeholder="Digite sua senha"
           label="Senha"
+          onChangeText={setPassword}
+          value={password}
         />
 
         {!createAccount && (
@@ -100,6 +116,11 @@ export function LoginScreen() {
         <CButton
           mt={createAccount ? "s12" : "s20"}
           title={createAccount ? "Cadastrar" : "Entrar"}
+          onPress={
+            createAccount
+              ? () => createUserWithEmailAndPassword(name, email, password)
+              : () => signInWithEmailAndPassword(email, password)
+          }
         />
         <CButton
           mt="s12"
