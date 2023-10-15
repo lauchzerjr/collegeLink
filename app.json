@@ -5,6 +5,17 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
+    ],
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "package": "com.esftec"
+    },
+    "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "bundleIdentifier": "com.esftec"
+    },
+    "plugins": [
+      "@react-native-firebase/app"
     ]
   }
 }
