@@ -5,15 +5,17 @@ import { useApptheme } from "../../hooks/useAppTheme";
 import React from "react";
 
 export interface CTextInputProps extends TextInputProps {
-  label: string;
+  label?: string;
   errorMessage?: string;
   iconRight?: React.ReactElement;
+  iconLeft?: React.ReactElement;
   boxProps?: BoxProps;
 }
 export function CTextInput({
   label,
   errorMessage,
   iconRight,
+  iconLeft,
   boxProps,
   ...textInputProps
 }: CTextInputProps) {
@@ -35,10 +37,17 @@ export function CTextInput({
   return (
     <CBox {...boxProps}>
       <Pressable onPress={focusInput}>
-        <CText mb="s4" fontWeight="bold" fontSize={16} color="bluePrimary">
-          {label}
-        </CText>
+        {label && (
+          <CText mb="s4" fontWeight="bold" fontSize={16} color="bluePrimary">
+            {label}
+          </CText>
+        )}
         <CBox {...$textInputContainer}>
+          {iconLeft && (
+            <CBox justifyContent="center" mr="s16">
+              {iconLeft}
+            </CBox>
+          )}
           <TextInput
             ref={inputRef}
             placeholderTextColor={colors.gray2}
