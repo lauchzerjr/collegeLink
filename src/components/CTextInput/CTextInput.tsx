@@ -28,7 +28,7 @@ export function CTextInput({
     flexDirection: "row",
     borderWidth: errorMessage ? 2 : 1,
     borderColor: errorMessage ? "error" : "gray4",
-    p: "s16",
+    p: "s12",
     borderRadius: "s12",
   };
 
@@ -42,6 +42,8 @@ export function CTextInput({
           <TextInput
             ref={inputRef}
             placeholderTextColor={colors.gray2}
+            cursorColor={colors.bluePrimary}
+            selectionColor={colors.bluePrimaryLight}
             style={$textInputStyle}
             {...textInputProps}
           />
@@ -51,11 +53,7 @@ export function CTextInput({
             </CBox>
           )}
         </CBox>
-        {errorMessage && (
-          <CText color="error">
-            {errorMessage}
-          </CText>
-        )}
+        {errorMessage && <CText color="error">{errorMessage}</CText>}
       </Pressable>
     </CBox>
   );

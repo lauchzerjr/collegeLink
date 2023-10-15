@@ -36,7 +36,7 @@ export function CButton({
       {loading ? (
         <CActivityIndicator color={buttonPreset.content} />
       ) : (
-        <CText color={buttonPreset.content}>{title}</CText>
+        <CText fontWeight="bold" color={buttonPreset.content}>{title}</CText>
       )}
     </CTouchableOpacityBox>
   );
