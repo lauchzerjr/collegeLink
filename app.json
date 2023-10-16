@@ -1,18 +1,18 @@
 {
   "expo": {
-    "name": "es-ftec",
-    "slug": "es-ftec",
+    "name": "collegelink",
+    "slug": "collegelink",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ],
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "com.esftec"
+      "package": "com.collegelink"
     },
     "ios": {
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.esftec"
+      "bundleIdentifier": "com.collegelink"
     },
     "plugins": [
       "@react-native-firebase/app"

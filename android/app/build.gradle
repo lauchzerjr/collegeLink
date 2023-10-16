@@ -81,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace 'com.esftec'
+    namespace 'com.collegelink'
     defaultConfig {
-        applicationId 'com.esftec'
+        applicationId 'com.collegelink'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

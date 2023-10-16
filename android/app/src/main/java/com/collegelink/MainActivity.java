@@ -1,4 +1,4 @@
-package com.esftec;
+package com.collegelink;
 
 import android.os.Build;
 import android.os.Bundle;

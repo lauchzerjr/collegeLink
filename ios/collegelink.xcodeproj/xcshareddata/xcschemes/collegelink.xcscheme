@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "esftec.app"
-               BlueprintName = "esftec"
-               ReferencedContainer = "container:esftec.xcodeproj">
+               BuildableName = "collegelink.app"
+               BlueprintName = "collegelink"
+               ReferencedContainer = "container:collegelink.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "esftecTests.xctest"
-               BlueprintName = "esftecTests"
-               ReferencedContainer = "container:esftec.xcodeproj">
+               BuildableName = "collegelinkTests.xctest"
+               BlueprintName = "collegelinkTests"
+               ReferencedContainer = "container:collegelink.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "esftec.app"
-            BlueprintName = "esftec"
-            ReferencedContainer = "container:esftec.xcodeproj">
+            BuildableName = "collegelink.app"
+            BlueprintName = "collegelink"
+            ReferencedContainer = "container:collegelink.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "esftec.app"
-            BlueprintName = "esftec"
-            ReferencedContainer = "container:esftec.xcodeproj">
+            BuildableName = "collegelink.app"
+            BlueprintName = "collegelink"
+            ReferencedContainer = "container:collegelink.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
