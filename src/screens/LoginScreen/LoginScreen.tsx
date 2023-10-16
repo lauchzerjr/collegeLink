@@ -77,7 +77,7 @@ export function LoginScreen() {
           mb="s16"
           textAlign="center"
         >
-          Digite seu e-mail acadêmico e senha para entrar
+          {createAccount ? "Crie sua conta aqui" : "Entrar no app"}
         </CText>
 
         {createAccount && (

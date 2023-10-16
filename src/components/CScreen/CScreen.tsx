@@ -6,5 +6,5 @@ interface CScreenProps {
 }
 
 export function CScreen({ children }: CScreenProps) {
-  return <CBox paddingHorizontal="s20">{children}</CBox>;
+  return <CBox paddingHorizontal="s20" bg="background">{children}</CBox>;
 }

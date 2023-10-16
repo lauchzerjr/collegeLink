@@ -18,7 +18,7 @@ export default function App() {
   console.log("user", user);
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar style="dark" backgroundColor="transparent" translucent />
+      <StatusBar style="dark" backgroundColor="white" translucent />
       <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
         <ToastProvider>
           <AuthProvider>
