@@ -19,6 +19,7 @@ export function CTextInput({
   boxProps,
   ...textInputProps
 }: CTextInputProps) {
+  const [isFocused, setIsFocused] = React.useState(false);
   const { colors } = useApptheme();
   const inputRef = React.useRef<TextInput>(null);
 
@@ -29,9 +30,17 @@ export function CTextInput({
   const $textInputContainer: BoxProps = {
     flexDirection: "row",
     borderWidth: errorMessage ? 2 : 1,
-    borderColor: errorMessage ? "error" : "gray4",
+    borderColor: errorMessage ? "error" : isFocused ? "bluePrimary" : "gray4",
     p: "s12",
     borderRadius: "s12",
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
   };
 
   return (
@@ -50,6 +59,8 @@ export function CTextInput({
           )}
           <TextInput
             ref={inputRef}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             placeholderTextColor={colors.gray2}
             cursorColor={colors.bluePrimary}
             selectionColor={colors.bluePrimaryLight}
