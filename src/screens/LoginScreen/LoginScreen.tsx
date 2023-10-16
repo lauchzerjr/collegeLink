@@ -114,6 +114,7 @@ export function LoginScreen() {
         )}
 
         <CButton
+          loading={isLoading}
           mt={createAccount ? "s12" : "s20"}
           title={createAccount ? "Cadastrar" : "Entrar"}
           onPress={

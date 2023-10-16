@@ -6,13 +6,20 @@ import { CScreen } from "../../components/CScreen/CScreen";
 import { CText } from "../../components/CText/CText";
 import { CTextInput } from "../../components/CTextInput/CTextInput";
 import { CButton } from "../../components/CButton/CButton";
-import { useApptheme } from "../../hooks/useAppTheme";
 import { useAuth } from "../../hooks/useAuth";
-import { useNavigation } from "@react-navigation/native";
+import { useToast } from "../../hooks/useToast";
 
 export function HomeScreen() {
-  const {signOut} = useAuth()
-  const navigation = useNavigation()
+  const { signOut } = useAuth();
+  const { addToast } = useToast();
+
+  const logOut = () => {
+    addToast({
+      message: "Você saiu do app!",
+      type: "success",
+    });
+    signOut();
+  };
 
   return (
     <CScreen>
@@ -36,10 +43,7 @@ export function HomeScreen() {
         placeholder="Pesquise por curso"
       />
 
-      {/* TESTEEEE */}
-
-      <CButton title="SAIR DO APP" onPress={signOut}/>
-      <CButton title="Ir para tela stack" onPress={() => navigation.navigate('posts')}/>
+      <CButton title="SAIR DO APP" onPress={logOut} />
     </CScreen>
   );
 }
