@@ -7,7 +7,7 @@ import { CText } from "../../components/CText/CText";
 import { CButton } from "../../components/CButton/CButton";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
-import { ScrollView } from "react-native";
+import { Keyboard, ScrollView } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
 
 export function LoginScreen() {
@@ -18,8 +18,8 @@ export function LoginScreen() {
   const [password, setPassword] = React.useState("123456");
 
   const {
-    createUserWithEmailAndPassword,
     isLoading,
+    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
   } = useAuth();
 
@@ -33,6 +33,16 @@ export function LoginScreen() {
         )}
       </CTouchableOpacityBox>
     );
+  };
+
+  const signIn = async () => {
+    await signInWithEmailAndPassword(email, password);
+    Keyboard.dismiss();
+  };
+
+  const signUp = async () => {
+    await createUserWithEmailAndPassword(name, email, password);
+    Keyboard.dismiss();
   };
 
   return (
@@ -117,11 +127,7 @@ export function LoginScreen() {
           loading={isLoading}
           mt={createAccount ? "s12" : "s20"}
           title={createAccount ? "Cadastrar" : "Entrar"}
-          onPress={
-            createAccount
-              ? () => createUserWithEmailAndPassword(name, email, password)
-              : () => signInWithEmailAndPassword(email, password)
-          }
+          onPress={createAccount ? signUp : signIn}
         />
         <CButton
           mt="s12"
