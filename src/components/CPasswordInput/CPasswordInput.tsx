@@ -19,12 +19,12 @@ export function CPasswordInput(props: CPasswordInputProps) {
       {...props}
       iconRight={
         <CTouchableOpacityBox onPress={toggleSecureTextEntry}>
-        {isSecureTextEntry ? (
-          <FontAwesome5 name="eye-slash" size={20} color="#005999" />
-        ) : (
-          <FontAwesome5 name="eye" size={20} color="#005999" />
-        )}
-      </CTouchableOpacityBox>
+          {isSecureTextEntry ? (
+            <FontAwesome5 name="eye" size={20} color="#005999" />
+          ) : (
+            <FontAwesome5 name="eye-slash" size={20} color="#005999" />
+          )}
+        </CTouchableOpacityBox>
       }
     />
   );
