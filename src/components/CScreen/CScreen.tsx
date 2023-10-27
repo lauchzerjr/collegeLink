@@ -6,6 +6,7 @@ import {
   ViewContainer,
 } from "./components/ScreenContainer";
 import { useAppTheme } from "../../hooks/useAppTheme";
+import { useAppSafeArea } from "../../hooks/useAppSafeArea";
 
 interface CScreenProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ interface CScreenProps {
 
 export function CScreen({ children, isScroll = false }: CScreenProps) {
   const { colors } = useAppTheme();
+  const { bottom, top } = useAppSafeArea();
   const Container = isScroll ? ScrollViewContainer : ViewContainer;
 
   return (
@@ -22,7 +24,11 @@ export function CScreen({ children, isScroll = false }: CScreenProps) {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <Container backgroundColor={colors.background}>
-        <CBox pb="s20" paddingHorizontal="s20">
+        <CBox
+          pb="s20"
+          paddingHorizontal="s20"
+          style={{ paddingTop: top, paddingBottom: bottom }}
+        >
           {children}
         </CBox>
       </Container>
