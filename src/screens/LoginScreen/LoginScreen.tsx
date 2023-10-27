@@ -1,21 +1,32 @@
 import React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { Keyboard } from "react-native";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { CTextInput } from "../../components/CTextInput/CTextInput";
 import { CText } from "../../components/CText/CText";
 import { CButton } from "../../components/CButton/CButton";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
-import { Keyboard } from "react-native";
 import { useAuth } from "../../hooks/useAuth";
+import { LoginSchema, loginSchema } from "./loginSchema";
+import { CFormTextInput } from "../../components/CForm/CFormTextInput";
+import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
+import { SignupSchema, signupSchema } from "./signupSchema";
 
 export function LoginScreen() {
   const [createAccount, setCreateAccount] = React.useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [name, setName] = React.useState("Junior");
-  const [email, setEmail] = React.useState("lauchzerjr@gmail.com");
-  const [password, setPassword] = React.useState("123456");
+
+  const { control, formState, handleSubmit, getValues } = useForm<LoginSchema | SignupSchema>({
+    resolver: zodResolver(createAccount ? signupSchema : loginSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    mode: "onChange",
+  });
 
   const {
     isLoading,
@@ -23,25 +34,13 @@ export function LoginScreen() {
     signInWithEmailAndPassword,
   } = useAuth();
 
-  const renderRightIconEye = () => {
-    return (
-      <CTouchableOpacityBox onPress={() => setShowPassword(!showPassword)}>
-        {showPassword ? (
-          <FontAwesome5 name="eye-slash" size={20} color="#005999" />
-        ) : (
-          <FontAwesome5 name="eye" size={20} color="#005999" />
-        )}
-      </CTouchableOpacityBox>
-    );
-  };
-
   const signIn = async () => {
-    await signInWithEmailAndPassword(email, password);
+    await signInWithEmailAndPassword(getValues("email"), getValues("password"));
     Keyboard.dismiss();
   };
 
   const signUp = async () => {
-    await createUserWithEmailAndPassword(name, email, password);
+    await createUserWithEmailAndPassword(getValues("name"), getValues("email"), getValues("password"));
     Keyboard.dismiss();
   };
 
@@ -76,33 +75,31 @@ export function LoginScreen() {
       </CText>
 
       {createAccount && (
-        <CTextInput
+        <CFormTextInput
+          control={control}
+          name="name"
           iconRight={<FontAwesome5 name="user-alt" size={20} color="#005999" />}
-          boxProps={{ mb: "s10" }}
           label="Nome"
           placeholder="Digite seu nome"
-          onChangeText={setName}
-          value={name}
+          boxProps={{ mb: "s10" }}
         />
       )}
 
-      <CTextInput
+      <CFormTextInput
+        control={control}
+        name="email"
         iconRight={<Feather name="at-sign" size={20} color="#005999" />}
-        boxProps={{ mb: "s10" }}
         label="E-mail acadêmico"
         placeholder="Digite seu e-mail acadêmico"
-        onChangeText={setEmail}
-        value={email}
+        boxProps={{ mb: "s10" }}
       />
 
-      <CTextInput
-        iconRight={renderRightIconEye()}
-        secureTextEntry={!showPassword ? true : false}
-        boxProps={{ mb: "s20" }}
-        placeholder="Digite sua senha"
+      <CFormPasswordInput
+        control={control}
+        name="password"
         label="Senha"
-        onChangeText={setPassword}
-        value={password}
+        placeholder="Digite sua senha"
+        boxProps={{ mb: "s10" }}
       />
 
       {!createAccount && (
@@ -118,10 +115,12 @@ export function LoginScreen() {
 
       <CButton
         loading={isLoading}
+        disabled={!formState.isValid}
         mt={createAccount ? "s12" : "s20"}
         title={createAccount ? "Cadastrar" : "Entrar"}
-        onPress={createAccount ? signUp : signIn}
+        onPress={createAccount ? handleSubmit(signUp) : handleSubmit(signIn)}
       />
+
       <CButton
         mt="s12"
         preset="outline"
