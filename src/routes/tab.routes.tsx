@@ -4,13 +4,13 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { HomeScreen } from "../screens/HomeScreen/HomeScreen";
 // import { Favorites } from "../screens/Wishlist/wishlist";
 // import { Profile } from "../screens/Profile/profile";
-import { useApptheme } from "../hooks/useAppTheme";
+import { useAppTheme } from "../hooks/useAppTheme";
 import { LoginScreen } from "../screens/LoginScreen/LoginScreen";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
 export const TabRoutes = () => {
-  const { colors } = useApptheme()
+  const { colors } = useAppTheme()
 
   return (
     <Navigator screenOptions={{ 

@@ -1,7 +1,7 @@
 import { Pressable, TextInput, TextInputProps, TextStyle } from "react-native";
 import { CBox, BoxProps } from "../CBox/CBox";
 import { CText } from "../CText/CText";
-import { useApptheme } from "../../hooks/useAppTheme";
+import { useAppTheme } from "../../hooks/useAppTheme";
 import React from "react";
 
 export interface CTextInputProps extends TextInputProps {
@@ -20,7 +20,7 @@ export function CTextInput({
   ...textInputProps
 }: CTextInputProps) {
   const [isFocused, setIsFocused] = React.useState(false);
-  const { colors } = useApptheme();
+  const { colors } = useAppTheme();
   const inputRef = React.useRef<TextInput>(null);
 
   const focusInput = () => {
