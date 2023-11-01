@@ -9,6 +9,7 @@ const palette = {
   redErrorLight: '#FBECEC',
 
   grayBlack: '#000000',
+  grayBlackLight: '#00000099',
   gray1: '#636363',
   gray2: '#8E8E8E',
   gray3: '#B3B3B3',
@@ -26,6 +27,7 @@ export const theme = createTheme({
     buttonPrimary: palette.bluePrimary,
 
     background: palette.grayWhite,
+    backgroundOpacity: palette.grayBlackLight,
 
     error: palette.redError,
     errorLight: palette.redErrorLight,

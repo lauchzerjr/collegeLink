@@ -9,6 +9,7 @@ import { useAuth } from "./src/hooks/useAuth";
 import { Routes } from "./src/routes";
 import { CToast } from "./src/components/CToast/CToast";
 import { ToastProvider } from "./src/contexts/ToastContext";
+import { UserProvider } from "./src/contexts/UserContext";
 
 export default function App() {
   const { user } = useAuth();
@@ -20,8 +21,10 @@ export default function App() {
         <StatusBar style="dark" backgroundColor="white" translucent />
         <ToastProvider>
           <AuthProvider>
-            <Routes />
-            <CToast />
+            <UserProvider>
+              <Routes />
+              <CToast />
+            </UserProvider>
           </AuthProvider>
         </ToastProvider>
       </ThemeProvider>
