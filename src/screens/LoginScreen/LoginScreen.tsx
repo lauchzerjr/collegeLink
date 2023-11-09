@@ -8,25 +8,22 @@ import { useForm } from "react-hook-form";
 import { CText } from "../../components/CText/CText";
 import { CButton } from "../../components/CButton/CButton";
 import { CScreen } from "../../components/CScreen/CScreen";
-import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
+import { CBox } from "../../components/CBox/CBox";
 import { useAuth } from "../../hooks/useAuth";
 import { LoginSchema, loginSchema } from "./loginSchema";
 import { CFormTextInput } from "../../components/CForm/CFormTextInput";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 import { SignupSchema, signupSchema } from "./signupSchema";
+import { CModal } from "../../components/CModal/CModal";
+import { useUser } from "../../hooks/useUser";
+import {
+  ForgotPasswordSchema,
+  forgotPasswordSchema,
+} from "./forgotPasswordSchema";
 
 export function LoginScreen() {
   const [createAccount, setCreateAccount] = React.useState(false);
-
-  const { control, formState, handleSubmit, getValues } = useForm<LoginSchema | SignupSchema>({
-    resolver: zodResolver(createAccount ? signupSchema : loginSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-    mode: "onChange",
-  });
+  const [modalForgotPassword, setModalForgotPassword] = React.useState(false);
 
   const {
     isLoading,
@@ -34,15 +31,51 @@ export function LoginScreen() {
     signInWithEmailAndPassword,
   } = useAuth();
 
+  const { forgotPassword } = useUser();
+
+  const { control, formState, handleSubmit, getValues } = useForm<
+    LoginSchema | SignupSchema | ForgotPasswordSchema
+  >({
+    resolver: zodResolver(
+      createAccount
+        ? signupSchema
+        : modalForgotPassword
+        ? forgotPasswordSchema
+        : loginSchema
+    ),
+    defaultValues: {
+      name: "",
+      email: "lauchzerjr@gmail.com",
+      password: "12345678",
+    },
+    mode: "onChange",
+  });
+
+  const handleForgotPassword = async () => {
+    await forgotPassword(getValues("email"));
+    Keyboard.dismiss();
+    toggleModal();
+  };
+
+  function toggleModal() {
+    setModalForgotPassword((prev) => !prev);
+  }
+
   const signIn = async () => {
     await signInWithEmailAndPassword(getValues("email"), getValues("password"));
     Keyboard.dismiss();
   };
 
   const signUp = async () => {
-    await createUserWithEmailAndPassword(getValues("name"), getValues("email"), getValues("password"));
+    await createUserWithEmailAndPassword(
+      getValues("name"),
+      getValues("email"),
+      getValues("password")
+    );
     Keyboard.dismiss();
   };
+
+  const submit = createAccount ? handleSubmit(signUp) : handleSubmit(signIn)
 
   return (
     <CScreen isScroll>
@@ -100,25 +133,41 @@ export function LoginScreen() {
         label="Senha"
         placeholder="Digite sua senha"
         boxProps={{ mb: "s10" }}
+        onSubmitEditing={submit}
       />
 
       {!createAccount && (
-        <CText
-          textAlign="center"
-          fontWeight="bold"
-          fontSize={16}
-          color="primary"
-        >
-          Esqueci minha senha
-        </CText>
+        <CBox alignItems="center">
+          <CText
+            fontWeight="bold"
+            fontSize={16}
+            color="primary"
+            onPress={toggleModal}
+          >
+            Esqueci minha senha
+          </CText>
+        </CBox>
       )}
+
+      <CModal
+        disabledButton={!formState.isValid}
+        isForgotPassword
+        titleButton="Recuperar senha"
+        visible={modalForgotPassword}
+        onClose={toggleModal}
+        control={control}
+        title="Esqueci minha senha"
+        description="Digite seu e-mail e enviaremos as instruções para redefinição de
+        senha"
+        onPress={handleForgotPassword}
+      />
 
       <CButton
         loading={isLoading}
         disabled={!formState.isValid}
         mt={createAccount ? "s12" : "s20"}
         title={createAccount ? "Cadastrar" : "Entrar"}
-        onPress={createAccount ? handleSubmit(signUp) : handleSubmit(signIn)}
+        onPress={submit}
       />
 
       <CButton

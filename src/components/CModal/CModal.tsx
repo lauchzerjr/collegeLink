@@ -13,11 +13,12 @@ import { useUser } from "../../hooks/useUser";
 interface CModalProps {
   title: string;
   titleButton: string;
-  description: string;
+  description?: string;
   visible: boolean;
   control: Control;
   isForgotPassword?: boolean;
   disabledButton: boolean;
+  error?: string;
   onClose: () => void;
   onPress: () => void;
 }
@@ -30,6 +31,7 @@ export const CModal = ({
   control,
   isForgotPassword,
   disabledButton,
+  error,
   onClose,
   onPress,
 }: CModalProps) => {
@@ -102,6 +104,7 @@ export const CModal = ({
                   label="Nova senha"
                   placeholder="Digite sua nova senha"
                   boxProps={{ mb: "s10" }}
+                  errorMessage={error}
                 />
               </>
             )}
