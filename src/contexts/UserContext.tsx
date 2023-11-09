@@ -38,7 +38,7 @@ export function UserProvider({ children }: UserProviderProps) {
         type: "success",
       });
     } catch (error) {
-      console.error("Erro ao alterar a senha:", error);
+      console.log("Erro ao alterar a senha:", error);
       addToast({
         message: "Erro ao alterar a senha!",
         type: "error",
@@ -59,7 +59,7 @@ export function UserProvider({ children }: UserProviderProps) {
         type: "success",
       });
     } catch (error) {
-      console.error("Erro ao enviar o e-mail", error);
+      console.log("Erro ao enviar o e-mail", error);
       addToast({
         message: "Erro ao enviar o e-mail",
         type: "error",
