@@ -53,7 +53,6 @@ export function LoginScreen() {
 
   const handleForgotPassword = async () => {
     await forgotPassword(getValues("email"));
-    Keyboard.dismiss();
     toggleModal();
   };
 
@@ -63,7 +62,6 @@ export function LoginScreen() {
 
   const signIn = async () => {
     await signInWithEmailAndPassword(getValues("email"), getValues("password"));
-    Keyboard.dismiss();
   };
 
   const signUp = async () => {
@@ -72,10 +70,9 @@ export function LoginScreen() {
       getValues("email"),
       getValues("password")
     );
-    Keyboard.dismiss();
   };
 
-  const submit = createAccount ? handleSubmit(signUp) : handleSubmit(signIn)
+  const submit = createAccount ? handleSubmit(signUp) : handleSubmit(signIn);
 
   return (
     <CScreen isScroll>

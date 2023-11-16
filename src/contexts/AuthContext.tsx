@@ -1,6 +1,7 @@
 import React, { ReactNode, createContext, useEffect, useState } from "react";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useToast } from "../hooks/useToast";
+import { Keyboard } from "react-native";
 
 export interface AuthContextProps {
   user: FirebaseAuthTypes.User | null;
@@ -84,6 +85,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     } finally {
       setIsLoading(false);
+      Keyboard.dismiss();
     }
   };
 
@@ -113,6 +115,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
     } finally {
       setIsLoading(false);
+      Keyboard.dismiss();
     }
   };
 
