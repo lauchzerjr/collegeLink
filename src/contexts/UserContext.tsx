@@ -1,10 +1,18 @@
 import React, { createContext } from "react";
 import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import { useToast } from "../hooks/useToast";
+import { Keyboard } from "react-native";
 
 export interface UserContextProps {
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
+  changeUserProfileForm: (
+    name: string,
+    city: string,
+    linkedin: string,
+    bio: string
+  ) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -45,6 +53,7 @@ export function UserProvider({ children }: UserProviderProps) {
       });
     } finally {
       setIsLoading(false);
+      Keyboard.dismiss();
     }
   };
 
@@ -66,11 +75,45 @@ export function UserProvider({ children }: UserProviderProps) {
       });
     } finally {
       setIsLoading(false);
+      Keyboard.dismiss();
+    }
+  };
+
+  const changeUserProfileForm = async (
+    name: string,
+    city: string,
+    linkedin: string,
+    bio: string
+  ) => {
+    try {
+      setIsLoading(true);
+      await firestore().collection("usersProfiles").doc(user.uid).set(
+        {
+          userID: user.uid,
+          name,
+          city,
+          linkedin,
+          bio,
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error("Erro ao salvar as alterações:", error);
+    } finally {
+      setIsLoading(false);
+      Keyboard.dismiss();
     }
   };
 
   return (
-    <UserContext.Provider value={{ changePassword, forgotPassword, isLoading }}>
+    <UserContext.Provider
+      value={{
+        changePassword,
+        forgotPassword,
+        changeUserProfileForm,
+        isLoading,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
