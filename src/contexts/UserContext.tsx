@@ -3,6 +3,7 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { useToast } from "../hooks/useToast";
 import { Keyboard } from "react-native";
+import { useAuth } from "../hooks/useAuth";
 
 export interface UserContextProps {
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
@@ -26,7 +27,7 @@ type UserProviderProps = {
 
 export function UserProvider({ children }: UserProviderProps) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const user = auth().currentUser;
+  const { user } = useAuth()
 
   const { addToast } = useToast();
 
@@ -88,17 +89,26 @@ export function UserProvider({ children }: UserProviderProps) {
     try {
       setIsLoading(true);
       await firestore().collection("usersProfiles").doc(user.uid).set(
-        {
-          userID: user.uid,
-          name,
-          city,
-          linkedin,
-          bio,
-        },
-        { merge: true }
-      );
+          {
+            userID: user.uid,
+            name,
+            city,
+            linkedin,
+            bio,
+          },
+          { merge: true }
+        );
+        
+      addToast({
+        message: "Perfil atualizado com sucesso!",
+        type: "success",
+      });
     } catch (error) {
       console.error("Erro ao salvar as alterações:", error);
+      addToast({
+        message: "Erro ao enviar atualizar perfil",
+        type: "error",
+      });
     } finally {
       setIsLoading(false);
       Keyboard.dismiss();

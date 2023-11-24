@@ -122,6 +122,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const signOut = async () => {
     try {
       await auth().signOut();
+      await setUser(null);
     } catch (error) {
       throw new Error("Erro ao fazer logout. Tente novamente mais tarde.");
     }
@@ -137,7 +138,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     loadUserStorageData();
-  }, [user]);
+  }, []);
 
   return (
     <AuthContext.Provider
