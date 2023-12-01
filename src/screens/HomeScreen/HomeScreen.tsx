@@ -1,5 +1,5 @@
-import React from "react";
-import { FontAwesome5 } from "@expo/vector-icons";
+import React, { useEffect } from "react";
+import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 
 import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
 import { CScreen } from "../../components/CScreen/CScreen";
@@ -13,6 +13,7 @@ export function HomeScreen() {
   const itemsPerPage = 10;
   const [page, setPage] = React.useState(1);
   const [searchText, setSearchText] = React.useState("");
+  const [hasNextPage, setHasNextPage] = React.useState(true);
 
   const MemoizedItem: React.FC<{ item: { id: number; name: string } }> =
     React.memo(({ item }) => {
@@ -34,11 +35,17 @@ export function HomeScreen() {
     return <MemoizedItem item={item} />;
   };
 
-  const loadMoreData = React.useCallback(() => {
-    setTimeout(() => {
-      setPage((prevPage) => prevPage + 1);
-    }, 500);
-  }, []);
+  const loadMoreData = () => {
+    if (!hasNextPage) return;
+
+    try {
+      setTimeout(() => {
+        setPage((prevPage) => prevPage + 1);
+      }, 500);
+    } catch (error) {
+      console.log("Error ==>", error);
+    }
+  };
 
   const filteredData = React.useMemo(() => {
     const filteredCourses = dataCourses
@@ -47,15 +54,32 @@ export function HomeScreen() {
       )
       .sort(compareByName);
 
-      console.log("filteredCourses ========>", filteredCourses.length)
+    setHasNextPage(filteredCourses.length > 10);
 
     return filteredCourses.slice(0, page * itemsPerPage);
   }, [searchText, page]);
 
-  React.useEffect(() => {
-    console.log("filteredData", filteredData.length);
-    console.log("page", page);
-  }, [filteredData, page]);
+  const renderListFooterComponent = () => {
+    if (hasNextPage) {
+      return <CActivityIndicator size="small" color="bluePrimary" />;
+    }
+  };
+
+  const clearSearch = () => {
+    if (searchText.length > 0) {
+      return (
+        <CTouchableOpacityBox onPress={() => setSearchText("")}>
+          <AntDesign name="closecircleo" size={24} color="#005999" />
+        </CTouchableOpacityBox>
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (searchText || searchText.length === 0) {
+      setPage(1);
+    }
+  }, [searchText]);
 
   return (
     <CScreen>
@@ -80,6 +104,7 @@ export function HomeScreen() {
         boxProps={{ mb: "s16" }}
         value={searchText}
         onChangeText={setSearchText}
+        iconRight={clearSearch()}
       />
 
       <FlatList
@@ -92,11 +117,7 @@ export function HomeScreen() {
         onEndReached={loadMoreData}
         onEndReachedThreshold={0.1}
         ListFooterComponentStyle={{ marginTop: 10 }}
-        ListFooterComponent={() =>
-          // filteredData.length >= page * itemsPerPage && (
-            <CActivityIndicator size="small" color="bluePrimary" />
-          // )
-        }
+        ListFooterComponent={renderListFooterComponent}
       />
     </CScreen>
   );
