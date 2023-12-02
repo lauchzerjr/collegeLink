@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FontAwesome5, AntDesign } from "@expo/vector-icons";
+import { FontAwesome5, AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
 import { CScreen } from "../../components/CScreen/CScreen";
@@ -10,7 +10,7 @@ import { compareByName, dataCourses } from "../../utils/dataCourses";
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
 
 export function HomeScreen() {
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
   const [page, setPage] = React.useState(1);
   const [searchText, setSearchText] = React.useState("");
   const [hasNextPage, setHasNextPage] = React.useState(true);
@@ -75,6 +75,24 @@ export function HomeScreen() {
     }
   };
 
+  const renderListEmptyComponent = () => {
+    return (
+      <CBox flex={1} alignItems="center" justifyContent="center" height={300}>
+        <CText
+          fontStyle="italic"
+          fontSize={32}
+          textAlign="center"
+          color="bluePrimary"
+          fontWeight="bold"
+          mb="s10"
+        >
+          Não encontramos nada para o termo digitado!
+        </CText>
+        <MaterialIcons name="search-off" size={80} color="#005999" />
+      </CBox>
+    );
+  };
+
   useEffect(() => {
     if (searchText || searchText.length === 0) {
       setPage(1);
@@ -90,7 +108,12 @@ export function HomeScreen() {
         justifyContent="space-around"
         flexDirection="row"
       >
-        <CText fontSize={32} fontWeight="bold" color="bluePrimary">
+        <CText
+          fontSize={32}
+          fontWeight="bold"
+          color="bluePrimary"
+          fontStyle="italic"
+        >
           CollegeLink
         </CText>
         <FontAwesome5 name="graduation-cap" size={100} color="#005999" />
@@ -108,6 +131,7 @@ export function HomeScreen() {
       />
 
       <FlatList
+        // style={{ flex: 1 }}
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
@@ -118,6 +142,7 @@ export function HomeScreen() {
         onEndReachedThreshold={0.1}
         ListFooterComponentStyle={{ marginTop: 10 }}
         ListFooterComponent={renderListFooterComponent}
+        ListEmptyComponent={renderListEmptyComponent}
       />
     </CScreen>
   );
