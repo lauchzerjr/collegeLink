@@ -11,9 +11,14 @@ import { useAppSafeArea } from "../../hooks/useAppSafeArea";
 interface CScreenProps {
   children: React.ReactNode;
   isScroll?: boolean;
+  isStackHeader?: boolean;
 }
 
-export function CScreen({ children, isScroll = false }: CScreenProps) {
+export function CScreen({
+  children,
+  isScroll = false,
+  isStackHeader = false,
+}: CScreenProps) {
   const { colors } = useAppTheme();
   const { bottom, top } = useAppSafeArea();
   const Container = isScroll ? ScrollViewContainer : ViewContainer;
@@ -27,7 +32,10 @@ export function CScreen({ children, isScroll = false }: CScreenProps) {
         <CBox
           pb="s20"
           paddingHorizontal="s20"
-          style={{ paddingTop: top, paddingBottom: bottom }}
+          style={{
+            paddingTop: isStackHeader ? 20 : top,
+            paddingBottom: bottom,
+          }}
         >
           {children}
         </CBox>
