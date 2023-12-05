@@ -10,6 +10,7 @@ import { Routes } from "./src/routes";
 import { CToast } from "./src/components/CToast/CToast";
 import { ToastProvider } from "./src/contexts/ToastContext";
 import { UserProvider } from "./src/contexts/UserContext";
+import { NameCollectionFirebaseContextProvider } from "./src/contexts/NameCollectionFirebase";
 
 export default function App() {
   const { user } = useAuth();
@@ -21,10 +22,12 @@ export default function App() {
         <StatusBar style="dark" backgroundColor="white" translucent />
         <ToastProvider>
           <AuthProvider>
-            <UserProvider>
-              <Routes />
-              <CToast />
-            </UserProvider>
+            <NameCollectionFirebaseContextProvider>
+              <UserProvider>
+                <Routes />
+                <CToast />
+              </UserProvider>
+            </NameCollectionFirebaseContextProvider>
           </AuthProvider>
         </ToastProvider>
       </ThemeProvider>
