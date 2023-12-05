@@ -5,16 +5,20 @@ import { useAppTheme } from "../../hooks/useAppTheme";
 
 interface CUserPhotoProps {
   photoURL: string;
+  isPostPhoto?: boolean;
 }
 
-export function CUserProfilePhoto({ photoURL }: CUserPhotoProps) {
+export function CUserProfilePhoto({
+  photoURL,
+  isPostPhoto = false,
+}: CUserPhotoProps) {
   const { colors } = useAppTheme();
 
   return (
     <View
       style={{
-        width: 135,
-        height: 135,
+        width: isPostPhoto ? 50 : 135,
+        height: isPostPhoto ? 50 : 135,
         backgroundColor: colors.gray4,
         alignItems: "center",
         justifyContent: "center",
@@ -24,20 +28,22 @@ export function CUserProfilePhoto({ photoURL }: CUserPhotoProps) {
         position: "relative",
       }}
     >
-      <TouchableOpacity
-        activeOpacity={0.7}
-        style={{
-          position: "absolute",
-          backgroundColor: colors.bluePrimary,
-          zIndex: 9,
-          right: 0,
-          bottom: 0,
-          borderRadius: 25,
-          padding: 8,
-        }}
-      >
-        <MaterialIcons name="mode-edit" size={20} color={colors.grayWhite} />
-      </TouchableOpacity>
+      {!isPostPhoto && (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{
+            position: "absolute",
+            backgroundColor: colors.bluePrimary,
+            zIndex: 9,
+            right: 0,
+            bottom: 0,
+            borderRadius: 25,
+            padding: 8,
+          }}
+        >
+          <MaterialIcons name="mode-edit" size={20} color={colors.grayWhite} />
+        </TouchableOpacity>
+      )}
       {photoURL ? (
         <Image
           // source={{ uri: user?.photoURL }}
@@ -53,7 +59,7 @@ export function CUserProfilePhoto({ photoURL }: CUserPhotoProps) {
       ) : (
         <FontAwesome5
           name="user-graduate"
-          size={70}
+          size={isPostPhoto ? 30 : 70}
           color={colors.bluePrimary}
         />
       )}
