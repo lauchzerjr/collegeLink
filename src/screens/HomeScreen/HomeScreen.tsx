@@ -8,12 +8,27 @@ import { CTextInput } from "../../components/CTextInput/CTextInput";
 import { FlatList } from "react-native";
 import { compareByName, dataCourses } from "../../utils/dataCourses";
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
+import { useNameCollectionFirebase } from "../../hooks/useNameCollectionFirebase";
+import { useNavigation } from "@react-navigation/native";
+import { transformCourse } from "../../utils/transformCourse";
 
 export function HomeScreen() {
+  const { setNameCollection, setCourseName } = useNameCollectionFirebase();
+  const { navigate } = useNavigation();
+
   const itemsPerPage = 15;
   const [page, setPage] = React.useState(1);
   const [searchText, setSearchText] = React.useState("");
   const [hasNextPage, setHasNextPage] = React.useState(true);
+
+  const handleTapCourse = async (nameCourse: string) => {
+    await setCourseName(nameCourse);
+
+    const courseNameCollection = transformCourse(nameCourse);
+    await setNameCollection(courseNameCollection);
+
+    navigate("PostsScreen", { nameCourse });
+  };
 
   const MemoizedItem: React.FC<{ item: { id: number; name: string } }> =
     React.memo(({ item }) => {
@@ -23,6 +38,7 @@ export function HomeScreen() {
           backgroundColor="bluePrimary"
           p="s12"
           borderRadius="s12"
+          onPress={() => handleTapCourse(item.name)}
         >
           <CText color="grayWhite" fontSize={18} fontWeight="bold">
             {item.name}
@@ -54,7 +70,7 @@ export function HomeScreen() {
       )
       .sort(compareByName);
 
-    setHasNextPage(filteredCourses.length > 10);
+    setHasNextPage(filteredCourses.length > 15);
 
     return filteredCourses.slice(0, page * itemsPerPage);
   }, [searchText, page]);
@@ -90,6 +106,14 @@ export function HomeScreen() {
         </CText>
         <MaterialIcons name="search-off" size={80} color="#005999" />
       </CBox>
+    );
+  };
+
+  const renderListHeaderComponent = () => {
+    return (
+      <CText fontSize={18} color="bluePrimary" mb="s10">
+        Cursos
+      </CText>
     );
   };
 
@@ -143,6 +167,7 @@ export function HomeScreen() {
         ListFooterComponentStyle={{ marginTop: 10 }}
         ListFooterComponent={renderListFooterComponent}
         ListEmptyComponent={renderListEmptyComponent}
+        ListHeaderComponent={renderListHeaderComponent}
       />
     </CScreen>
   );
