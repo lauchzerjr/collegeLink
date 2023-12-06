@@ -4,10 +4,10 @@ export declare global {
       home: undefined;
       favorites: undefined;
       profile: undefined;
-      posts: undefined;
+      PostsScreen: { nameCourse: string };
       login: undefined;
-      createPost: undefined;
-      sport: { nameCollection: string, sportName: string }; // Exemplo de tela com parametros
+      CreatePostScreen: undefined;
+      PostProfileScreen: undefined;
     }
   }
 }

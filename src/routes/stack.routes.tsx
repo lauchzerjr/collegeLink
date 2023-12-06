@@ -1,15 +1,18 @@
-import {
-  createStackNavigator,
-  TransitionPresets,
-} from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import { useAuth } from "../hooks/useAuth";
 import { TabRoutes } from "./tab.routes";
-import { LoginScreen } from "../screens/LoginScreen/LoginScreen";
+import { PostsScreen } from "../screens/PostsScreen/PostsScreen";
+import { useAppTheme } from "../hooks/useAppTheme";
+import { CTouchableOpacityBox } from "../components/CBox/CBox";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { CreatePostScreen } from "../screens/CreatePostScreen/CreatePostScreen";
+import { ProfileScreen } from "../screens/ProfileScreen/ProfileScreen";
 
 const { Screen, Navigator } = createStackNavigator();
 
 export const StackRoutes = () => {
+  const { colors } = useAppTheme();
+
   return (
     <Navigator>
       <Screen
@@ -18,15 +21,55 @@ export const StackRoutes = () => {
         options={{ headerShown: false }}
       />
 
-      {/* <Screen 
-        name="postScreen"
-        component={PostScreen}
+      <Screen
+        name="PostsScreen"
+        component={PostsScreen}
+        options={({ route, navigation }) => ({
+          title: route.params?.nameCourse,
+          headerTitleStyle: { fontSize: 12, color: colors.bluePrimary },
+          headerLeft: () => (
+            <CTouchableOpacityBox ml="s12" onPress={() => navigation.goBack()}>
+              <AntDesign
+                name="leftcircle"
+                size={24}
+                color={colors.bluePrimary}
+              />
+            </CTouchableOpacityBox>
+          ),
+          headerRight: () => (
+            <CTouchableOpacityBox
+              mr="s12"
+              onPress={() => navigation.navigate("CreatePostScreen")}
+            >
+              <Ionicons
+                name="add-circle"
+                size={32}
+                color={colors.bluePrimary}
+              />
+            </CTouchableOpacityBox>
+          ),
+        })}
       />
 
-      <Screen 
-        name="createPost"
+      <Screen
+        name="CreatePostScreen"
         component={CreatePostScreen}
-      /> */}
+        options={({ route, navigation }) => ({
+          title: "Criar postagem",
+          headerTitleStyle: { color: colors.bluePrimary },
+          headerLeft: () => (
+            <CTouchableOpacityBox ml="s12" onPress={() => navigation.goBack()}>
+              <AntDesign
+                name="leftcircle"
+                size={24}
+                color={colors.bluePrimary}
+              />
+            </CTouchableOpacityBox>
+          ),
+        })}
+      />
+
+      <Screen name="PostProfileScreen" component={ProfileScreen} />
     </Navigator>
   );
 };
