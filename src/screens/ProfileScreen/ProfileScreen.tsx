@@ -18,13 +18,7 @@ import {
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
 import { CUserProfilePhoto } from "../../components/CUserProfilePhoto/CUserProfilePhoto";
 import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfileForm";
-
-interface UserData {
-  name: string;
-  city: string;
-  linkedin: string;
-  bio: string;
-}
+import { Userprofile } from "../../services/user/models/userModels";
 
 export function ProfileScreen() {
   const { user } = useAuth();
@@ -36,7 +30,7 @@ export function ProfileScreen() {
   } = useUser();
 
   const [modalChangePassword, setModalChangePassword] = React.useState(false);
-  const [userData, setUserData] = React.useState<UserData | null>(null);
+  const [userData, setUserData] = React.useState<Userprofile | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
 
   const { control, formState, handleSubmit, getValues, setValue } =
@@ -96,7 +90,7 @@ export function ProfileScreen() {
           .collection("usersProfiles")
           .doc(user.uid)
           .get();
-        const userData = userDoc.data() as UserData;
+        const userData = userDoc.data() as Userprofile;
         if (userData) {
           setUserData(userData);
           setValue("name", userData?.name);
@@ -125,10 +119,10 @@ export function ProfileScreen() {
   return (
     <CScreen isScroll>
       <CBox alignItems="center" justifyContent="center" mb="s10">
-        <CUserProfilePhoto photoURL="https://images.livemint.com/rf/Image-621x414/LiveMint/Period2/2019/01/12/Photos/Processed/uri1-U20573096666kjH--621x414@LiveMint.jpg" />
+        <CUserProfilePhoto photoURL={userData?.userPhoto} />
 
         <CText mt="s10" fontSize={16} color="bluePrimary">
-          {user.email}
+          {userData.email}
         </CText>
       </CBox>
 
