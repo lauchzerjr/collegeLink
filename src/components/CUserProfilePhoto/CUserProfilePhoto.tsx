@@ -46,13 +46,10 @@ export function CUserProfilePhoto({
       )}
       {photoURL ? (
         <Image
-          // source={{ uri: user?.photoURL }}
-          source={{
-            uri: "https://images.livemint.com/rf/Image-621x414/LiveMint/Period2/2019/01/12/Photos/Processed/uri1-U20573096666kjH--621x414@LiveMint.jpg",
-          }}
+          source={{ uri: photoURL }}
           style={{
-            width: 130,
-            height: 130,
+            width: isPostPhoto ? 50 : 130,
+            height: isPostPhoto ? 50 : 130,
             borderRadius: 100,
           }}
         />
