@@ -11,6 +11,7 @@ import { CActivityIndicator } from "../../components/CActivityIndicator/CActivit
 import { useNameCollectionFirebase } from "../../hooks/useNameCollectionFirebase";
 import { useNavigation } from "@react-navigation/native";
 import { transformCourse } from "../../utils/transformCourse";
+import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
 
 export function HomeScreen() {
   const { setNameCollection, setCourseName } = useNameCollectionFirebase();
@@ -92,21 +93,7 @@ export function HomeScreen() {
   };
 
   const renderListEmptyComponent = () => {
-    return (
-      <CBox flex={1} alignItems="center" justifyContent="center" height={300}>
-        <CText
-          fontStyle="italic"
-          fontSize={32}
-          textAlign="center"
-          color="bluePrimary"
-          fontWeight="bold"
-          mb="s10"
-        >
-          Não encontramos nada para o termo digitado!
-        </CText>
-        <MaterialIcons name="search-off" size={80} color="#005999" />
-      </CBox>
-    );
+    return <CEmptyList title="Não encontramos nada para o termo digitado!" />;
   };
 
   const renderListHeaderComponent = () => {
