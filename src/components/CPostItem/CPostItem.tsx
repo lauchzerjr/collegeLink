@@ -35,9 +35,9 @@ export function CPostItem({ item }: CPostItemProps) {
       <CBox height={1} width={"100%"} bg="grayBlack" />
 
       <CPostItemFooter
+        likes={item?.postLikes}
         commentsCount={23}
         dislikes={24}
-        likes={90}
         userId={item.userId}
       />
     </CBox>

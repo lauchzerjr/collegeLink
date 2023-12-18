@@ -7,9 +7,11 @@ import { useForm } from "react-hook-form";
 import { CreatePostSchemaSchema, createPostSchema } from "./createPostSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CButton } from "../../components/CButton/CButton";
-import { View } from "react-native";
+import firestore from "@react-native-firebase/firestore";
+import { useAuth } from "../../hooks/useAuth";
 
 export function CreatePostScreen() {
+  const { user } = useAuth();
   const { nameCollection, courseName } = useNameCollectionFirebase();
 
   const { control, formState, handleSubmit, getValues, setValue } =
@@ -17,11 +19,22 @@ export function CreatePostScreen() {
       resolver: zodResolver(createPostSchema),
       defaultValues: {
         subjectPost: "",
-        discipline: "",
+        disciplinePost: "",
         textPost: "",
       },
       mode: "onChange",
     });
+
+  const handleCreatePost = () => {
+    firestore()
+      .collection(nameCollection)
+      .add({
+        userId: user.uid,
+        disciplinePost: getValues("disciplinePost"),
+        subjectPost: getValues("subjectPost"),
+        textPost: getValues("textPost"),
+      });
+  };
 
   return (
     <CScreen isStackHeader>
@@ -48,7 +61,7 @@ export function CreatePostScreen() {
 
       <CFormTextInput
         control={control}
-        name="discipline"
+        name="disciplinePost"
         label="Disciplina"
         placeholder="Digite a disciplina"
         boxProps={{ mb: "s10" }}
@@ -66,7 +79,7 @@ export function CreatePostScreen() {
 
       <CButton title="Adicionar imagens" preset="outline" />
 
-      <CButton title="Publicar" />
+      <CButton title="Publicar" onPress={handleSubmit(handleCreatePost)} />
     </CScreen>
   );
 }
