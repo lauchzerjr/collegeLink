@@ -4,6 +4,7 @@ import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { UserPostInfos } from "../../user/models/userModels";
 import { UserController } from "../../user/controllers/UserController";
 import { LikeController } from "../../Like/controllers/LikeController";
+import { DislikesController } from "../../Dislikes/controllers/DislikesController";
 
 const getPosts = async (
   nameCollection: string,
@@ -21,14 +22,18 @@ const getPosts = async (
       )) as UserPostInfos;
 
       const postLikes = await LikeController.getTotalCountLikesPost(post.id);
+      const postDislikes = await DislikesController.getTotalCountDislikesPost(
+        post.id
+      );
 
       console.log("postLikes ===>", postLikes);
 
       return {
         ...post,
         userId: post.userId,
-        user: user,
-        postLikes: postLikes,
+        user,
+        postLikes,
+        postDislikes,
       };
     })
   );

@@ -4,22 +4,74 @@ import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useAuth } from "../../hooks/useAuth";
+import { LikeController } from "../../services/Like/controllers/LikeController";
+import { DislikesController } from "../../services/Dislikes/controllers/DislikesController";
 
 interface CPostItemFooterProps {
   userId: string;
-  likes: number;
-  dislikes: number;
+  postId: string;
+  initialLikes: number;
+  initialDislikes: number;
   commentsCount: number;
 }
 
 export function CPostItemFooter({
   userId,
-  likes,
-  dislikes,
+  postId,
+  initialLikes,
+  initialDislikes,
   commentsCount,
 }: CPostItemFooterProps) {
   const { colors } = useAppTheme();
   const { user } = useAuth();
+
+  const [likes, setLikes] = React.useState(initialLikes);
+  const [hasLiked, setHasLiked] = React.useState(false);
+  const [dislikes, setDislikes] = React.useState(initialDislikes);
+  const [hasDisliked, setHasDisliked] = React.useState(false);
+
+  const checkIfLiked = React.useCallback(async () => {
+    const liked = await LikeController.hasLikedPost(postId, user.uid);
+    setHasLiked(liked);
+  }, []);
+
+  const checkIfDisliked = React.useCallback(async () => {
+    const disliked = await DislikesController.hasDislikedPost(postId, user.uid);
+    setHasDisliked(disliked);
+  }, []);
+
+  React.useEffect(() => {
+    checkIfLiked();
+    checkIfDisliked();
+  }, [postId, userId]);
+
+  const handleLike = React.useCallback(async () => {
+    try {
+      if (hasLiked) {
+        setLikes(likes - 1);
+      } else {
+        setLikes(likes + 1);
+      }
+      setHasLiked(!hasLiked);
+      await LikeController.setLikePost({ postId, userId: user.uid });
+    } catch (error) {
+      console.error("Erro ao lidar com o like:", error);
+    }
+  }, [hasLiked, likes, postId, userId, user.uid]);
+
+  const handleDislike = React.useCallback(async () => {
+    try {
+      if (hasDisliked) {
+        setDislikes(dislikes - 1);
+      } else {
+        setDislikes(dislikes + 1);
+      }
+      setHasDisliked(!hasDisliked);
+      await DislikesController.setDislikePost({ postId, userId: user.uid });
+    } catch (error) {
+      console.error("Erro ao lidar com o like:", error);
+    }
+  }, [hasDisliked, dislikes, postId, userId, user.uid]);
 
   return (
     <CBox
@@ -29,8 +81,12 @@ export function CPostItemFooter({
       alignItems="center"
     >
       <CBox flexDirection="row" alignItems="center">
-        <CTouchableOpacityBox mr="s4" activeOpacity={0.7}>
-          <AntDesign name="like2" size={24} color={colors.bluePrimary} />
+        <CTouchableOpacityBox mr="s4" activeOpacity={0.7} onPress={handleLike}>
+          <AntDesign
+            name={hasLiked ? "like1" : "like2"}
+            size={24}
+            color={colors.bluePrimary}
+          />
         </CTouchableOpacityBox>
         {likes !== 0 && (
           <CText fontWeight="bold" color="bluePrimary">
@@ -40,8 +96,16 @@ export function CPostItemFooter({
       </CBox>
 
       <CBox flexDirection="row" alignItems="center">
-        <CTouchableOpacityBox mr="s4" activeOpacity={0.7}>
-          <AntDesign name="dislike2" size={24} color={colors.bluePrimary} />
+        <CTouchableOpacityBox
+          mr="s4"
+          activeOpacity={0.7}
+          onPress={handleDislike}
+        >
+          <AntDesign
+            name={hasDisliked ? "dislike1" : "dislike2"}
+            size={24}
+            color={colors.bluePrimary}
+          />
         </CTouchableOpacityBox>
         {dislikes !== 0 && (
           <CText fontWeight="bold" color="bluePrimary">

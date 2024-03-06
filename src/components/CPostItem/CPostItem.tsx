@@ -4,6 +4,7 @@ import { CText } from "../CText/CText";
 import { Post } from "../../services/Post/models/postModels";
 import { CPostItemHeader } from "../CPostItemHeader/CPostItemHeader";
 import { CPostItemFooter } from "../CPostItemFooter/CPostItemFooter";
+import { LikeController } from "../../services/Like/controllers/LikeController";
 
 interface CPostItemProps {
   item: Post;
@@ -20,25 +21,26 @@ export function CPostItem({ item }: CPostItemProps) {
       borderColor="bluePrimary"
     >
       <CPostItemHeader
-        disciplinePost={item.disciplinePost}
-        email={item.user.email}
-        name={item.user.name}
-        userPhoto={item.user.userPhoto}
+        disciplinePost={item?.disciplinePost}
+        email={item?.user?.email}
+        name={item?.user?.name}
+        userPhoto={item?.user?.userPhoto}
       />
 
       <CBox paddingVertical="s10">
-        <CText>Titulo: {item.subjectPost}</CText>
-        <CText>{item.textPost}</CText>
+        <CText>Titulo: {item?.subjectPost}</CText>
+        <CText>{item?.textPost}</CText>
 
         <CBox width={"100%"} height={250} bg="grayWhite" />
       </CBox>
       <CBox height={1} width={"100%"} bg="grayBlack" />
 
       <CPostItemFooter
-        likes={item?.postLikes}
+        initialLikes={item?.postLikes}
         commentsCount={23}
-        dislikes={24}
-        userId={item.userId}
+        initialDislikes={item?.postDislikes}
+        userId={item?.userId}
+        postId={item?.id}
       />
     </CBox>
   );

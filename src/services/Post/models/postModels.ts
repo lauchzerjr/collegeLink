@@ -14,6 +14,7 @@ export type Post = {
   photoPost?: string;
   createdAt: number;
   postLikes: number;
+  postDislikes: number;
 };
 
 export interface PaginatedData<Data> {
