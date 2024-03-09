@@ -5,7 +5,7 @@ import { PaginatedData } from "../models/postModels";
 
 async function getPosts(
   nameCollection: string,
-  startAfter?: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
 ): Promise<PaginatedData<FirebaseFirestoreTypes.DocumentData>> {
   let query = await firestore()
     .collection(nameCollection)

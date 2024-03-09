@@ -4,7 +4,7 @@ import firestore, {
 
 async function getComments(postId: string): Promise<Comment[]> {
   const querySnapshot = await firestore()
-    .collection("comments")
+    .collection("postComments")
     .where("postId", "==", postId)
     .get();
 

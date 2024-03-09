@@ -4,7 +4,6 @@ import { CText } from "../CText/CText";
 import { Post } from "../../services/Post/models/postModels";
 import { CPostItemHeader } from "../CPostItemHeader/CPostItemHeader";
 import { CPostItemFooter } from "../CPostItemFooter/CPostItemFooter";
-import { LikeController } from "../../services/Like/controllers/LikeController";
 
 interface CPostItemProps {
   item: Post;

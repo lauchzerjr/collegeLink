@@ -8,7 +8,7 @@ import { DislikesController } from "../../Dislikes/controllers/DislikesControlle
 
 const getPosts = async (
   nameCollection: string,
-  startAfter?: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
 ): Promise<PaginatedData<Post>> => {
   const { data, lastVisible } = await postApi.getPosts(
     nameCollection,
@@ -25,8 +25,6 @@ const getPosts = async (
       const postDislikes = await DislikesController.getTotalCountDislikesPost(
         post.id
       );
-
-      console.log("postLikes ===>", postLikes);
 
       return {
         ...post,
