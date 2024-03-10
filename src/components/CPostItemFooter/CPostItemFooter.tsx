@@ -6,6 +6,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useAuth } from "../../hooks/useAuth";
 import { LikeController } from "../../services/Like/controllers/LikeController";
 import { DislikesController } from "../../services/Dislikes/controllers/DislikesController";
+import { useNavigation } from "@react-navigation/native";
 
 interface CPostItemFooterProps {
   userId: string;
@@ -22,6 +23,7 @@ export function CPostItemFooter({
   initialDislikes,
   commentsCount,
 }: CPostItemFooterProps) {
+  const { navigate } = useNavigation();
   const { colors } = useAppTheme();
   const { user } = useAuth();
 
@@ -29,6 +31,10 @@ export function CPostItemFooter({
   const [hasLiked, setHasLiked] = React.useState(false);
   const [dislikes, setDislikes] = React.useState(initialDislikes);
   const [hasDisliked, setHasDisliked] = React.useState(false);
+
+  const navigateToPostCommentScreen = () => {
+    navigate("PostCommentsScreen", { postId });
+  };
 
   const checkIfLiked = React.useCallback(async () => {
     const liked = await LikeController.hasLikedPost(postId, user.uid);
@@ -115,7 +121,11 @@ export function CPostItemFooter({
       </CBox>
 
       <CBox flexDirection="row" alignItems="center">
-        <CTouchableOpacityBox mr="s4" activeOpacity={0.7}>
+        <CTouchableOpacityBox
+          mr="s4"
+          activeOpacity={0.7}
+          onPress={navigateToPostCommentScreen}
+        >
           <FontAwesome name="comment-o" size={24} color={colors.bluePrimary} />
         </CTouchableOpacityBox>
         {commentsCount !== 0 && (

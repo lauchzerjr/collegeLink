@@ -36,7 +36,7 @@ export function CPostItem({ item }: CPostItemProps) {
 
       <CPostItemFooter
         initialLikes={item?.postLikes}
-        commentsCount={23}
+        commentsCount={item?.postComments}
         initialDislikes={item?.postDislikes}
         userId={item?.userId}
         postId={item?.id}

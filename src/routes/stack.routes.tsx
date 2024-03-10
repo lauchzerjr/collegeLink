@@ -1,4 +1,7 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 
 import { TabRoutes } from "./tab.routes";
 import { PostsScreen } from "../screens/PostsScreen/PostsScreen";
@@ -7,6 +10,7 @@ import { CTouchableOpacityBox } from "../components/CBox/CBox";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { CreatePostScreen } from "../screens/CreatePostScreen/CreatePostScreen";
 import { ProfileScreen } from "../screens/ProfileScreen/ProfileScreen";
+import { PostCommentsScreen } from "../screens/PostCommentsScreen/PostCommentsScreen";
 
 const { Screen, Navigator } = createStackNavigator();
 
@@ -67,6 +71,16 @@ export const StackRoutes = () => {
             </CTouchableOpacityBox>
           ),
         })}
+      />
+
+      <Screen
+        name="PostCommentsScreen"
+        component={PostCommentsScreen}
+        options={{
+          gestureEnabled: true,
+          headerShown: false,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+        }}
       />
 
       <Screen name="PostProfileScreen" component={ProfileScreen} />

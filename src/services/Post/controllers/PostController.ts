@@ -5,6 +5,7 @@ import { UserPostInfos } from "../../user/models/userModels";
 import { UserController } from "../../user/controllers/UserController";
 import { LikeController } from "../../Like/controllers/LikeController";
 import { DislikesController } from "../../Dislikes/controllers/DislikesController";
+import { CommentController } from "../../Comment/controllers/CommentController";
 
 const getPosts = async (
   nameCollection: string,
@@ -25,6 +26,9 @@ const getPosts = async (
       const postDislikes = await DislikesController.getTotalCountDislikesPost(
         post.id
       );
+      const postComments = await CommentController.getTotalCountPostComments(
+        post.id
+      );
 
       return {
         ...post,
@@ -32,6 +36,7 @@ const getPosts = async (
         user,
         postLikes,
         postDislikes,
+        postComments,
       };
     })
   );
