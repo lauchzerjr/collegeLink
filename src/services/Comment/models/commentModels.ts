@@ -7,4 +7,5 @@ export type Comment = {
     userPhoto: string;
   };
   text: string;
+  createdAt: string;
 };

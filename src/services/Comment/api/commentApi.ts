@@ -22,7 +22,7 @@ async function getPostComments(
   let query = await firestore()
     .collection("postComments")
     .where("postId", "==", postId)
-    // .orderBy("createdAt")
+    .orderBy("createdAt", "desc")
     .limit(2);
 
   if (startAfter) {
