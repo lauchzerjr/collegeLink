@@ -43,18 +43,19 @@ async function getPostComments(
   };
 }
 
-async function setPostComment({
-  postId,
-  userId,
-  text,
-}: Omit<Comment, "id">): Promise<void> {
+async function createPostComment(
+  postId: string,
+  userId: string,
+  text: string
+): Promise<void> {
   await firestore().collection("postComments").add({
     postId,
     userId,
     text,
+    createdAt: new Date().toISOString(),
   });
 
-  console.log("Dislike adicionado com sucesso para o post", postId);
+  console.log("comentario adicionado com sucesso para o post", postId);
 }
 
 async function removePostComment({ id }: Pick<Comment, "id">): Promise<void> {
@@ -66,6 +67,6 @@ async function removePostComment({ id }: Pick<Comment, "id">): Promise<void> {
 export const commentApi = {
   getTotalCountPostComments,
   getPostComments,
-  setPostComment,
+  createPostComment,
   removePostComment,
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { CBox } from "../../components/CBox/CBox";
+import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CText } from "../../components/CText/CText";
 import { FlatList } from "react-native";
@@ -8,6 +8,10 @@ import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
 import { usePostCommentList } from "../../services/Comment/useCases/useCommentList";
 import { useRoute } from "@react-navigation/native";
 import { CPostCommentItem } from "../../components/CPostItem/CPostCommentItem";
+import { CTextInput } from "../../components/CTextInput/CTextInput";
+import { usePostCommentCreate } from "../../services/Comment/useCases/usePostCommentCreate";
+import { useAuth } from "../../hooks/useAuth";
+import { PostCommentTextMessage } from "./components/PostCommentTextMessage";
 
 type RouteParams = {
   postId: string;
@@ -16,8 +20,9 @@ type RouteParams = {
 export function PostCommentsScreen() {
   const route = useRoute();
   const { postId } = route.params as RouteParams;
-  const { data, fetchMoreData, lastItem, startAfter, loading } =
+  const { data, fetchMoreData, lastItem, startAfter, loading, fetchData } =
     usePostCommentList(postId);
+
   const [hasNextPage, setHasNextPage] = React.useState(true);
 
   const renderItem = ({ item }) => {
@@ -57,7 +62,7 @@ export function PostCommentsScreen() {
   }
 
   return (
-    <CScreen>
+    <CScreen flex={1}>
       <CBox
         height={8}
         width={40}
@@ -66,28 +71,32 @@ export function PostCommentsScreen() {
         borderRadius="s12"
         mb="s10"
       />
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 210 }}
-        ItemSeparatorComponent={() => (
-          <CBox
-            height={1}
-            width={"100%"}
-            bg="bluePrimary"
-            marginVertical="s10"
-            alignSelf="center"
-          />
-        )}
-        onEndReached={fetchMoreData}
-        onEndReachedThreshold={0.1}
-        ListFooterComponentStyle={{ marginTop: 10 }}
-        ListFooterComponent={renderListFooterComponent}
-        ListEmptyComponent={renderListEmptyComponent}
-        ListHeaderComponent={renderListHeaderComponent}
-      />
+      <CBox flex={1} justifyContent="space-between">
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 210 }}
+          ItemSeparatorComponent={() => (
+            <CBox
+              height={1}
+              width={"100%"}
+              bg="bluePrimary"
+              marginVertical="s10"
+              alignSelf="center"
+            />
+          )}
+          onEndReached={fetchMoreData}
+          onEndReachedThreshold={0.1}
+          ListFooterComponentStyle={{ marginTop: 10 }}
+          ListFooterComponent={renderListFooterComponent}
+          ListEmptyComponent={renderListEmptyComponent}
+          ListHeaderComponent={renderListHeaderComponent}
+        />
+
+        <PostCommentTextMessage postId={postId} onAddComment={fetchData} />
+      </CBox>
     </CScreen>
   );
 }

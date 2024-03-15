@@ -7,8 +7,9 @@ import {
 } from "./components/ScreenContainer";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { useAppSafeArea } from "../../hooks/useAppSafeArea";
+import { BoxProps } from "../CBox/CBox";
 
-interface CScreenProps {
+interface CScreenProps extends BoxProps {
   children: React.ReactNode;
   isScroll?: boolean;
   isStackHeader?: boolean;
@@ -18,6 +19,7 @@ export function CScreen({
   children,
   isScroll = false,
   isStackHeader = false,
+  ...BoxProps
 }: CScreenProps) {
   const { colors } = useAppTheme();
   const { bottom, top } = useAppSafeArea();
@@ -36,6 +38,7 @@ export function CScreen({
             paddingTop: isStackHeader ? 20 : top,
             paddingBottom: bottom,
           }}
+          {...BoxProps}
         >
           {children}
         </CBox>

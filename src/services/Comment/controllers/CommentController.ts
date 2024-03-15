@@ -37,8 +37,12 @@ const getPostComments = async (
   };
 };
 
-const setPostComment = async (postId: string, userId: string, text: string) => {
-  return commentApi.setPostComment({ postId, userId, text });
+const createPostComment = async (
+  postId: string,
+  userId: string,
+  text: string
+) => {
+  return commentApi.createPostComment(postId, userId, text);
 };
 
 const removePostComment = async (id: string) => {
@@ -48,6 +52,6 @@ const removePostComment = async (id: string) => {
 export const CommentController = {
   getTotalCountPostComments,
   getPostComments,
-  setPostComment,
+  createPostComment,
   removePostComment,
 };
