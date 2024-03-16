@@ -1,6 +1,4 @@
-import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-
-export type Post = {
+export interface Post {
   id: string;
   subjectPost: string;
   userId: string;
@@ -16,9 +14,4 @@ export type Post = {
   postLikes: number;
   postDislikes: number;
   postComments: number;
-};
-
-export interface PaginatedData<Data> {
-  data: Data[];
-  lastVisible: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null;
 }

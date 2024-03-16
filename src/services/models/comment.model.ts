@@ -1,4 +1,4 @@
-export type Comment = {
+export interface Comment {
   id: string;
   postId: string;
   userId: string;
@@ -8,4 +8,4 @@ export type Comment = {
   };
   text: string;
   createdAt: string;
-};
+}

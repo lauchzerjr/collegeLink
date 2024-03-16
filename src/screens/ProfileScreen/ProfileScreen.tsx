@@ -18,7 +18,7 @@ import {
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
 import { CUserProfilePhoto } from "../../components/CUserProfilePhoto/CUserProfilePhoto";
 import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfileForm";
-import { Userprofile } from "../../services/user/models/userModels";
+import { Userprofile } from "../../services/models/user.model";
 
 export function ProfileScreen() {
   const { user } = useAuth();

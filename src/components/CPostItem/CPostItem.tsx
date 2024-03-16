@@ -1,7 +1,7 @@
 import React from "react";
 import { CBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
-import { Post } from "../../services/Post/models/postModels";
+import { Post } from "../../services/models/post.model";
 import { CPostItemHeader } from "../CPostItemHeader/CPostItemHeader";
 import { CPostItemFooter } from "../CPostItemFooter/CPostItemFooter";
 

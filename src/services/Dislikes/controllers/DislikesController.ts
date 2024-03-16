@@ -1,5 +1,5 @@
-import { dislikesApi } from "../api/DislikesApi";
-import { Dislikes } from "../models/DislikesModels";
+import { dislikesApi } from "../../api/dislike.api";
+import { Dislikes } from "../../models/dislike.model";
 
 const getTotalCountDislikesPost = async (postId: string) => {
   return dislikesApi.getTotalCountDislikesPost(postId);

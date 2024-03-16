@@ -1,4 +1,4 @@
-export type Dislikes = {
+export interface Like {
   postId: string;
   userId: string;
-};
+}

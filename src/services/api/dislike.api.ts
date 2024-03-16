@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { Dislikes } from "../models/DislikesModels";
+import { Dislikes } from "../models/dislike.model";
 
 async function getTotalCountDislikesPost(postId: string): Promise<number> {
   const querySnapshot = await firestore()

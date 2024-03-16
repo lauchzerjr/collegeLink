@@ -4,7 +4,7 @@ import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useAuth } from "../../hooks/useAuth";
-import { LikeController } from "../../services/Like/controllers/LikeController";
+import { LikeController } from "../../services/controllers/like.controller";
 import { DislikesController } from "../../services/Dislikes/controllers/DislikesController";
 import { useNavigation } from "@react-navigation/native";
 
@@ -58,8 +58,8 @@ export function CPostItemFooter({
       } else {
         setLikes(likes + 1);
       }
-      setHasLiked(!hasLiked);
-      await LikeController.setLikePost({ postId, userId: user.uid });
+      setHasLiked((hasLiked) => !hasLiked);
+      await LikeController.handlePostLikePress({ postId, userId: user.uid });
     } catch (error) {
       console.error("Erro ao lidar com o like:", error);
     }

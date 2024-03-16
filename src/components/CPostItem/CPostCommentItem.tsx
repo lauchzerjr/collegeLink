@@ -1,7 +1,7 @@
 import React from "react";
 import { CBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
-import { Comment } from "../../services/Comment/models/commentModels";
+import { Comment } from "../../services/models/comment.model";
 import { CUserProfilePhoto } from "../CUserProfilePhoto/CUserProfilePhoto";
 import { dateUtils } from "../../utils/dateIsoFormater";
 

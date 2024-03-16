@@ -1,7 +1,7 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
-import { PaginatedData } from "../models/postModels";
+import { PaginatedData } from "../models/paginatedData.model";
 
 async function getPosts(
   nameCollection: string,

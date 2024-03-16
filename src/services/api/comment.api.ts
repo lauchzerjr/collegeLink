@@ -1,8 +1,8 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
-import { Comment } from "../models/commentModels";
-import { PaginatedData } from "../../Post/models/postModels";
+import { Comment } from "../models/comment.model";
+import { PaginatedData } from "../models/paginatedData.model";
 
 async function getTotalCountPostComments({
   postId,

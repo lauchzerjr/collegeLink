@@ -1,8 +1,8 @@
-export type UserPostInfos = {
+export interface UserPostInfos {
   name: string;
   email: string;
   userPhoto: string;
-};
+}
 
 export interface Userprofile {
   name: string;
