@@ -5,7 +5,7 @@ import { CText } from "../CText/CText";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useAuth } from "../../hooks/useAuth";
 import { LikeController } from "../../services/controllers/like.controller";
-import { DislikesController } from "../../services/Dislikes/controllers/DislikesController";
+import { DislikeController } from "../../services/controllers/dislike.controller";
 import { useNavigation } from "@react-navigation/native";
 
 interface CPostItemFooterProps {
@@ -42,7 +42,7 @@ export function CPostItemFooter({
   }, []);
 
   const checkIfDisliked = React.useCallback(async () => {
-    const disliked = await DislikesController.hasDislikedPost(postId, user.uid);
+    const disliked = await DislikeController.hasDislikedPost(postId, user.uid);
     setHasDisliked(disliked);
   }, []);
 
@@ -72,8 +72,11 @@ export function CPostItemFooter({
       } else {
         setDislikes(dislikes + 1);
       }
-      setHasDisliked(!hasDisliked);
-      await DislikesController.setDislikePost({ postId, userId: user.uid });
+      setHasDisliked((hasDisliked) => !hasDisliked);
+      await DislikeController.handlePostDislikePress({
+        postId,
+        userId: user.uid,
+      });
     } catch (error) {
       console.error("Erro ao lidar com o like:", error);
     }

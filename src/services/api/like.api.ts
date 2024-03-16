@@ -42,7 +42,7 @@ async function removeLike({ postId, userId }: Like): Promise<void> {
   console.log("Like removido com sucesso para o post", postId);
 }
 
-export const likesApi = {
+export const likeApi = {
   getTotalCountLikes,
   hasLiked,
   addLike,

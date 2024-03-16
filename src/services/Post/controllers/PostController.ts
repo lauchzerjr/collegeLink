@@ -3,7 +3,7 @@ import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { UserPostInfos } from "../../models/user.model";
 import { UserController } from "../../user/controllers/UserController";
 import { LikeController } from "../../controllers/like.controller";
-import { DislikesController } from "../../Dislikes/controllers/DislikesController";
+import { DislikeController } from "../../controllers/dislike.controller";
 import { CommentController } from "../../Comment/controllers/CommentController";
 import { PaginatedData } from "../../models/paginatedData.model";
 import { Post } from "../../models/post.model";
@@ -24,7 +24,7 @@ const getPosts = async (
       )) as UserPostInfos;
 
       const postLikes = await LikeController.getTotalCountPostLikes(post.id);
-      const postDislikes = await DislikesController.getTotalCountDislikesPost(
+      const postDislikes = await DislikeController.getTotalCountDislikesPost(
         post.id
       );
       const postComments = await CommentController.getTotalCountPostComments(
