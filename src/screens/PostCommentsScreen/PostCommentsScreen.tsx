@@ -5,11 +5,11 @@ import { CText } from "../../components/CText/CText";
 import { FlatList } from "react-native";
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
 import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
-import { usePostCommentList } from "../../useCases/post.comment/useCommentList";
+import { usePostCommentList } from "../../useCases/postComment/useCommentList";
 import { useRoute } from "@react-navigation/native";
 import { CPostCommentItem } from "../../components/CPostItem/CPostCommentItem";
 import { CTextInput } from "../../components/CTextInput/CTextInput";
-import { usePostCommentCreate } from "../../useCases/post.comment/usePostCommentCreate";
+import { usePostCommentCreate } from "../../useCases/postComment/usePostCommentCreate";
 import { useAuth } from "../../hooks/useAuth";
 import { PostCommentTextMessage } from "./components/PostCommentTextMessage";
 

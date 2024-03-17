@@ -19,7 +19,7 @@ const getPosts = async (
 
   const postsWithDetails: Post[] = await Promise.all(
     data.map(async (post: Post) => {
-      const user = (await UserController.getUserInfos(
+      const user = (await UserController.getUserPostInfo(
         post.userId
       )) as UserPostInfos;
 

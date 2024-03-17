@@ -22,12 +22,12 @@ export default function App() {
         <StatusBar style="dark" backgroundColor="white" translucent />
         <ToastProvider>
           <AuthProvider>
-            <NameCollectionFirebaseContextProvider>
-              <UserProvider>
+            <UserProvider>
+              <NameCollectionFirebaseContextProvider>
                 <Routes />
                 <CToast />
-              </UserProvider>
-            </NameCollectionFirebaseContextProvider>
+              </NameCollectionFirebaseContextProvider>
+            </UserProvider>
           </AuthProvider>
         </ToastProvider>
       </ThemeProvider>

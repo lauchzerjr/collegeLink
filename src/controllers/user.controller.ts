@@ -1,15 +1,52 @@
-import { UserPostInfos } from "../models/user.model";
+import {
+  UserPostCommentInfos,
+  UserPostInfos,
+  UserProfileInfo,
+} from "../models/user.model";
 import { userInfosApi } from "../services/user.service";
 
-const getUserInfos = async (userId: string): Promise<UserPostInfos> => {
-  const { name, email, userPhoto } = await userInfosApi.getUsersInfos(userId);
+const getUserPostInfo = async (userId: string): Promise<UserPostInfos> => {
+  const { name, userPhoto, createdAt, email } = await userInfosApi.getUserInfos(
+    userId
+  );
   return {
     name,
     email,
     userPhoto,
-  };
+    createdAt,
+  } as UserPostInfos;
+};
+
+const getUserPostCommentInfo = async (
+  userId: string
+): Promise<UserPostCommentInfos> => {
+  const { name, userPhoto, createdAt } = await userInfosApi.getUserInfos(
+    userId
+  );
+  return {
+    name,
+    userPhoto,
+    createdAt,
+  } as UserPostCommentInfos;
+};
+
+const getUserProfileInfo = async (userId: string): Promise<UserProfileInfo> => {
+  const { name, city, linkedin, bio, userPhoto, email, createdAt } =
+    await userInfosApi.getUserInfos(userId);
+
+  return {
+    name,
+    city,
+    linkedin,
+    bio,
+    userPhoto,
+    email,
+    createdAt,
+  } as UserProfileInfo;
 };
 
 export const UserController = {
-  getUserInfos,
+  getUserPostCommentInfo,
+  getUserPostInfo,
+  getUserProfileInfo,
 };

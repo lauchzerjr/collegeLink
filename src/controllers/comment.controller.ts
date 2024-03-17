@@ -2,7 +2,7 @@ import { Comment } from "../models/comment.model";
 import { commentApi } from "../services/comment.service";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { UserController } from "./user.controller";
-import { UserPostInfos } from "../models/user.model";
+import { UserPostCommentInfos } from "../models/user.model";
 
 const getTotalCountPostComments = async (postId: string) => {
   return commentApi.getTotalCountComments({ postId });
@@ -19,9 +19,9 @@ const getPostComments = async (
 
   const postCommentsWithDetails: Comment[] = await Promise.all(
     data.map(async (postComments: Comment) => {
-      const user = (await UserController.getUserInfos(
+      const user = (await UserController.getUserPostCommentInfo(
         postComments.userId
-      )) as UserPostInfos;
+      )) as UserPostCommentInfos;
 
       return {
         ...postComments,

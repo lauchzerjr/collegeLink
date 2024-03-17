@@ -2,7 +2,7 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 
-async function getUsersInfos(
+async function getUserInfos(
   userId: string
 ): Promise<FirebaseFirestoreTypes.DocumentData> {
   const userDoc = await firestore()
@@ -14,5 +14,5 @@ async function getUsersInfos(
 }
 
 export const userInfosApi = {
-  getUsersInfos,
+  getUserInfos,
 };
