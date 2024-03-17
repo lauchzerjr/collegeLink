@@ -1,6 +1,4 @@
-import { usePaginatedList } from "../../hooks/usePaginatedList";
-import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { CommentController } from "../controllers/CommentController";
+import { CommentController } from "../../controllers/comment.controller";
 import { useState } from "react";
 
 interface Options {
@@ -17,7 +15,7 @@ export const usePostCommentCreate = (
   const createPostComment = async (comment: string) => {
     try {
       setLoading(true);
-      const postComment = await CommentController.createPostComment(
+      const postComment = await CommentController.addPostComment(
         postId,
         userId,
         comment

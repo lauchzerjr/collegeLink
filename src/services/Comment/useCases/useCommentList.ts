@@ -1,6 +1,6 @@
 import { usePaginatedList } from "../../hooks/usePaginatedList";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { CommentController } from "../controllers/CommentController";
+import { CommentController } from "../../controllers/comment.controller";
 
 export const usePostCommentList = (postId: string) => {
   const fetchPostComments = async (

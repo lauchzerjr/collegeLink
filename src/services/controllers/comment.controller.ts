@@ -1,18 +1,18 @@
-import { Comment } from "../../models/comment.model";
-import { commentApi } from "../../api/comment.api";
+import { Comment } from "../models/comment.model";
+import { commentApi } from "../api/comment.api";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { UserController } from "../../user/controllers/UserController";
-import { UserPostInfos } from "../../models/user.model";
+import { UserController } from "../user/controllers/UserController";
+import { UserPostInfos } from "../models/user.model";
 
 const getTotalCountPostComments = async (postId: string) => {
-  return commentApi.getTotalCountPostComments({ postId });
+  return commentApi.getTotalCountComments({ postId });
 };
 
 const getPostComments = async (
   postId: string,
   startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
 ) => {
-  const { data, lastVisible } = await commentApi.getPostComments(
+  const { data, lastVisible } = await commentApi.getComments(
     postId,
     startAfter
   );
@@ -37,21 +37,17 @@ const getPostComments = async (
   };
 };
 
-const createPostComment = async (
-  postId: string,
-  userId: string,
-  text: string
-) => {
-  return commentApi.createPostComment(postId, userId, text);
+const addPostComment = async (postId: string, userId: string, text: string) => {
+  return commentApi.addComment(postId, userId, text);
 };
 
 const removePostComment = async (id: string) => {
-  return commentApi.removePostComment({ id });
+  return commentApi.removeComment({ id });
 };
 
 export const CommentController = {
   getTotalCountPostComments,
   getPostComments,
-  createPostComment,
+  addPostComment,
   removePostComment,
 };

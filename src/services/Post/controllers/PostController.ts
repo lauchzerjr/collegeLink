@@ -4,7 +4,7 @@ import { UserPostInfos } from "../../models/user.model";
 import { UserController } from "../../user/controllers/UserController";
 import { LikeController } from "../../controllers/like.controller";
 import { DislikeController } from "../../controllers/dislike.controller";
-import { CommentController } from "../../Comment/controllers/CommentController";
+import { CommentController } from "../../controllers/comment.controller";
 import { PaginatedData } from "../../models/paginatedData.model";
 import { Post } from "../../models/post.model";
 

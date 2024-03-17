@@ -4,7 +4,7 @@ import firestore, {
 import { Comment } from "../models/comment.model";
 import { PaginatedData } from "../models/paginatedData.model";
 
-async function getTotalCountPostComments({
+async function getTotalCountComments({
   postId,
 }: Pick<Comment, "postId">): Promise<number> {
   const querySnapshot = await firestore()
@@ -15,7 +15,7 @@ async function getTotalCountPostComments({
   return querySnapshot.docs.length;
 }
 
-async function getPostComments(
+async function getComments(
   postId: string,
   startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
 ): Promise<PaginatedData<FirebaseFirestoreTypes.DocumentData>> {
@@ -43,7 +43,7 @@ async function getPostComments(
   };
 }
 
-async function createPostComment(
+async function addComment(
   postId: string,
   userId: string,
   text: string
@@ -58,15 +58,15 @@ async function createPostComment(
   console.log("comentario adicionado com sucesso para o post", postId);
 }
 
-async function removePostComment({ id }: Pick<Comment, "id">): Promise<void> {
+async function removeComment({ id }: Pick<Comment, "id">): Promise<void> {
   await firestore().collection("postComments").doc(id).delete();
 
   console.log("comentario removido com sucesso para o id", id);
 }
 
 export const commentApi = {
-  getTotalCountPostComments,
-  getPostComments,
-  createPostComment,
-  removePostComment,
+  getTotalCountComments,
+  getComments,
+  addComment,
+  removeComment,
 };
