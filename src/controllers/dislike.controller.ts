@@ -1,4 +1,4 @@
-import { dislikeApi } from "../api/dislike.api";
+import { dislikeApi } from "../services/dislike.service";
 import { Dislikes } from "../models/dislike.model";
 
 const getTotalCountDislikesPost = async (postId: string) => {

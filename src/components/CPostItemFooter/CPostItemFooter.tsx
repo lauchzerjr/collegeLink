@@ -4,8 +4,8 @@ import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useAuth } from "../../hooks/useAuth";
-import { LikeController } from "../../services/controllers/like.controller";
-import { DislikeController } from "../../services/controllers/dislike.controller";
+import { LikeController } from "../../controllers/like.controller";
+import { DislikeController } from "../../controllers/dislike.controller";
 import { useNavigation } from "@react-navigation/native";
 
 interface CPostItemFooterProps {

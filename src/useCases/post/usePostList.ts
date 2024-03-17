@@ -1,5 +1,5 @@
-import { PostController } from "../controllers/PostController";
-import { useNameCollectionFirebase } from "../../../hooks/useNameCollectionFirebase";
+import { PostController } from "../../controllers/post.controller";
+import { useNameCollectionFirebase } from "../../hooks/useNameCollectionFirebase";
 import { usePaginatedList } from "../../hooks/usePaginatedList";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesome5, AntDesign } from "@expo/vector-icons";
-import { usePostCommentCreate } from "../../../services/Comment/useCases/usePostCommentCreate";
+import { usePostCommentCreate } from "../../../useCases/post.comment/usePostCommentCreate";
 import { useAuth } from "../../../hooks/useAuth";
 import { CTouchableOpacityBox } from "../../../components/CBox/CBox";
 import { CTextInput } from "../../../components/CTextInput/CTextInput";
