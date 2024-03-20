@@ -42,7 +42,7 @@ export function ProfileScreen() {
         <CUserProfilePhoto photoURL={userData?.userPhoto} />
 
         <CText mt="s10" fontSize={16} color="bluePrimary">
-          {userData.email}
+          {userData?.email}
         </CText>
       </CBox>
 

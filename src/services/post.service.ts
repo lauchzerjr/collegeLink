@@ -2,6 +2,24 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import { PaginatedData } from "../models/paginatedData.model";
+import { CreatePost } from "../models/post.model";
+
+async function createPost({
+  nameCollection,
+  userId,
+  disciplinePost,
+  subjectPost,
+  textPost,
+  photoPost,
+}: CreatePost): Promise<void> {
+  firestore().collection(nameCollection).add({
+    userId,
+    disciplinePost,
+    subjectPost,
+    textPost,
+    createdAt: new Date().toISOString(),
+  });
+}
 
 async function getPosts(
   nameCollection: string,
@@ -31,5 +49,6 @@ async function getPosts(
 }
 
 export const postApi = {
+  createPost,
   getPosts,
 };

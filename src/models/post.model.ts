@@ -15,3 +15,12 @@ export interface Post {
   postDislikes: number;
   postComments: number;
 }
+
+export interface CreatePost {
+  nameCollection: string;
+  userId: string;
+  disciplinePost: string;
+  subjectPost: string;
+  textPost?: string;
+  photoPost?: string;
+}

@@ -15,7 +15,6 @@ import { CFormTextInput } from "../../components/CForm/CFormTextInput";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 import { SignupSchema, signupSchema } from "./signupSchema";
 import { CModal } from "../../components/CModal/CModal";
-import { useUser } from "../../hooks/useUser";
 import {
   ForgotPasswordSchema,
   forgotPasswordSchema,
@@ -31,7 +30,7 @@ export function LoginScreen() {
     signInWithEmailAndPassword,
   } = useAuth();
 
-  const { forgotPassword } = useUser();
+  const { forgotPassword } = useAuth();
 
   const { control, formState, handleSubmit, getValues } = useForm<
     LoginSchema | SignupSchema | ForgotPasswordSchema

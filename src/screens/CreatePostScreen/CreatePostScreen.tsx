@@ -1,40 +1,13 @@
 import React from "react";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CText } from "../../components/CText/CText";
-import { useNameCollectionFirebase } from "../../hooks/useNameCollectionFirebase";
 import { CFormTextInput } from "../../components/CForm/CFormTextInput";
-import { useForm } from "react-hook-form";
-import { CreatePostSchemaSchema, createPostSchema } from "./createPostSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { CButton } from "../../components/CButton/CButton";
-import firestore from "@react-native-firebase/firestore";
-import { useAuth } from "../../hooks/useAuth";
+import { useCreatePost } from "../../useCases/post/useCreatePost";
 
 export function CreatePostScreen() {
-  const { user } = useAuth();
-  const { nameCollection, courseName } = useNameCollectionFirebase();
-
-  const { control, formState, handleSubmit, getValues, setValue } =
-    useForm<CreatePostSchemaSchema>({
-      resolver: zodResolver(createPostSchema),
-      defaultValues: {
-        subjectPost: "",
-        disciplinePost: "",
-        textPost: "",
-      },
-      mode: "onChange",
-    });
-
-  const handleCreatePost = () => {
-    firestore()
-      .collection(nameCollection)
-      .add({
-        userId: user.uid,
-        disciplinePost: getValues("disciplinePost"),
-        subjectPost: getValues("subjectPost"),
-        textPost: getValues("textPost"),
-      });
-  };
+  const { control, courseName, handleCreatePost, handleSubmit } =
+    useCreatePost();
 
   return (
     <CScreen isStackHeader>

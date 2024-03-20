@@ -15,12 +15,8 @@ import {
 } from "../../screens/ProfileScreen/changePasswordSchema";
 
 export function useUserInfoProfile() {
-  const { user } = useAuth();
-  const {
-    changePassword,
-    changeUserProfileForm,
-    isLoading: isLoadingUserContext,
-  } = useUser();
+  const { user, changePassword } = useAuth();
+  const { changeUserProfileForm, isLoading: isLoadingUserContext } = useUser();
 
   const [modalChangePassword, setModalChangePassword] = useState(false);
   const [userData, setUserData] = useState<UserProfileInfo | null>(null);

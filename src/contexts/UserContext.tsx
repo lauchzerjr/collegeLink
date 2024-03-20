@@ -1,13 +1,10 @@
 import React, { createContext } from "react";
-import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
 import { useToast } from "../hooks/useToast";
 import { Keyboard } from "react-native";
 import { useAuth } from "../hooks/useAuth";
+import { userInfosApi } from "../services/user.service";
 
 export interface UserContextProps {
-  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-  forgotPassword: (email: string) => Promise<void>;
   changeUserProfileForm: (
     name: string,
     city: string,
@@ -27,58 +24,9 @@ type UserProviderProps = {
 
 export function UserProvider({ children }: UserProviderProps) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   const { addToast } = useToast();
-
-  const changePassword = async (oldPassword: string, newPassword: string) => {
-    try {
-      setIsLoading(true);
-      const credential = auth.EmailAuthProvider.credential(
-        user.email,
-        oldPassword
-      );
-      await user.reauthenticateWithCredential(credential);
-
-      await user.updatePassword(newPassword);
-
-      addToast({
-        message: "Senha alterada com sucesso!",
-        type: "success",
-      });
-    } catch (error) {
-      console.log("Erro ao alterar a senha:", error);
-      addToast({
-        message: "Erro ao alterar a senha!",
-        type: "error",
-      });
-    } finally {
-      setIsLoading(false);
-      Keyboard.dismiss();
-    }
-  };
-
-  const forgotPassword = async (email: string) => {
-    try {
-      setIsLoading(true);
-
-      await auth().sendPasswordResetEmail(email);
-
-      addToast({
-        message: "Enviamos as instruções para seu e-mail!",
-        type: "success",
-      });
-    } catch (error) {
-      console.log("Erro ao enviar o e-mail", error);
-      addToast({
-        message: "Erro ao enviar o e-mail",
-        type: "error",
-      });
-    } finally {
-      setIsLoading(false);
-      Keyboard.dismiss();
-    }
-  };
 
   const changeUserProfileForm = async (
     name: string,
@@ -88,17 +36,9 @@ export function UserProvider({ children }: UserProviderProps) {
   ) => {
     try {
       setIsLoading(true);
-      await firestore().collection("usersProfiles").doc(user.uid).set(
-          {
-            userID: user.uid,
-            name,
-            city,
-            linkedin,
-            bio,
-          },
-          { merge: true }
-        );
-        
+
+      userInfosApi.changeUserProfileForm(user, name, city, linkedin, bio);
+
       addToast({
         message: "Perfil atualizado com sucesso!",
         type: "success",
@@ -118,8 +58,6 @@ export function UserProvider({ children }: UserProviderProps) {
   return (
     <UserContext.Provider
       value={{
-        changePassword,
-        forgotPassword,
         changeUserProfileForm,
         isLoading,
       }}

@@ -6,7 +6,7 @@ import { LikeController } from "./like.controller";
 import { DislikeController } from "./dislike.controller";
 import { CommentController } from "./comment.controller";
 import { PaginatedData } from "../models/paginatedData.model";
-import { Post } from "../models/post.model";
+import { CreatePost, Post } from "../models/post.model";
 
 const getPosts = async (
   nameCollection: string,
@@ -48,6 +48,25 @@ const getPosts = async (
   };
 };
 
+const createPost = async ({
+  nameCollection,
+  userId,
+  disciplinePost,
+  subjectPost,
+  textPost,
+  photoPost,
+}: CreatePost): Promise<void> => {
+  postApi.createPost({
+    nameCollection,
+    userId,
+    disciplinePost,
+    subjectPost,
+    textPost,
+    photoPost,
+  });
+};
+
 export const PostController = {
   getPosts,
+  createPost,
 };
