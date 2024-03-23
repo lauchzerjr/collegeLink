@@ -48,7 +48,7 @@ export function ProfileScreen() {
 
       <CUserProfileForm isEditableInput control={control} />
 
-      {formState.isDirty ? (
+      <CBox width="100%" flexDirection="row" justifyContent="space-around">
         <CButton
           mt="s12"
           preset="primary"
@@ -56,14 +56,13 @@ export function ProfileScreen() {
           onPress={handleSubmit(changeForm)}
           loading={isLoadingUserContext}
         />
-      ) : (
         <CButton
           mt="s12"
           preset="outline"
           title="Alterar senha"
           onPress={toggleOpenModalChangePassword}
         />
-      )}
+      </CBox>
 
       <CModal
         disabledButton={!formStateChangePassword.isValid}
