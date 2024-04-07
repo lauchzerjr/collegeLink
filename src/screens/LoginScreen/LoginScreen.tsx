@@ -44,8 +44,8 @@ export function LoginScreen() {
     ),
     defaultValues: {
       name: "",
-      email: "lauchzerjr@gmail.com",
-      password: "12345678",
+      email: "adalberto.junior@acad.ftec.com.br",
+      password: "123456789",
     },
     mode: "onChange",
   });
@@ -146,16 +146,39 @@ export function LoginScreen() {
       )}
 
       <CModal
-        disabledButton={!formState.isValid}
-        isForgotPassword
-        titleButton="Recuperar senha"
         visible={modalForgotPassword}
         onClose={toggleModal}
-        control={control}
         title="Esqueci minha senha"
-        description="Digite seu e-mail e enviaremos as instruções para redefinição de
-        senha"
-        onPress={handleForgotPassword}
+        children={
+          <>
+            <CText
+              fontSize={16}
+              textAlign="center"
+              color="bluePrimary"
+              mt="s10"
+            >
+              Digite seu e-mail e enviaremos as instruções para redefinição de
+              senha
+            </CText>
+
+            <CFormTextInput
+              control={control}
+              name="email"
+              iconRight={<Feather name="at-sign" size={20} color="#005999" />}
+              label="E-mail acadêmico"
+              placeholder="Digite seu e-mail acadêmico"
+              boxProps={{ mt: "s16", mb: "s16" }}
+            />
+
+            <CButton
+              disabled={!formState.isValid}
+              title={"Recuperar senha"}
+              onPress={handleForgotPassword}
+              loading={isLoading}
+              mb="s10"
+            />
+          </>
+        }
       />
 
       <CButton

@@ -10,13 +10,13 @@ import { CActivityIndicator } from "../../components/CActivityIndicator/CActivit
 import { CUserProfilePhoto } from "../../components/CUserProfilePhoto/CUserProfilePhoto";
 import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfileForm";
 import { useUserInfoProfile } from "../../useCases/profile/useUserInfoProfile";
+import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 
 export function ProfileScreen() {
   const {
     userData,
     isLoading,
     control,
-    formState,
     handleSubmit,
     changeForm,
     controlChangePassword,
@@ -26,6 +26,7 @@ export function ProfileScreen() {
     toggleOpenModalChangePassword,
     formStateChangePassword,
     handleChangePassword,
+    isLoadingUserChangePassword,
   } = useUserInfoProfile();
 
   if (isLoading) {
@@ -65,14 +66,38 @@ export function ProfileScreen() {
       </CBox>
 
       <CModal
-        disabledButton={!formStateChangePassword.isValid}
-        titleButton="Alterar senha"
         visible={modalChangePassword}
         onClose={toggleOpenModalChangePassword}
-        control={controlChangePassword}
         title="Alterar senha"
-        onPress={handleSubmitChangePassword(handleChangePassword)}
-        error={formStateChangePassword?.errors?.newPassword?.message}
+        children={
+          <>
+            <CFormPasswordInput
+              control={controlChangePassword}
+              name="oldPassword"
+              label="Senha atual"
+              placeholder="Digite sua senha atual"
+              boxProps={{ mb: "s10" }}
+            />
+            <CFormPasswordInput
+              control={controlChangePassword}
+              name="newPassword"
+              label="Nova senha"
+              placeholder="Digite sua nova senha"
+              boxProps={{ mb: "s10" }}
+              errorMessage={
+                formStateChangePassword?.errors?.newPassword?.message
+              }
+            />
+
+            <CButton
+              disabled={!formStateChangePassword.isValid}
+              title={"Alterar senha"}
+              onPress={handleSubmitChangePassword(handleChangePassword)}
+              loading={isLoadingUserChangePassword}
+              mb="s10"
+            />
+          </>
+        }
       />
     </CScreen>
   );

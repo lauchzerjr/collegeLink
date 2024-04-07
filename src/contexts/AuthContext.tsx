@@ -3,6 +3,7 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useToast } from "../hooks/useToast";
 import { Keyboard } from "react-native";
 import { authApi } from "../services/auth.service";
+import { userInfosApi } from "../services/user.service";
 
 export interface AuthContextProps {
   user: FirebaseAuthTypes.User | null;
@@ -56,6 +57,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
         await user.sendEmailVerification();
       }
+
+      await userInfosApi.changeUserProfileForm(user, name, "", "", "");
+
       addToast({
         message:
           "E-mail de confirmação enviado com sucesso!\nPor favor, verifique seu e-mail",
@@ -138,7 +142,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       setIsLoading(true);
 
-      authApi.changeUserPassword(user.email, oldPassword, newPassword, user);
+      await authApi.changeUserPassword(
+        user.email,
+        oldPassword,
+        newPassword,
+        user
+      );
 
       addToast({
         message: "Senha alterada com sucesso!",
@@ -146,10 +155,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
     } catch (error) {
       console.log("Erro ao alterar a senha:", error);
-      addToast({
-        message: "Erro ao alterar a senha!",
-        type: "error",
-      });
+
+      if (error.code === "auth/invalid-login") {
+        addToast({
+          message: "Erro ao alterar a senha!",
+          type: "error",
+        });
+      }
     } finally {
       setIsLoading(false);
       Keyboard.dismiss();

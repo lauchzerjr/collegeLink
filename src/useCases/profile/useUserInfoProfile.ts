@@ -15,7 +15,11 @@ import {
 } from "../../screens/ProfileScreen/changePasswordSchema";
 
 export function useUserInfoProfile() {
-  const { user, changePassword } = useAuth();
+  const {
+    user,
+    changePassword,
+    isLoading: isLoadingUserChangePassword,
+  } = useAuth();
   const { changeUserProfileForm, isLoading: isLoadingUserContext } = useUser();
 
   const [modalChangePassword, setModalChangePassword] = useState(false);
@@ -26,7 +30,7 @@ export function useUserInfoProfile() {
     useForm<ProfileSchema>({
       resolver: zodResolver(profileSchema),
       defaultValues: {
-        name: userData?.name || user.displayName,
+        name: userData?.name || user?.displayName,
         city: userData?.city || "",
         linkedin: userData?.linkedin || "",
         bio: userData?.bio || "",
@@ -103,6 +107,7 @@ export function useUserInfoProfile() {
     modalChangePassword,
     controlChangePassword,
     formStateChangePassword,
+    isLoadingUserChangePassword,
     handleSubmit,
     toggleOpenModalChangePassword,
     changeForm,
