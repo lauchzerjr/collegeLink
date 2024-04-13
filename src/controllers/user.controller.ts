@@ -31,7 +31,7 @@ const getUserPostCommentInfo = async (
 };
 
 const getUserProfileInfo = async (userId: string): Promise<UserProfileInfo> => {
-  const { name, city, linkedin, bio, userPhoto, email, createdAt } =
+  const { name, city, linkedin, bio, userPhoto, email, createdAt, isEnabledCity } =
     await userInfosApi.getUserInfos(userId);
 
   return {
@@ -42,6 +42,7 @@ const getUserProfileInfo = async (userId: string): Promise<UserProfileInfo> => {
     userPhoto,
     email,
     createdAt,
+    isEnabledCity
   } as UserProfileInfo;
 };
 

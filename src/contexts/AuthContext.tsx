@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       await userInfosApi.changeUserProfileForm(user, name, "", "", "");
+      await userInfosApi.changeUserProfileCityToggle(user, false);
 
       addToast({
         message:

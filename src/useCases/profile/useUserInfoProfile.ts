@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { UserProfileInfo } from "../../models/user.model";
 import { useAuth } from "../../hooks/useAuth";
 import { UserController } from "../../controllers/user.controller";
@@ -20,11 +20,16 @@ export function useUserInfoProfile() {
     changePassword,
     isLoading: isLoadingUserChangePassword,
   } = useAuth();
-  const { changeUserProfileForm, isLoading: isLoadingUserContext } = useUser();
+  const {
+    changeUserProfileForm,
+    isLoading: isLoadingUserContext,
+    changeUserProfileCityToggle,
+  } = useUser();
 
   const [modalChangePassword, setModalChangePassword] = useState(false);
   const [userData, setUserData] = useState<UserProfileInfo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isEnabledCity, setIsEnabledCity] = useState(userData?.isEnabledCity);
 
   const { control, formState, handleSubmit, getValues, setValue } =
     useForm<ProfileSchema>({
@@ -55,6 +60,11 @@ export function useUserInfoProfile() {
 
   function toggleOpenModalChangePassword() {
     setModalChangePassword((prev) => !prev);
+  }
+
+  async function toggleCity() {
+    setIsEnabledCity((prev) => !prev);
+    changeUserProfileCityToggle(!isEnabledCity);
   }
 
   const handleChangePassword = async () => {
@@ -108,10 +118,12 @@ export function useUserInfoProfile() {
     controlChangePassword,
     formStateChangePassword,
     isLoadingUserChangePassword,
+    isEnabledCity,
     handleSubmit,
     toggleOpenModalChangePassword,
     changeForm,
     handleSubmitChangePassword,
     handleChangePassword,
+    toggleCity,
   };
 }

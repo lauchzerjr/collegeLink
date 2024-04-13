@@ -19,4 +19,5 @@ export interface UserProfileInfo {
   userPhoto: string;
   email: string;
   createdAt: string;
+  isEnabledCity: boolean;
 }

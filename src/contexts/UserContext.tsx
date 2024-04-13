@@ -11,6 +11,7 @@ export interface UserContextProps {
     linkedin: string,
     bio: string
   ) => Promise<void>;
+  changeUserProfileCityToggle: (isEnabledCity: boolean) => Promise<void>;
   isLoading: boolean;
 }
 
@@ -37,7 +38,7 @@ export function UserProvider({ children }: UserProviderProps) {
     try {
       setIsLoading(true);
 
-      userInfosApi.changeUserProfileForm(user, name, city, linkedin, bio);
+      await userInfosApi.changeUserProfileForm(user, name, city, linkedin, bio);
 
       addToast({
         message: "Perfil atualizado com sucesso!",
@@ -55,10 +56,35 @@ export function UserProvider({ children }: UserProviderProps) {
     }
   };
 
+  const changeUserProfileCityToggle = async (isEnabledCity: boolean) => {
+    try {
+      await userInfosApi.changeUserProfileCityToggle(user, isEnabledCity);
+
+      if (isEnabledCity) {
+        addToast({
+          message: "Sua cidade será exibida para outros usuários!",
+          type: "success",
+        });
+      } else {
+        addToast({
+          message: "Sua cidade não será exibida para outros usuários!",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao exibir cidade:", error);
+      addToast({
+        message: "Erro ao enviar atualizar perfil",
+        type: "error",
+      });
+    }
+  };
+
   return (
     <UserContext.Provider
       value={{
         changeUserProfileForm,
+        changeUserProfileCityToggle,
         isLoading,
       }}
     >

@@ -11,6 +11,8 @@ import { CUserProfilePhoto } from "../../components/CUserProfilePhoto/CUserProfi
 import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfileForm";
 import { useUserInfoProfile } from "../../useCases/profile/useUserInfoProfile";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
+import { Switch } from "react-native";
+import { useAuth } from "../../hooks/useAuth";
 
 export function ProfileScreen() {
   const {
@@ -27,7 +29,11 @@ export function ProfileScreen() {
     formStateChangePassword,
     handleChangePassword,
     isLoadingUserChangePassword,
+    isEnabledCity,
+    toggleCity,
   } = useUserInfoProfile();
+
+  const { user } = useAuth();
 
   if (isLoading) {
     return (
@@ -39,11 +45,27 @@ export function ProfileScreen() {
 
   return (
     <CScreen isScroll>
-      <CBox alignItems="center" justifyContent="center" mb="s10">
+      <CBox
+        alignItems="center"
+        justifyContent="center"
+        mb="s10"
+        position="relative"
+      >
         <CUserProfilePhoto photoURL={userData?.userPhoto} />
+        <CBox position="absolute" top={0} left={0}>
+          <Switch
+            trackColor={{ false: "#B3B3B3", true: "#00599950" }}
+            thumbColor={!isEnabledCity ? "#8E8E8E" : "#005999"}
+            onValueChange={toggleCity}
+            value={isEnabledCity}
+          />
+          <CText mt="s4" fontSize={16} color="bluePrimary">
+            Cidade
+          </CText>
+        </CBox>
 
         <CText mt="s10" fontSize={16} color="bluePrimary">
-          {userData?.email}
+          {user?.email}
         </CText>
       </CBox>
 

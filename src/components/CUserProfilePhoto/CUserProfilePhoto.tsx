@@ -2,6 +2,9 @@ import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "../../hooks/useAppTheme";
+import { CModal } from "../CModal/CModal";
+import { CButton } from "../CButton/CButton";
+import { useUserProfilePhoto } from "../../useCases/profile/useUserProfilePhoto";
 
 interface CUserPhotoProps {
   photoURL: string;
@@ -13,6 +16,13 @@ export function CUserProfilePhoto({
   isPostPhoto = false,
 }: CUserPhotoProps) {
   const { colors } = useAppTheme();
+  const {
+    changedPhotoUrl,
+    isModalPickImage,
+    pickImageCamera,
+    pickImageGallery,
+    toggleModalUserPhoto,
+  } = useUserProfilePhoto();
 
   return (
     <View
@@ -30,6 +40,7 @@ export function CUserProfilePhoto({
     >
       {!isPostPhoto && (
         <TouchableOpacity
+          onPress={toggleModalUserPhoto}
           activeOpacity={0.7}
           style={{
             position: "absolute",
@@ -46,7 +57,7 @@ export function CUserProfilePhoto({
       )}
       {photoURL ? (
         <Image
-          source={{ uri: photoURL }}
+          source={{ uri: changedPhotoUrl || photoURL }}
           style={{
             width: isPostPhoto ? 50 : 130,
             height: isPostPhoto ? 50 : 130,
@@ -60,6 +71,27 @@ export function CUserProfilePhoto({
           color={colors.bluePrimary}
         />
       )}
+
+      <CModal
+        title={"Alterar foto de perfil"}
+        visible={isModalPickImage}
+        onClose={toggleModalUserPhoto}
+        children={
+          <>
+            <CButton
+              title={"Tirar uma foto"}
+              onPress={pickImageCamera}
+              mb="s10"
+              mt="s10"
+            />
+            <CButton
+              title={"Escolher da galeria"}
+              onPress={pickImageGallery}
+              mb="s10"
+            />
+          </>
+        }
+      />
     </View>
   );
 }
