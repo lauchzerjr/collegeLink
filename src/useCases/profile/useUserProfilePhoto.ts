@@ -1,5 +1,5 @@
 import { userInfosApi } from "./../../services/user.service";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import * as ImagePicker from "expo-image-picker";
 import { useToast } from "../../hooks/useToast";
@@ -17,6 +17,7 @@ export function useUserProfilePhoto() {
 
   const [isModalPickImage, setIsModalPickImage] = useState(false);
   const [changedPhotoUrl, setChangedPhotoUrl] = useState("");
+  const [isLoadingPhoto, setIsLoadingPhoto] = useState(false);
 
   const imageOptions: ImageOptionsProps = {
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -25,34 +26,39 @@ export function useUserProfilePhoto() {
     quality: 1,
   };
 
-  const uploadUserProfilePhotoProfile = async (uri: string) => {
-    try {
-      const { task, ref } = await userInfosApi.uploadUserProfilePhoto(
-        uri,
-        user.uid
-      );
+  const uploadUserProfilePhoto = useCallback(
+    async (uri: string) => {
+      try {
+        const { task, ref } = await userInfosApi.uploadUserProfilePhoto(
+          uri,
+          user.uid
+        );
 
-      task.then(async () => {
-        const url = await ref.getDownloadURL();
-        userInfosApi.saveUserProfilePhoto(user.uid, url);
-        setChangedPhotoUrl(url);
-      });
+        task.then(async () => {
+          const url = await ref.getDownloadURL();
+          await userInfosApi.saveUserProfilePhoto(user.uid, url);
+        });
 
-      addToast({
-        message: "Foto alterada com sucesso",
-        type: "success",
-      });
-      toggleModalUserPhoto();
-    } catch (error) {
-      addToast({
-        message: "Falha ao alterar foto de perfil",
-        type: "error",
-      });
-    }
-  };
+        setChangedPhotoUrl(uri);
+
+        addToast({
+          message: "Foto alterada com sucesso",
+          type: "success",
+        });
+        toggleModalUserPhoto();
+      } catch (error) {
+        addToast({
+          message: "Falha ao alterar foto de perfil",
+          type: "error",
+        });
+      }
+    },
+    [changedPhotoUrl]
+  );
 
   const pickImageCamera = async () => {
     try {
+      setIsLoadingPhoto(true);
       if (ImagePicker.PermissionStatus.UNDETERMINED) {
         await ImagePicker.requestCameraPermissionsAsync();
       }
@@ -66,22 +72,25 @@ export function useUserProfilePhoto() {
           message: "Você não autorizou o uso da câmera",
           type: "error",
         });
+        setIsLoadingPhoto(false);
         toggleModalUserPhoto();
         return;
       }
 
       const result = await ImagePicker.launchCameraAsync(imageOptions);
-
       if (!result.canceled) {
-        uploadUserProfilePhotoProfile(result.assets[0].uri);
+        await uploadUserProfilePhoto(result.assets[0].uri);
       }
+      setIsLoadingPhoto(false);
     } catch (error) {
+      setIsLoadingPhoto(false);
       console.log("Erro ao abrir a camera => ", error);
     }
   };
 
   const pickImageGallery = async () => {
     try {
+      setIsLoadingPhoto(true);
       if (ImagePicker.PermissionStatus.UNDETERMINED) {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       }
@@ -95,16 +104,19 @@ export function useUserProfilePhoto() {
           message: "Você não autorizou o uso da galeria",
           type: "error",
         });
+        setIsLoadingPhoto(false);
         toggleModalUserPhoto();
         return;
       }
-
       const result = await ImagePicker.launchImageLibraryAsync(imageOptions);
 
       if (!result.canceled) {
-        uploadUserProfilePhotoProfile(result.assets[0].uri);
+        await uploadUserProfilePhoto(result.assets[0].uri);
       }
+
+      setIsLoadingPhoto(false);
     } catch (error) {
+      setIsLoadingPhoto(false);
       console.log("Erro ao abrir a galeria => ", error);
     }
   };
@@ -114,6 +126,7 @@ export function useUserProfilePhoto() {
   }
 
   return {
+    isLoadingPhoto,
     changedPhotoUrl,
     isModalPickImage,
     pickImageCamera,

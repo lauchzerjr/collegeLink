@@ -5,6 +5,7 @@ import { useAppTheme } from "../../hooks/useAppTheme";
 import { CModal } from "../CModal/CModal";
 import { CButton } from "../CButton/CButton";
 import { useUserProfilePhoto } from "../../useCases/profile/useUserProfilePhoto";
+import { CActivityIndicator } from "../CActivityIndicator/CActivityIndicator";
 
 interface CUserPhotoProps {
   photoURL: string;
@@ -17,6 +18,7 @@ export function CUserProfilePhoto({
 }: CUserPhotoProps) {
   const { colors } = useAppTheme();
   const {
+    isLoadingPhoto,
     changedPhotoUrl,
     isModalPickImage,
     pickImageCamera,
@@ -55,15 +57,22 @@ export function CUserProfilePhoto({
           <MaterialIcons name="mode-edit" size={20} color={colors.grayWhite} />
         </TouchableOpacity>
       )}
-      {photoURL ? (
-        <Image
-          source={{ uri: changedPhotoUrl || photoURL }}
-          style={{
-            width: isPostPhoto ? 50 : 130,
-            height: isPostPhoto ? 50 : 130,
-            borderRadius: 100,
-          }}
-        />
+
+      {photoURL || changedPhotoUrl ? (
+        <>
+          {isLoadingPhoto ? (
+            <CActivityIndicator color="bluePrimary" />
+          ) : (
+            <Image
+              source={{ uri: changedPhotoUrl || photoURL }}
+              style={{
+                width: isPostPhoto ? 50 : 130,
+                height: isPostPhoto ? 50 : 130,
+                borderRadius: 100,
+              }}
+            />
+          )}
+        </>
       ) : (
         <FontAwesome5
           name="user-graduate"
