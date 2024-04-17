@@ -12,7 +12,6 @@ import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfile
 import { useUserInfoProfile } from "../../useCases/profile/useUserInfoProfile";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 import { Switch } from "react-native";
-import { useAuth } from "../../hooks/useAuth";
 
 export function ProfileScreen() {
   const {
@@ -32,8 +31,6 @@ export function ProfileScreen() {
     isEnabledCity,
     toggleCity,
   } = useUserInfoProfile();
-
-  const { user } = useAuth();
 
   if (isLoading) {
     return (
@@ -65,7 +62,7 @@ export function ProfileScreen() {
         </CBox>
 
         <CText mt="s10" fontSize={16} color="bluePrimary">
-          {user?.email}
+          {userData?.email}
         </CText>
       </CBox>
 

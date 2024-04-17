@@ -20,7 +20,8 @@ async function changeUserProfileForm(
   name: string,
   city: string,
   linkedin: string,
-  bio: string
+  bio: string,
+  email: string
 ): Promise<void> {
   await firestore().collection("usersProfiles").doc(user.uid).set(
     {
@@ -29,6 +30,7 @@ async function changeUserProfileForm(
       city,
       linkedin,
       bio,
+      email,
     },
     { merge: true }
   );

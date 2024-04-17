@@ -1,7 +1,6 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 async function createUserWithEmailAndPassword(
-  name: string,
   email: string,
   password: string
 ): Promise<FirebaseAuthTypes.User> {

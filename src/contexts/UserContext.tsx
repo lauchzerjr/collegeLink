@@ -38,7 +38,14 @@ export function UserProvider({ children }: UserProviderProps) {
     try {
       setIsLoading(true);
 
-      await userInfosApi.changeUserProfileForm(user, name, city, linkedin, bio);
+      await userInfosApi.changeUserProfileForm(
+        user,
+        name,
+        city,
+        linkedin,
+        bio,
+        user.email
+      );
 
       addToast({
         message: "Perfil atualizado com sucesso!",

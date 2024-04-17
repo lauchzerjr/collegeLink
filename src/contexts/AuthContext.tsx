@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setIsLoading(true);
 
       const user = await authApi.createUserWithEmailAndPassword(
-        name,
         email,
         password
       );
@@ -58,7 +57,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         await user.sendEmailVerification();
       }
 
-      await userInfosApi.changeUserProfileForm(user, name, "", "", "");
+      await userInfosApi.changeUserProfileForm(
+        user,
+        name,
+        "",
+        "",
+        "",
+        user.email
+      );
       await userInfosApi.changeUserProfileCityToggle(user, false);
 
       addToast({
