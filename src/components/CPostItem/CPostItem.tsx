@@ -24,6 +24,7 @@ export function CPostItem({ item }: CPostItemProps) {
         email={item?.user?.email}
         name={item?.user?.name}
         userPhoto={item?.user?.userPhoto}
+        userId={item?.userId}
       />
 
       <CBox paddingVertical="s10">

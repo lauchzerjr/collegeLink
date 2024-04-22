@@ -6,9 +6,14 @@ import { Control } from "react-hook-form";
 interface UserProfileFormProps {
   control: Control;
   isEditableInput?: boolean;
+  isEnabledCity: boolean;
 }
 
-export const CUserProfileForm = ({ control, isEditableInput = false }: UserProfileFormProps) => {
+export const CUserProfileForm = ({
+  control,
+  isEditableInput = false,
+  isEnabledCity,
+}: UserProfileFormProps) => {
   return (
     <>
       <CFormTextInput
@@ -21,15 +26,17 @@ export const CUserProfileForm = ({ control, isEditableInput = false }: UserProfi
         editable={isEditableInput}
       />
 
-      <CFormTextInput
-        control={control}
-        name="city"
-        iconRight={<Entypo name="location" size={20} color="#005999" />}
-        label="Cidade"
-        placeholder="Digite sua cidade"
-        boxProps={{ mb: "s10" }}
-        editable={isEditableInput}
-      />
+      {isEnabledCity && (
+        <CFormTextInput
+          control={control}
+          name="city"
+          iconRight={<Entypo name="location" size={20} color="#005999" />}
+          label="Cidade"
+          placeholder="Digite sua cidade"
+          boxProps={{ mb: "s10" }}
+          editable={isEditableInput}
+        />
+      )}
 
       <CFormTextInput
         control={control}

@@ -12,8 +12,10 @@ import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfile
 import { useUserInfoProfile } from "../../useCases/profile/useUserInfoProfile";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 import { Switch } from "react-native";
+import { useRoute } from "@react-navigation/native";
+import { useAuth } from "../../hooks/useAuth";
 
-export function ProfileScreen() {
+export function PostProfileScreen() {
   const {
     userData,
     isLoading,
@@ -32,6 +34,11 @@ export function ProfileScreen() {
     toggleCity,
   } = useUserInfoProfile();
 
+  const { params } = useRoute();
+  const { user } = useAuth();
+
+  const isUserLoged = params?.userId === user.uid;
+
   if (isLoading) {
     return (
       <CBox flex={1} alignItems="center" justifyContent="center">
@@ -48,19 +55,23 @@ export function ProfileScreen() {
         mb="s10"
         position="relative"
       >
-        <CUserProfilePhoto photoURL={userData?.userPhoto} isUserLoged />
-
-        <CBox position="absolute" top={0} left={0}>
-          <Switch
-            trackColor={{ false: "#B3B3B3", true: "#00599950" }}
-            thumbColor={!isEnabledCity ? "#8E8E8E" : "#005999"}
-            onValueChange={toggleCity}
-            value={isEnabledCity}
-          />
-          <CText mt="s4" fontSize={16} color="bluePrimary">
-            Cidade
-          </CText>
-        </CBox>
+        <CUserProfilePhoto
+          photoURL={userData?.userPhoto}
+          isUserLoged={isUserLoged}
+        />
+        {isUserLoged && (
+          <CBox position="absolute" top={0} left={0}>
+            <Switch
+              trackColor={{ false: "#B3B3B3", true: "#00599950" }}
+              thumbColor={!isEnabledCity ? "#8E8E8E" : "#005999"}
+              onValueChange={toggleCity}
+              value={isEnabledCity}
+            />
+            <CText mt="s4" fontSize={16} color="bluePrimary">
+              Cidade
+            </CText>
+          </CBox>
+        )}
 
         <CText mt="s10" fontSize={16} color="bluePrimary">
           {userData?.email}
@@ -68,26 +79,28 @@ export function ProfileScreen() {
       </CBox>
 
       <CUserProfileForm
+        isEditableInput={isUserLoged}
         control={control}
         isEnabledCity={userData?.isEnabledCity}
-        isEditableInput
       />
 
-      <CBox width="100%" flexDirection="row" justifyContent="space-around">
-        <CButton
-          mt="s12"
-          preset="primary"
-          title="Salvar alterações"
-          onPress={handleSubmit(changeForm)}
-          loading={isLoadingUserContext}
-        />
-        <CButton
-          mt="s12"
-          preset="outline"
-          title="Alterar senha"
-          onPress={toggleOpenModalChangePassword}
-        />
-      </CBox>
+      {isUserLoged && (
+        <CBox width="100%" flexDirection="row" justifyContent="space-around">
+          <CButton
+            mt="s12"
+            preset="primary"
+            title="Salvar alterações"
+            onPress={handleSubmit(changeForm)}
+            loading={isLoadingUserContext}
+          />
+          <CButton
+            mt="s12"
+            preset="outline"
+            title="Alterar senha"
+            onPress={toggleOpenModalChangePassword}
+          />
+        </CBox>
+      )}
 
       <CModal
         visible={modalChangePassword}

@@ -41,7 +41,7 @@ export const CPostList = () => {
   return (
     <FlatList
       data={data}
-      keyExtractor={(item, index) => String(index)}
+      keyExtractor={(item) => item.id}
       renderItem={renderItem}
       onEndReached={fetchMoreData}
       onEndReachedThreshold={0.1}

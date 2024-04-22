@@ -9,7 +9,8 @@ interface CPostItemHeaderProps {
   name: string;
   email: string;
   userPhoto: string;
-  disciplinePost;
+  disciplinePost: string;
+  userId: string;
 }
 
 export function CPostItemHeader({
@@ -17,13 +18,14 @@ export function CPostItemHeader({
   email,
   name,
   userPhoto,
+  userId,
 }: CPostItemHeaderProps) {
   const { colors } = useAppTheme();
 
   return (
     <>
       <CBox flexDirection="row" width={"90%"} pb="s10">
-        <CUserProfilePhoto photoURL={userPhoto} isPostPhoto />
+        <CUserProfilePhoto photoURL={userPhoto} isPostPhoto userId={userId} />
 
         <CBox ml="s10">
           <CText fontWeight="bold">{name}</CText>

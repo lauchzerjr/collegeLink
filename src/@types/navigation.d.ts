@@ -6,6 +6,7 @@ export declare global {
       profile: undefined;
       PostsScreen: { nameCourse: string };
       PostCommentsScreen: { postId: string };
+      PostProfileScreen: { userId: string };
       login: undefined;
       CreatePostScreen: undefined;
       PostProfileScreen: undefined;

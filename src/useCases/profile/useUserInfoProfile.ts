@@ -13,6 +13,7 @@ import {
   ChangePasswordSchema,
   changePasswordSchema,
 } from "../../screens/ProfileScreen/changePasswordSchema";
+import { useRoute } from "@react-navigation/native";
 
 export function useUserInfoProfile() {
   const {
@@ -25,6 +26,8 @@ export function useUserInfoProfile() {
     isLoading: isLoadingUserContext,
     changeUserProfileCityToggle,
   } = useUser();
+
+  const { params } = useRoute();
 
   const [modalChangePassword, setModalChangePassword] = useState(false);
   const [userData, setUserData] = useState<UserProfileInfo | null>(null);
@@ -89,7 +92,10 @@ export function useUserInfoProfile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userData = await UserController.getUserProfileInfo(user.uid);
+        const userData = await UserController.getUserProfileInfo(
+          params?.userId || user.uid
+        );
+        console.log("🚀 ~ fetchUserData ~ userData:", userData);
 
         if (userData) {
           setUserData(userData);
@@ -106,7 +112,7 @@ export function useUserInfoProfile() {
     };
 
     fetchUserData();
-  }, [user.uid, setValue]);
+  }, [params?.userId, user.uid, setValue, isEnabledCity]);
 
   return {
     userData,

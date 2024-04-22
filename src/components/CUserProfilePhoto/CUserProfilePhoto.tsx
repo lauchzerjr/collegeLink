@@ -6,15 +6,20 @@ import { CModal } from "../CModal/CModal";
 import { CButton } from "../CButton/CButton";
 import { useUserProfilePhoto } from "../../useCases/profile/useUserProfilePhoto";
 import { CActivityIndicator } from "../CActivityIndicator/CActivityIndicator";
+import { useNavigation } from "@react-navigation/native";
 
 interface CUserPhotoProps {
   photoURL: string;
   isPostPhoto?: boolean;
+  userId?: string;
+  isUserLoged?: boolean;
 }
 
 export function CUserProfilePhoto({
   photoURL,
   isPostPhoto = false,
+  userId,
+  isUserLoged,
 }: CUserPhotoProps) {
   const { colors } = useAppTheme();
   const {
@@ -25,6 +30,8 @@ export function CUserProfilePhoto({
     pickImageGallery,
     toggleModalUserPhoto,
   } = useUserProfilePhoto();
+
+  const { navigate } = useNavigation();
 
   return (
     <View
@@ -40,7 +47,18 @@ export function CUserProfilePhoto({
         position: "relative",
       }}
     >
-      {!isPostPhoto && (
+      {isPostPhoto && (
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            zIndex: 2,
+          }}
+          onPress={() => navigate("PostProfileScreen", { userId })}
+        />
+      )}
+      {!isPostPhoto && isUserLoged && (
         <TouchableOpacity
           onPress={toggleModalUserPhoto}
           activeOpacity={0.7}

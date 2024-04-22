@@ -9,8 +9,8 @@ import { useAppTheme } from "../hooks/useAppTheme";
 import { CTouchableOpacityBox } from "../components/CBox/CBox";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { CreatePostScreen } from "../screens/CreatePostScreen/CreatePostScreen";
-import { ProfileScreen } from "../screens/ProfileScreen/ProfileScreen";
 import { PostCommentsScreen } from "../screens/PostCommentsScreen/PostCommentsScreen";
+import { PostProfileScreen } from "../screens/PostProfileScreen/PostProfileScreen";
 
 const { Screen, Navigator } = createStackNavigator();
 
@@ -83,7 +83,15 @@ export const StackRoutes = () => {
         }}
       />
 
-      <Screen name="PostProfileScreen" component={ProfileScreen} />
+      <Screen
+        name="PostProfileScreen"
+        component={PostProfileScreen}
+        options={{
+          title: "Perfil do usuário",
+          headerTitleAlign: "center",
+          headerTintColor: colors.bluePrimary,
+        }}
+      />
     </Navigator>
   );
 };
