@@ -38,7 +38,7 @@ export const usePaginatedList = <Data>(
 
         setData((prev) => [...prev, ...data]);
         setStartAfter(lastVisible);
-        if (data.length < 2) {
+        if (data.length < 10) {
           setLastItem(true);
         }
       }

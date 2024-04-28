@@ -2,7 +2,8 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import { PaginatedData } from "../models/paginatedData.model";
-import { CreatePost } from "../models/post.model";
+import { CreatePost, Post } from "../models/post.model";
+import storage, { FirebaseStorageTypes } from "@react-native-firebase/storage";
 
 async function createPost({
   nameCollection,
@@ -17,8 +18,26 @@ async function createPost({
     disciplinePost,
     subjectPost,
     textPost,
+    photoPost,
     createdAt: new Date().toISOString(),
   });
+}
+
+async function uploadPostPhoto(
+  uri: string,
+  userId: string,
+  nameCollection: string
+): Promise<{
+  task: FirebaseStorageTypes.Task;
+  ref: FirebaseStorageTypes.Reference;
+}> {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+  const imageName = `post_images/nameCollection_{${nameCollection}}/user_id_${userId}.jpg`;
+  const ref = storage().ref().child(imageName);
+  const task = ref.put(blob);
+
+  return { task, ref };
 }
 
 async function getPosts(
@@ -27,8 +46,8 @@ async function getPosts(
 ): Promise<PaginatedData<FirebaseFirestoreTypes.DocumentData>> {
   let query = await firestore()
     .collection(nameCollection)
-    // .orderBy("createdAt")
-    .limit(2);
+    .orderBy("createdAt", "desc")
+    .limit(10);
 
   if (startAfter) {
     query = query.startAfter(startAfter);
@@ -50,5 +69,6 @@ async function getPosts(
 
 export const postApi = {
   createPost,
+  uploadPostPhoto,
   getPosts,
 };

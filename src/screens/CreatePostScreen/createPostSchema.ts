@@ -9,7 +9,7 @@ export const createPostSchema = z.object({
     .string()
     .min(3, "disciplina muito curta")
     .max(30, "disciplina muito longo"),
-  textPost: z.string(),
+  textPost: z.string().min(3, "texto muito curto"),
 });
 
 export type CreatePostSchemaSchema = z.infer<typeof createPostSchema>;

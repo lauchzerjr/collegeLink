@@ -23,7 +23,7 @@ async function getComments(
     .collection("postComments")
     .where("postId", "==", postId)
     .orderBy("createdAt", "desc")
-    .limit(2);
+    .limit(10);
 
   if (startAfter) {
     query = query.startAfter(startAfter);
