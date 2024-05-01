@@ -14,7 +14,8 @@ import { transformCourse } from "../../utils/transformCourse";
 import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
 
 export function HomeScreen() {
-  const { setNameCollection, setCourseName } = useNameCollectionFirebase();
+  const { handleChangeNameCollection, handleChangeCourseName } =
+    useNameCollectionFirebase();
   const { navigate } = useNavigation();
 
   const itemsPerPage = 15;
@@ -22,11 +23,11 @@ export function HomeScreen() {
   const [searchText, setSearchText] = React.useState("");
   const [hasNextPage, setHasNextPage] = React.useState(true);
 
-  const handleTapCourse = async (nameCourse: string) => {
-    await setCourseName(nameCourse);
+  const handleTapCourse = (nameCourse: string) => {
+    handleChangeCourseName(nameCourse);
 
     const courseNameCollection = transformCourse(nameCourse);
-    await setNameCollection(courseNameCollection);
+    handleChangeNameCollection(courseNameCollection);
 
     navigate("PostsScreen", { nameCourse });
   };
@@ -142,7 +143,6 @@ export function HomeScreen() {
       />
 
       <FlatList
-        // style={{ flex: 1 }}
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}

@@ -4,6 +4,7 @@ import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CUserProfilePhoto } from "../CUserProfilePhoto/CUserProfilePhoto";
 import { CText } from "../CText/CText";
 import { FontAwesome } from "@expo/vector-icons";
+import { dateUtils } from "../../utils/dateIsoFormater";
 
 interface CPostItemHeaderProps {
   name: string;
@@ -11,6 +12,7 @@ interface CPostItemHeaderProps {
   userPhoto: string;
   disciplinePost: string;
   userId: string;
+  createdAt: string;
 }
 
 export function CPostItemHeader({
@@ -19,6 +21,7 @@ export function CPostItemHeader({
   name,
   userPhoto,
   userId,
+  createdAt,
 }: CPostItemHeaderProps) {
   const { colors } = useAppTheme();
 
@@ -31,6 +34,7 @@ export function CPostItemHeader({
           <CText fontWeight="bold">{name}</CText>
           <CText>{email}</CText>
           <CText>Disciplina: {disciplinePost}</CText>
+          <CText>postado há: {dateUtils.formatRelative(createdAt)}</CText>
         </CBox>
       </CBox>
 

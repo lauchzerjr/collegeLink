@@ -1,16 +1,10 @@
-import React, {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useState,
-} from "react";
+import React, { createContext, ReactNode, useState } from "react";
 
 export interface NameCollectionFirebaseProps {
   nameCollection: string;
-  setNameCollection: Dispatch<SetStateAction<string>>;
+  handleChangeNameCollection: (nameCourse: string) => void;
   courseName: string;
-  setCourseName: Dispatch<SetStateAction<string>>;
+  handleChangeCourseName: (courseName: string) => void;
 }
 
 type NameCollectionFirebaseProviderProps = {
@@ -27,13 +21,21 @@ function NameCollectionFirebaseContextProvider({
   const [nameCollection, setNameCollection] = useState("");
   const [courseName, setCourseName] = useState("");
 
+  const handleChangeNameCollection = (nameCollection: string) => {
+    setNameCollection(nameCollection);
+  };
+
+  const handleChangeCourseName = (courseName: string) => {
+    setCourseName(courseName);
+  };
+
   return (
     <NameCollectionFirebaseContext.Provider
       value={{
         nameCollection,
-        setNameCollection,
+        handleChangeNameCollection,
         courseName,
-        setCourseName,
+        handleChangeCourseName,
       }}
     >
       {children}

@@ -10,7 +10,7 @@ export interface Post {
   disciplinePost: string;
   textPost?: string;
   photoPost?: string;
-  createdAt: number;
+  createdAt: string;
   postLikes: number;
   postDislikes: number;
   postComments: number;
