@@ -8,16 +8,17 @@ import { useForm } from "react-hook-form";
 import { PostController } from "../../controllers/post.controller";
 import { postApi } from "../../services/post.service";
 import * as ImagePicker from "expo-image-picker";
-import { useToast } from "../../hooks/useToast";
 import { useNavigation } from "@react-navigation/native";
 import { usePostList } from "./usePostList";
 import { useAuthStore } from "../../stores/authStore";
 import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
+import { useToastStore } from "../../stores/useToastStore";
 
 export function useCreatePost() {
   const { user } = useAuthStore();
   const { goBack } = useNavigation();
-  const { addToast } = useToast();
+  const showToast = useToastStore((state) => state.showToast);
+
   const { fetchData } = usePostList();
   const { nameCollection, courseName } = useNameCollectionStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +64,7 @@ export function useCreatePost() {
       ).granted;
 
       if (!galleryStatus) {
-        addToast({
+        showToast({
           message: "Você não autorizou o uso da galeria",
           type: "error",
         });
@@ -108,7 +109,7 @@ export function useCreatePost() {
       fetchData();
       goBack();
     } catch (error) {
-      addToast({
+      showToast({
         message: "Falha ao publicar post",
         type: "error",
       });

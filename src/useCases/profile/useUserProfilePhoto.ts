@@ -1,8 +1,8 @@
 import { userInfosApi } from "./../../services/user.service";
 import { useCallback, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { useToast } from "../../hooks/useToast";
 import { useAuthStore } from "../../stores/authStore";
+import { useToastStore } from "../../stores/useToastStore";
 
 interface ImageOptionsProps {
   mediaTypes: ImagePicker.MediaTypeOptions.Images;
@@ -12,7 +12,8 @@ interface ImageOptionsProps {
 }
 
 export function useUserProfilePhoto() {
-  const { addToast } = useToast();
+  const showToast = useToastStore((state) => state.showToast);
+
   const { user } = useAuthStore();
 
   const [isModalPickImage, setIsModalPickImage] = useState(false);
@@ -41,13 +42,13 @@ export function useUserProfilePhoto() {
 
         setChangedPhotoUrl(uri);
 
-        addToast({
+        showToast({
           message: "Foto alterada com sucesso",
           type: "success",
         });
         toggleModalUserPhoto();
       } catch (error) {
-        addToast({
+        showToast({
           message: "Falha ao alterar foto de perfil",
           type: "error",
         });
@@ -68,7 +69,7 @@ export function useUserProfilePhoto() {
       ).granted;
 
       if (!cameraStatus) {
-        addToast({
+        showToast({
           message: "Você não autorizou o uso da câmera",
           type: "error",
         });
@@ -100,7 +101,7 @@ export function useUserProfilePhoto() {
       ).granted;
 
       if (!galleryStatus) {
-        addToast({
+        showToast({
           message: "Você não autorizou o uso da galeria",
           type: "error",
         });

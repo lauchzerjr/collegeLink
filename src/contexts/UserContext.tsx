@@ -1,8 +1,8 @@
 import React, { createContext } from "react";
-import { useToast } from "../hooks/useToast";
 import { Keyboard } from "react-native";
 import { userInfosApi } from "../services/user.service";
 import { useAuthStore } from "../stores/authStore";
+import { useToastStore } from "../stores/useToastStore";
 
 export interface UserContextProps {
   changeUserProfileForm: (
@@ -27,7 +27,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const [isLoading, setIsLoading] = React.useState(false);
   const { user } = useAuthStore();
 
-  const { addToast } = useToast();
+  const showToast = useToastStore((state) => state.showToast);
 
   const changeUserProfileForm = async (
     name: string,
@@ -47,13 +47,13 @@ export function UserProvider({ children }: UserProviderProps) {
         user.email
       );
 
-      addToast({
+      showToast({
         message: "Perfil atualizado com sucesso!",
         type: "success",
       });
     } catch (error) {
       console.error("Erro ao salvar as alterações:", error);
-      addToast({
+      showToast({
         message: "Erro ao enviar atualizar perfil",
         type: "error",
       });
@@ -68,19 +68,19 @@ export function UserProvider({ children }: UserProviderProps) {
       await userInfosApi.changeUserProfileCityToggle(user, isEnabledCity);
 
       if (isEnabledCity) {
-        addToast({
+        showToast({
           message: "Sua cidade será exibida para outros usuários!",
           type: "success",
         });
       } else {
-        addToast({
+        showToast({
           message: "Sua cidade não será exibida para outros usuários!",
           type: "error",
         });
       }
     } catch (error) {
       console.error("Erro ao exibir cidade:", error);
-      addToast({
+      showToast({
         message: "Erro ao enviar atualizar perfil",
         type: "error",
       });

@@ -19,8 +19,8 @@ import {
   forgotPasswordSchema,
 } from "./forgotPasswordSchema";
 import { useAuthStore } from "../../stores/authStore";
-import { useToast } from "../../hooks/useToast";
 import { useController } from "../../hooks/useController";
+import { useToastStore } from "../../stores/useToastStore";
 
 export function LoginScreen() {
   const { authController } = useController();
@@ -29,7 +29,7 @@ export function LoginScreen() {
   const [createAccount, setCreateAccount] = useState(false);
   const [modalForgotPassword, setModalForgotPassword] = useState(false);
 
-  const { addToast } = useToast();
+  const showToast = useToastStore((state) => state.showToast);
 
   const { control, formState, handleSubmit, getValues } = useForm<
     LoginSchema | SignupSchema | ForgotPasswordSchema
@@ -84,7 +84,7 @@ export function LoginScreen() {
         setLoading(false);
       },
       onSuccessSignUp(msg) {
-        addToast({
+        showToast({
           message: msg,
           type: "success",
         });
@@ -92,14 +92,14 @@ export function LoginScreen() {
       },
       onSuccessChangePassword() {},
       onSuccessForgotPassword: (msg) => {
-        addToast({
+        showToast({
           message: msg,
           type: "success",
         });
         setLoading(false);
       },
       onError: (error) => {
-        addToast({
+        showToast({
           message: error,
           type: "error",
         });

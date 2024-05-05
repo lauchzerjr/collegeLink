@@ -4,22 +4,25 @@ import { AntDesign } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 import { BoxProps, CBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
-import { useToast } from "../../hooks/useToast";
+import { useToastStore } from "../../stores/useToastStore";
+import { useShallow } from "zustand/react/shallow";
 
 const MAX_WIDTH = Dimensions.get("screen").width * 0.9;
 
 export function CToast() {
-  const { toast, addToast } = useToast();
+  const { toast, showToast } = useToastStore(
+    useShallow((state) => ({ toast: state.toast, showToast: state.showToast }))
+  );
 
   React.useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => {
-        addToast(null);
+        showToast(null);
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [toast, addToast]);
+  }, [toast, showToast]);
 
   if (!toast) {
     return null;
