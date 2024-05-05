@@ -8,7 +8,6 @@ import { Routes } from "./src/routes";
 import { CToast } from "./src/components/CToast/CToast";
 import { ToastProvider } from "./src/contexts/ToastContext";
 import { UserProvider } from "./src/contexts/UserContext";
-import { NameCollectionFirebaseContextProvider } from "./src/contexts/NameCollectionFirebase";
 import { ControllerProvider } from "./src/contexts/Provider";
 import { authApi } from "./src/services/auth.service";
 import { useAuthStore } from "./src/stores/authStore";
@@ -33,10 +32,8 @@ export default function App() {
         <ToastProvider>
           <ControllerProvider>
             <UserProvider>
-              <NameCollectionFirebaseContextProvider>
-                <Routes />
-                <CToast />
-              </NameCollectionFirebaseContextProvider>
+              <Routes />
+              <CToast />
             </UserProvider>
           </ControllerProvider>
         </ToastProvider>

@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import { useNameCollectionFirebase } from "../../hooks/useNameCollectionFirebase";
 import {
   CreatePostSchemaSchema,
   createPostSchema,
@@ -13,13 +12,14 @@ import { useToast } from "../../hooks/useToast";
 import { useNavigation } from "@react-navigation/native";
 import { usePostList } from "./usePostList";
 import { useAuthStore } from "../../stores/authStore";
+import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
 
 export function useCreatePost() {
   const { user } = useAuthStore();
   const { goBack } = useNavigation();
   const { addToast } = useToast();
   const { fetchData } = usePostList();
-  const { nameCollection, courseName } = useNameCollectionFirebase();
+  const { nameCollection, courseName } = useNameCollectionStore();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 

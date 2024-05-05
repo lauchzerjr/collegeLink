@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FontAwesome5, AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 
 import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
 import { CScreen } from "../../components/CScreen/CScreen";
@@ -8,14 +8,14 @@ import { CTextInput } from "../../components/CTextInput/CTextInput";
 import { FlatList } from "react-native";
 import { compareByName, dataCourses } from "../../utils/dataCourses";
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
-import { useNameCollectionFirebase } from "../../hooks/useNameCollectionFirebase";
 import { useNavigation } from "@react-navigation/native";
 import { transformCourse } from "../../utils/transformCourse";
 import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
+import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
 
 export function HomeScreen() {
   const { handleChangeNameCollection, handleChangeCourseName } =
-    useNameCollectionFirebase();
+    useNameCollectionStore();
   const { navigate } = useNavigation();
 
   const itemsPerPage = 15;

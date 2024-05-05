@@ -1,10 +1,10 @@
 import { PostController } from "../../controllers/post.controller";
-import { useNameCollectionFirebase } from "../../hooks/useNameCollectionFirebase";
 import { usePaginatedList } from "../../hooks/usePaginatedList";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
+import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
 
 export const usePostList = () => {
-  const { nameCollection } = useNameCollectionFirebase();
+  const { nameCollection } = useNameCollectionStore();
 
   const fetchPosts = async (
     startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
