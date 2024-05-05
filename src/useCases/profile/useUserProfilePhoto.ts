@@ -1,8 +1,8 @@
 import { userInfosApi } from "./../../services/user.service";
-import { useCallback, useEffect, useState } from "react";
-import { useAuth } from "../../hooks/useAuth";
+import { useCallback, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useToast } from "../../hooks/useToast";
+import { useAuthStore } from "../../stores/authStore";
 
 interface ImageOptionsProps {
   mediaTypes: ImagePicker.MediaTypeOptions.Images;
@@ -13,7 +13,7 @@ interface ImageOptionsProps {
 
 export function useUserProfilePhoto() {
   const { addToast } = useToast();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const [isModalPickImage, setIsModalPickImage] = useState(false);
   const [changedPhotoUrl, setChangedPhotoUrl] = useState("");

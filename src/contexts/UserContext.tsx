@@ -1,8 +1,8 @@
 import React, { createContext } from "react";
 import { useToast } from "../hooks/useToast";
 import { Keyboard } from "react-native";
-import { useAuth } from "../hooks/useAuth";
 import { userInfosApi } from "../services/user.service";
+import { useAuthStore } from "../stores/authStore";
 
 export interface UserContextProps {
   changeUserProfileForm: (
@@ -25,7 +25,7 @@ type UserProviderProps = {
 
 export function UserProvider({ children }: UserProviderProps) {
   const [isLoading, setIsLoading] = React.useState(false);
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const { addToast } = useToast();
 

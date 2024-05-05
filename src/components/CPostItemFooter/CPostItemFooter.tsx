@@ -3,10 +3,10 @@ import { useAppTheme } from "../../hooks/useAppTheme";
 import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { useAuth } from "../../hooks/useAuth";
 import { LikeController } from "../../controllers/like.controller";
 import { DislikeController } from "../../controllers/dislike.controller";
 import { useNavigation } from "@react-navigation/native";
+import { useAuthStore } from "../../stores/authStore";
 
 interface CPostItemFooterProps {
   userId: string;
@@ -25,7 +25,7 @@ export function CPostItemFooter({
 }: CPostItemFooterProps) {
   const { navigate } = useNavigation();
   const { colors } = useAppTheme();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const [likes, setLikes] = React.useState(initialLikes);
   const [hasLiked, setHasLiked] = React.useState(false);

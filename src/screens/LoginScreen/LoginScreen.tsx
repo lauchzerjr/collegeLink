@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Keyboard } from "react-native";
@@ -9,7 +9,6 @@ import { CText } from "../../components/CText/CText";
 import { CButton } from "../../components/CButton/CButton";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CBox } from "../../components/CBox/CBox";
-import { useAuth } from "../../hooks/useAuth";
 import { LoginSchema, loginSchema } from "./loginSchema";
 import { CFormTextInput } from "../../components/CForm/CFormTextInput";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
@@ -19,18 +18,18 @@ import {
   ForgotPasswordSchema,
   forgotPasswordSchema,
 } from "./forgotPasswordSchema";
+import { useAuthStore } from "../../stores/authStore";
+import { useToast } from "../../hooks/useToast";
+import { useController } from "../../hooks/useController";
 
 export function LoginScreen() {
-  const [createAccount, setCreateAccount] = React.useState(false);
-  const [modalForgotPassword, setModalForgotPassword] = React.useState(false);
+  const { authController } = useController();
+  const { setUser, setLoading, loading } = useAuthStore();
 
-  const {
-    isLoading,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-  } = useAuth();
+  const [createAccount, setCreateAccount] = useState(false);
+  const [modalForgotPassword, setModalForgotPassword] = useState(false);
 
-  const { forgotPassword } = useAuth();
+  const { addToast } = useToast();
 
   const { control, formState, handleSubmit, getValues } = useForm<
     LoginSchema | SignupSchema | ForgotPasswordSchema
@@ -45,13 +44,13 @@ export function LoginScreen() {
     defaultValues: {
       name: "",
       email: "adalberto.junior@acad.ftec.com.br",
-      password: "123456789",
+      password: "12345678",
     },
     mode: "onChange",
   });
 
   const handleForgotPassword = async () => {
-    await forgotPassword(getValues("email"));
+    await authController.forgotPassword(getValues("email"));
     toggleModal();
   };
 
@@ -59,19 +58,63 @@ export function LoginScreen() {
     setModalForgotPassword((prev) => !prev);
   }
 
-  const signIn = async () => {
-    await signInWithEmailAndPassword(getValues("email"), getValues("password"));
+  const handleSignIn = async () => {
+    await authController.signIn(getValues("email"), getValues("password"));
   };
 
-  const signUp = async () => {
-    await createUserWithEmailAndPassword(
+  const handleSignUp = async () => {
+    await authController.signUp(
       getValues("name"),
       getValues("email"),
       getValues("password")
     );
+    Keyboard.dismiss();
   };
 
-  const submit = createAccount ? handleSubmit(signUp) : handleSubmit(signIn);
+  const submit = createAccount
+    ? handleSubmit(handleSignUp)
+    : handleSubmit(handleSignIn);
+
+  useEffect(() => {
+    const unsubscribe = authController.subscribe({
+      onSuccessSignIn: (user) => {
+        console.log("🚀 ~ useEffect ~ user:", user);
+        setUser(user);
+
+        setLoading(false);
+      },
+      onSuccessSignUp(msg) {
+        addToast({
+          message: msg,
+          type: "success",
+        });
+        setLoading(false);
+      },
+      onSuccessChangePassword() {},
+      onSuccessForgotPassword: (msg) => {
+        addToast({
+          message: msg,
+          type: "success",
+        });
+        setLoading(false);
+      },
+      onError: (error) => {
+        addToast({
+          message: error,
+          type: "error",
+        });
+        setLoading(false);
+      },
+      onLoading: () => {
+        console.log("loadinggggg");
+        setLoading(true);
+      },
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <CScreen isScroll>
@@ -174,7 +217,7 @@ export function LoginScreen() {
               disabled={!formState.isValid}
               title={"Recuperar senha"}
               onPress={handleForgotPassword}
-              loading={isLoading}
+              loading={loading}
               mb="s10"
             />
           </>
@@ -182,7 +225,7 @@ export function LoginScreen() {
       />
 
       <CButton
-        loading={isLoading}
+        loading={loading}
         disabled={!formState.isValid}
         mt={createAccount ? "s12" : "s20"}
         title={createAccount ? "Cadastrar" : "Entrar"}

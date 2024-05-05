@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { UserProfileInfo } from "../../models/user.model";
-import { useAuth } from "../../hooks/useAuth";
 import { UserController } from "../../controllers/user.controller";
 import { useUser } from "../../hooks/useUser";
 import {
@@ -14,13 +13,13 @@ import {
   changePasswordSchema,
 } from "../../screens/ProfileScreen/changePasswordSchema";
 import { useRoute } from "@react-navigation/native";
+import { useAuthStore } from "../../stores/authStore";
+import { useController } from "../../hooks/useController";
 
 export function useUserInfoProfile() {
-  const {
-    user,
-    changePassword,
-    isLoading: isLoadingUserChangePassword,
-  } = useAuth();
+  const { user, loading } = useAuthStore();
+  const { authController } = useController();
+
   const {
     changeUserProfileForm,
     isLoading: isLoadingUserContext,
@@ -71,9 +70,10 @@ export function useUserInfoProfile() {
   }
 
   const handleChangePassword = async () => {
-    await changePassword(
+    await authController.changePassword(
       getValuesChangePassword("oldPassword"),
-      getValuesChangePassword("newPassword")
+      getValuesChangePassword("newPassword"),
+      user
     );
     reset({ oldPassword: "" });
     reset({ newPassword: "" });
@@ -123,7 +123,7 @@ export function useUserInfoProfile() {
     modalChangePassword,
     controlChangePassword,
     formStateChangePassword,
-    isLoadingUserChangePassword,
+    loading,
     isEnabledCity,
     handleSubmit,
     toggleOpenModalChangePassword,

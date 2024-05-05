@@ -5,13 +5,21 @@ import { HomeScreen } from "../screens/HomeScreen/HomeScreen";
 import { FavoriteScreen } from "../screens/FavoriteScreen/FavoriteScreen";
 import { useAppTheme } from "../hooks/useAppTheme";
 import { ProfileScreen } from "../screens/ProfileScreen/ProfileScreen";
-import { useAuth } from "../hooks/useAuth";
+import { useAuthStore } from "../stores/authStore";
+import { useController } from "../hooks/useController";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
 export const TabRoutes = () => {
   const { colors } = useAppTheme();
-  const { signOut } = useAuth();
+  const { setUser } = useAuthStore();
+
+  const { authController } = useController();
+
+  const handleSignOut = async () => {
+    await authController.signOut();
+    setUser(null);
+  };
 
   return (
     <Navigator
@@ -73,7 +81,7 @@ export const TabRoutes = () => {
               size={24}
               color={tintColor}
               style={{ marginRight: 20 }}
-              onPress={signOut}
+              onPress={handleSignOut}
               selectionColor={colors.bluePrimaryLight}
             />
           ),

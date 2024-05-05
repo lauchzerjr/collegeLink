@@ -1,11 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
 
 import { StackRoutes } from "./stack.routes";
-import { useAuth } from "../hooks/useAuth";
 import { LoginScreen } from "../screens/LoginScreen/LoginScreen";
+import { useAuthStore } from "../stores/authStore";
 
 export const Routes = () => {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   return (
     <NavigationContainer>

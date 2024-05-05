@@ -13,7 +13,7 @@ import { useUserInfoProfile } from "../../useCases/profile/useUserInfoProfile";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 import { Switch } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuthStore } from "../../stores/authStore";
 
 export function PostProfileScreen() {
   const {
@@ -29,13 +29,13 @@ export function PostProfileScreen() {
     toggleOpenModalChangePassword,
     formStateChangePassword,
     handleChangePassword,
-    isLoadingUserChangePassword,
+    loading,
     isEnabledCity,
     toggleCity,
   } = useUserInfoProfile();
 
   const { params } = useRoute();
-  const { user } = useAuth();
+  const { user } = useAuthStore();
 
   const isUserLoged = params?.userId === user.uid;
 
@@ -130,7 +130,7 @@ export function PostProfileScreen() {
               disabled={!formStateChangePassword.isValid}
               title={"Alterar senha"}
               onPress={handleSubmitChangePassword(handleChangePassword)}
-              loading={isLoadingUserChangePassword}
+              loading={loading}
               mb="s10"
             />
           </>

@@ -1,10 +1,11 @@
 import React from "react";
 import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import { usePostCommentCreate } from "../../../useCases/post/usePostCommentCreate";
-import { useAuth } from "../../../hooks/useAuth";
+// import { useAuth } from "../../../hooks/useAuth";
 import { CTouchableOpacityBox } from "../../../components/CBox/CBox";
 import { CTextInput } from "../../../components/CTextInput/CTextInput";
 import { Keyboard } from "react-native";
+import { useAuthStore } from "../../../stores/authStore";
 
 interface PostCommentTextMessageProps {
   postId: string;
@@ -15,7 +16,7 @@ export function PostCommentTextMessage({
   postId,
   onAddComment,
 }: PostCommentTextMessageProps) {
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   const { createPostComment } = usePostCommentCreate(postId, user.uid, {
     onSuccess: () => {
       onAddComment();

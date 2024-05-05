@@ -22,12 +22,12 @@ async function signOut(): Promise<void> {
 }
 
 async function loadUserStorageData(
-  setUser: React.Dispatch<React.SetStateAction<FirebaseAuthTypes.User>>
+  setUser: (user: FirebaseAuthTypes.User | null) => void
 ): Promise<void> {
   await auth().onAuthStateChanged(setUser);
 }
 
-async function changeUserPassword(
+async function updatePassword(
   email: string,
   oldPassword: string,
   newPassword: string,
@@ -48,6 +48,6 @@ export const authApi = {
   signInWithEmailAndPassword,
   signOut,
   loadUserStorageData,
-  changeUserPassword,
+  updatePassword,
   forgotUserPassword,
 };
