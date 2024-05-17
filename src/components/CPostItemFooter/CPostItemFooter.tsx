@@ -25,7 +25,7 @@ export function CPostItemFooter({
 }: CPostItemFooterProps) {
   const { navigate } = useNavigation();
   const { colors } = useAppTheme();
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   const [likes, setLikes] = React.useState(initialLikes);
   const [hasLiked, setHasLiked] = React.useState(false);

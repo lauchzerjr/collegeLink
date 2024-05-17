@@ -1,12 +1,26 @@
-import { useContext } from "react";
-
+import { useMemo } from "react";
 import {
-  ControllerContext,
-  ControllerContextProps,
-} from "../contexts/Provider";
+  UserProfileController,
+  UserProfileControllerImpl,
+} from "../controllers/user.controller";
+import {
+  AuthController,
+  AuthControllerImpl,
+} from "../controllers/auth.controller";
 
-export function useController(): ControllerContextProps {
-  const context = useContext(ControllerContext);
+type Controller = "UserProfileController" | "AuthController";
 
-  return context;
+type Values = Record<Controller, any>;
+
+const userProfileControllerImpl = new UserProfileControllerImpl();
+const authControllerImpl = new AuthControllerImpl();
+
+export function useController<T>(key: keyof Values): T {
+  const values: Values = {
+    AuthController: authControllerImpl as AuthController,
+    UserProfileController: userProfileControllerImpl as UserProfileController,
+  };
+
+  const value = useMemo(() => values[key] as T, []);
+  return value;
 }

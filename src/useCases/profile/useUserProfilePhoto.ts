@@ -14,7 +14,7 @@ interface ImageOptionsProps {
 export function useUserProfilePhoto() {
   const showToast = useToastStore((state) => state.showToast);
 
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   const [isModalPickImage, setIsModalPickImage] = useState(false);
   const [changedPhotoUrl, setChangedPhotoUrl] = useState("");

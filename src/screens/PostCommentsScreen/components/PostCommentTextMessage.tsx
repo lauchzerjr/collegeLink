@@ -16,7 +16,8 @@ export function PostCommentTextMessage({
   postId,
   onAddComment,
 }: PostCommentTextMessageProps) {
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+
   const { createPostComment } = usePostCommentCreate(postId, user.uid, {
     onSuccess: () => {
       onAddComment();

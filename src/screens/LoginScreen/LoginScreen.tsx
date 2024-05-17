@@ -21,10 +21,19 @@ import {
 import { useAuthStore } from "../../stores/authStore";
 import { useController } from "../../hooks/useController";
 import { useToastStore } from "../../stores/useToastStore";
+import { AuthController } from "../../controllers/auth.controller";
+import { useShallow } from "zustand/react/shallow";
 
 export function LoginScreen() {
-  const { authController } = useController();
-  const { setUser, setLoading, loading } = useAuthStore();
+  const authController = useController<AuthController>("AuthController");
+
+  const { setUser, setLoading, loading } = useAuthStore(
+    useShallow((state) => ({
+      setUser: state.setUser,
+      setLoading: state.setLoading,
+      loading: state.loading,
+    }))
+  );
 
   const [createAccount, setCreateAccount] = useState(false);
   const [modalForgotPassword, setModalForgotPassword] = useState(false);
@@ -60,6 +69,7 @@ export function LoginScreen() {
 
   const handleSignIn = async () => {
     await authController.signIn(getValues("email"), getValues("password"));
+    Keyboard.dismiss();
   };
 
   const handleSignUp = async () => {

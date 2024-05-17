@@ -15,7 +15,8 @@ import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
 import { useToastStore } from "../../stores/useToastStore";
 
 export function useCreatePost() {
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+
   const { goBack } = useNavigation();
   const showToast = useToastStore((state) => state.showToast);
 
