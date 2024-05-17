@@ -3,7 +3,7 @@ import { ThemeProvider } from "@shopify/restyle";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { theme } from "./src/theme/theme";
+import { theme } from "./src/presentation/theme/theme";
 import { Routes } from "./src/presentation/routes";
 import { CToast } from "./src/components/CToast/CToast";
 import { authApi } from "./src/services/auth.service";
