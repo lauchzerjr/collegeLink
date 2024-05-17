@@ -9,7 +9,7 @@ import { CModal } from "../../components/CModal/CModal";
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
 import { CUserProfilePhoto } from "../../components/CUserProfilePhoto/CUserProfilePhoto";
 import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfileForm";
-import { useUserInfoProfile } from "../../../useCases/profile/useUserInfoProfile";
+import { useUserInfoProfile } from "../../hooks/useUserInfoProfile";
 import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 import { Switch } from "react-native";
 import { useRoute } from "@react-navigation/native";

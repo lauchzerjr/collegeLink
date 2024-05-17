@@ -5,7 +5,7 @@ import { CText } from "../../components/CText/CText";
 import { FlatList } from "react-native";
 import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
 import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
-import { usePostCommentList } from "../../../useCases/post/useCommentList";
+import { usePostCommentList } from "../../hooks/useCommentList";
 import { useRoute } from "@react-navigation/native";
 import { CPostCommentItem } from "../../components/CPostItem/CPostCommentItem";
 import { PostCommentTextMessage } from "./components/PostCommentTextMessage";

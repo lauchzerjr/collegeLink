@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList } from "react-native";
-import { usePostList } from "../../../../useCases/post/usePostList";
+import { usePostList } from "../../../hooks/usePostList";
 import { CPostItem } from "../../../components/CPostItem/CPostItem";
 import { CBox } from "../../../components/CBox/CBox";
 import { useAppSafeArea } from "../../../../presentation/hooks/useAppSafeArea";

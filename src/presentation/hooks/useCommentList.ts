@@ -1,4 +1,4 @@
-import { usePaginatedList } from "../../presentation/hooks/usePaginatedList";
+import { usePaginatedList } from "./usePaginatedList";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { CommentController } from "../../controllers/comment.controller";
 

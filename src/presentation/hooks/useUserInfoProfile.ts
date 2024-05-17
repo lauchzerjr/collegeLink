@@ -3,17 +3,17 @@ import { UserProfileInfo } from "../../models/user.model";
 import {
   ProfileSchema,
   profileSchema,
-} from "../../presentation/screens/ProfileScreen/profileSchema";
+} from "../screens/ProfileScreen/profileSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChangePasswordSchema,
   changePasswordSchema,
-} from "../../presentation/screens/ProfileScreen/changePasswordSchema";
+} from "../screens/ProfileScreen/changePasswordSchema";
 import { useRoute } from "@react-navigation/native";
-import { useAuthStore } from "../../presentation/stores/authStore";
-import { useController } from "../../presentation/hooks/useController";
-import { useToastStore } from "../../presentation/stores/useToastStore";
+import { useAuthStore } from "../stores/authStore";
+import { useController } from "./useController";
+import { useToastStore } from "../stores/useToastStore";
 import { Keyboard } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 import { UserProfileController } from "../../controllers/user.controller";
