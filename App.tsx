@@ -5,7 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { theme } from "./src/presentation/theme/theme";
 import { Routes } from "./src/presentation/routes";
-import { CToast } from "./src/components/CToast/CToast";
+import { CToast } from "./src/presentation/components/CToast/CToast";
 import { authApi } from "./src/services/auth.service";
 import { useAuthStore } from "./src/presentation/stores/authStore";
 

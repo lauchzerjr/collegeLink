@@ -4,7 +4,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Dimensions } from "react-native";
 import { BoxProps, CBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
-import { useToastStore } from "../../presentation/stores/useToastStore";
+import { useToastStore } from "../../stores/useToastStore";
 import { useShallow } from "zustand/react/shallow";
 
 const MAX_WIDTH = Dimensions.get("screen").width * 0.9;

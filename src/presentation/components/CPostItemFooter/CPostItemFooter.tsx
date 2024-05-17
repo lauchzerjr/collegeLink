@@ -1,12 +1,12 @@
 import React from "react";
-import { useAppTheme } from "../../presentation/hooks/useAppTheme";
+import { useAppTheme } from "../../hooks/useAppTheme";
 import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
-import { LikeController } from "../../controllers/like.controller";
-import { DislikeController } from "../../controllers/dislike.controller";
+import { LikeController } from "../../../controllers/like.controller";
+import { DislikeController } from "../../../controllers/dislike.controller";
 import { useNavigation } from "@react-navigation/native";
-import { useAuthStore } from "../../presentation/stores/authStore";
+import { useAuthStore } from "../../stores/authStore";
 
 interface CPostItemFooterProps {
   userId: string;

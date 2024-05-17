@@ -1,13 +1,13 @@
 import React from "react";
-import { CBox } from "../../../components/CBox/CBox";
-import { CScreen } from "../../../components/CScreen/CScreen";
-import { CText } from "../../../components/CText/CText";
+import { CBox } from "../../components/CBox/CBox";
+import { CScreen } from "../../components/CScreen/CScreen";
+import { CText } from "../../components/CText/CText";
 import { FlatList } from "react-native";
-import { CActivityIndicator } from "../../../components/CActivityIndicator/CActivityIndicator";
-import { CEmptyList } from "../../../components/CEmptyList/CEmptyList";
+import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
+import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
 import { usePostCommentList } from "../../../useCases/post/useCommentList";
 import { useRoute } from "@react-navigation/native";
-import { CPostCommentItem } from "../../../components/CPostItem/CPostCommentItem";
+import { CPostCommentItem } from "../../components/CPostItem/CPostCommentItem";
 import { PostCommentTextMessage } from "./components/PostCommentTextMessage";
 
 type RouteParams = {

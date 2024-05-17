@@ -1,4 +1,4 @@
-import { ThemeColorsProps } from "../../presentation/theme/theme";
+import { ThemeColorsProps } from "../../theme/theme";
 import { CTouchableOpacityBoxProps } from "../CBox/CBox";
 import { ButtonPreset } from "./CButton";
 

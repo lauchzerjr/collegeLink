@@ -1,6 +1,6 @@
 import React from "react";
 import { createText } from "@shopify/restyle";
-import { ThemeProps } from "../../presentation/theme/theme";
+import { ThemeProps } from "../../theme/theme";
 
 const SRText = createText<ThemeProps>();
 type SRTextProps = React.ComponentProps<typeof SRText>;

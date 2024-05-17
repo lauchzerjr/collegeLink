@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 
-import { CBox, CTouchableOpacityBox } from "../../../components/CBox/CBox";
-import { CScreen } from "../../../components/CScreen/CScreen";
-import { CText } from "../../../components/CText/CText";
-import { CTextInput } from "../../../components/CTextInput/CTextInput";
+import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
+import { CScreen } from "../../components/CScreen/CScreen";
+import { CText } from "../../components/CText/CText";
+import { CTextInput } from "../../components/CTextInput/CTextInput";
 import { FlatList } from "react-native";
 import { compareByName, dataCourses } from "../../utils/dataCourses";
-import { CActivityIndicator } from "../../../components/CActivityIndicator/CActivityIndicator";
+import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
 import { useNavigation } from "@react-navigation/native";
 import { transformCourse } from "../../utils/transformCourse";
-import { CEmptyList } from "../../../components/CEmptyList/CEmptyList";
+import { CEmptyList } from "../../components/CEmptyList/CEmptyList";
 import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
 
 export function HomeScreen() {

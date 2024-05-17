@@ -1,10 +1,10 @@
 import React from "react";
-import { useAppTheme } from "../../presentation/hooks/useAppTheme";
+import { useAppTheme } from "../../hooks/useAppTheme";
 import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CUserProfilePhoto } from "../CUserProfilePhoto/CUserProfilePhoto";
 import { CText } from "../CText/CText";
 import { FontAwesome } from "@expo/vector-icons";
-import { dateUtils } from "../../presentation/utils/dateIsoFormater";
+import { dateUtils } from "../../utils/dateIsoFormater";
 
 interface CPostItemHeaderProps {
   name: string;

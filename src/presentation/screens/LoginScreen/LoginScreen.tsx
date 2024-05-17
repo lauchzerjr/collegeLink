@@ -5,15 +5,15 @@ import { Keyboard } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { CText } from "../../../components/CText/CText";
-import { CButton } from "../../../components/CButton/CButton";
-import { CScreen } from "../../../components/CScreen/CScreen";
-import { CBox } from "../../../components/CBox/CBox";
+import { CText } from "../../components/CText/CText";
+import { CButton } from "../../components/CButton/CButton";
+import { CScreen } from "../../components/CScreen/CScreen";
+import { CBox } from "../../components/CBox/CBox";
 import { LoginSchema, loginSchema } from "./loginSchema";
-import { CFormTextInput } from "../../../components/CForm/CFormTextInput";
-import { CFormPasswordInput } from "../../../components/CForm/CFormPasswordInput";
+import { CFormTextInput } from "../../components/CForm/CFormTextInput";
+import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
 import { SignupSchema, signupSchema } from "./signupSchema";
-import { CModal } from "../../../components/CModal/CModal";
+import { CModal } from "../../components/CModal/CModal";
 import {
   ForgotPasswordSchema,
   forgotPasswordSchema,

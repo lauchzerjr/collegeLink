@@ -1,10 +1,10 @@
 import React from "react";
-import { CScreen } from "../../../components/CScreen/CScreen";
-import { CText } from "../../../components/CText/CText";
-import { CFormTextInput } from "../../../components/CForm/CFormTextInput";
-import { CButton } from "../../../components/CButton/CButton";
+import { CScreen } from "../../components/CScreen/CScreen";
+import { CText } from "../../components/CText/CText";
+import { CFormTextInput } from "../../components/CForm/CFormTextInput";
+import { CButton } from "../../components/CButton/CButton";
 import { useCreatePost } from "../../../useCases/post/useCreatePost";
-import { CBox, CTouchableOpacityBox } from "../../../components/CBox/CBox";
+import { CBox, CTouchableOpacityBox } from "../../components/CBox/CBox";
 import { Image } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 

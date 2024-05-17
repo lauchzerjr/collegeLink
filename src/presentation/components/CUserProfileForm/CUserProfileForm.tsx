@@ -1,5 +1,5 @@
 import React from "react";
-import { CFormTextInput } from "../../components/CForm/CFormTextInput";
+import { CFormTextInput } from "../CForm/CFormTextInput";
 import { FontAwesome5, Entypo, FontAwesome } from "@expo/vector-icons";
 import { Control } from "react-hook-form";
 

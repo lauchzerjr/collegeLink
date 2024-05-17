@@ -1,7 +1,7 @@
 import React from "react";
 import { CBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
-import { Post } from "../../models/post.model";
+import { Post } from "../../../models/post.model";
 import { CPostItemHeader } from "../CPostItemHeader/CPostItemHeader";
 import { CPostItemFooter } from "../CPostItemFooter/CPostItemFooter";
 import { Image } from "react-native";

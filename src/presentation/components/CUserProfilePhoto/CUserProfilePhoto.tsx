@@ -1,10 +1,10 @@
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import { useAppTheme } from "../../presentation/hooks/useAppTheme";
+import { useAppTheme } from "../../hooks/useAppTheme";
 import { CModal } from "../CModal/CModal";
 import { CButton } from "../CButton/CButton";
-import { useUserProfilePhoto } from "../../useCases/profile/useUserProfilePhoto";
+import { useUserProfilePhoto } from "../../../useCases/profile/useUserProfilePhoto";
 import { CActivityIndicator } from "../CActivityIndicator/CActivityIndicator";
 import { useNavigation } from "@react-navigation/native";
 
