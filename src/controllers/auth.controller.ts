@@ -16,10 +16,7 @@ export type AuthReducer = {
 };
 
 export interface AuthController extends SubscribableController<AuthReducer> {
-  signIn: (
-    email: string,
-    password: string
-  ) => Promise<FirebaseAuthTypes.User | string>;
+  signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   signUp: (name: string, email: string, password: string) => Promise<void>;
   changePassword: (
@@ -49,10 +46,7 @@ export class AuthControllerImpl
     }
   }
 
-  async signIn(
-    email: string,
-    password: string
-  ): Promise<FirebaseAuthTypes.User | string> {
+  async signIn(email: string, password: string): Promise<void> {
     try {
       this.dispatch("onLoading");
 
@@ -90,14 +84,7 @@ export class AuthControllerImpl
         await user.sendEmailVerification();
       }
 
-      await userInfosApi.changeUserProfileForm(
-        user,
-        name,
-        "",
-        "",
-        "",
-        user.email
-      );
+      await userInfosApi.updateFormProfile(user, name, "", "", "", user.email);
       await userInfosApi.changeUserProfileCityToggle(user, false);
 
       this.dispatch(
