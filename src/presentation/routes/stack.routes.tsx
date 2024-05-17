@@ -5,7 +5,7 @@ import {
 
 import { TabRoutes } from "./tab.routes";
 import { PostsScreen } from "../screens/PostsScreen/PostsScreen";
-import { useAppTheme } from "../../hooks/useAppTheme";
+import { useAppTheme } from "../../presentation/hooks/useAppTheme";
 import { CTouchableOpacityBox } from "../../components/CBox/CBox";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { CreatePostScreen } from "../screens/CreatePostScreen/CreatePostScreen";

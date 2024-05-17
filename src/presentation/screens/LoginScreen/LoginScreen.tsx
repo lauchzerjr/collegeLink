@@ -19,7 +19,7 @@ import {
   forgotPasswordSchema,
 } from "./forgotPasswordSchema";
 import { useAuthStore } from "../../stores/authStore";
-import { useController } from "../../../hooks/useController";
+import { useController } from "../../../presentation/hooks/useController";
 import { useToastStore } from "../../stores/useToastStore";
 import { AuthController } from "../../../controllers/auth.controller";
 import { useShallow } from "zustand/react/shallow";

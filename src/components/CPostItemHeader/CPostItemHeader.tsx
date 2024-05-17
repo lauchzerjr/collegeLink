@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppTheme } from "../../hooks/useAppTheme";
+import { useAppTheme } from "../../presentation/hooks/useAppTheme";
 import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CUserProfilePhoto } from "../CUserProfilePhoto/CUserProfilePhoto";
 import { CText } from "../CText/CText";

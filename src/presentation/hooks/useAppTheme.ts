@@ -1,5 +1,5 @@
 import { useTheme } from "@shopify/restyle";
-import { ThemeProps } from "../presentation/theme/theme";
+import { ThemeProps } from "../theme/theme";
 
 export function useAppTheme() {
   return useTheme<ThemeProps>();

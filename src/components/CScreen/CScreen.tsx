@@ -5,8 +5,8 @@ import {
   ScrollViewContainer,
   ViewContainer,
 } from "./components/ScreenContainer";
-import { useAppTheme } from "../../hooks/useAppTheme";
-import { useAppSafeArea } from "../../hooks/useAppSafeArea";
+import { useAppTheme } from "../../presentation/hooks/useAppTheme";
+import { useAppSafeArea } from "../../presentation/hooks/useAppSafeArea";
 import { BoxProps } from "../CBox/CBox";
 
 interface CScreenProps extends BoxProps {

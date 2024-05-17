@@ -1,7 +1,7 @@
 import { Pressable, TextInput, TextInputProps, TextStyle } from "react-native";
 import { CBox, BoxProps } from "../CBox/CBox";
 import { CText } from "../CText/CText";
-import { useAppTheme } from "../../hooks/useAppTheme";
+import { useAppTheme } from "../../presentation/hooks/useAppTheme";
 import React from "react";
 
 export interface CTextInputProps extends TextInputProps {

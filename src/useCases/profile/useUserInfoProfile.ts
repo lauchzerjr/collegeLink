@@ -12,7 +12,7 @@ import {
 } from "../../presentation/screens/ProfileScreen/changePasswordSchema";
 import { useRoute } from "@react-navigation/native";
 import { useAuthStore } from "../../presentation/stores/authStore";
-import { useController } from "../../hooks/useController";
+import { useController } from "../../presentation/hooks/useController";
 import { useToastStore } from "../../presentation/stores/useToastStore";
 import { Keyboard } from "react-native";
 import { useShallow } from "zustand/react/shallow";

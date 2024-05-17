@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import { usePostList } from "../../../../useCases/post/usePostList";
 import { CPostItem } from "../../../../components/CPostItem/CPostItem";
 import { CBox } from "../../../../components/CBox/CBox";
-import { useAppSafeArea } from "../../../../hooks/useAppSafeArea";
+import { useAppSafeArea } from "../../../../presentation/hooks/useAppSafeArea";
 import { CActivityIndicator } from "../../../../components/CActivityIndicator/CActivityIndicator";
 import { CEmptyList } from "../../../../components/CEmptyList/CEmptyList";
 

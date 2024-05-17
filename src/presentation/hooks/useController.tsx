@@ -2,11 +2,11 @@ import { useMemo } from "react";
 import {
   UserProfileController,
   UserProfileControllerImpl,
-} from "../controllers/user.controller";
+} from "../../controllers/user.controller";
 import {
   AuthController,
   AuthControllerImpl,
-} from "../controllers/auth.controller";
+} from "../../controllers/auth.controller";
 
 type Controller = "UserProfileController" | "AuthController";
 
