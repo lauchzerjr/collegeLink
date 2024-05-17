@@ -16,8 +16,8 @@ import { useController } from "../../presentation/hooks/useController";
 import { useToastStore } from "../../presentation/stores/useToastStore";
 import { Keyboard } from "react-native";
 import { useShallow } from "zustand/react/shallow";
-import { UserProfileController } from "../../presentation/controllers/user.controller";
-import { AuthController } from "../../presentation/controllers/auth.controller";
+import { UserProfileController } from "../../controllers/user.controller";
+import { AuthController } from "../../controllers/auth.controller";
 
 export function useUserInfoProfile() {
   const { user, loading } = useAuthStore(

@@ -1,4 +1,4 @@
-import { PostController } from "../../presentation/controllers/post.controller";
+import { PostController } from "../../controllers/post.controller";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { useNameCollectionStore } from "../../presentation/stores/useNameCollectionStore";
 import { usePaginatedList } from "../../presentation/hooks/usePaginatedList";

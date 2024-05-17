@@ -1,10 +1,10 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { authApi } from "../../services/auth.service";
+import { authApi } from "../services/auth.service";
 import {
   AbstractSubscribableController,
   SubscribableController,
 } from "./AbstractSubscribableController";
-import { userInfosApi } from "../../services/user.service";
+import { userInfosApi } from "../services/user.service";
 
 export type AuthReducer = {
   onSuccessSignIn(response: FirebaseAuthTypes.User): void;

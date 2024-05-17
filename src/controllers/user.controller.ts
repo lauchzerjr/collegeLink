@@ -3,12 +3,12 @@ import {
   AbstractSubscribableController,
   SubscribableController,
 } from "./AbstractSubscribableController";
-import { userInfosApi } from "../../services/user.service";
+import { userInfosApi } from "../services/user.service";
 import {
   UserPostCommentInfos,
   UserPostInfos,
   UserProfileInfo,
-} from "../../models/user.model";
+} from "../models/user.model";
 
 export type UserProfileReducer = {
   onSuccessGetUserProfileInfo(response: UserProfileInfo): void;
