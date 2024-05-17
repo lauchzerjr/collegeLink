@@ -16,23 +16,23 @@ import { Switch } from "react-native";
 export function ProfileScreen() {
   const {
     userData,
-    isLoading,
+    handleUpdateFormProfile,
     control,
     handleSubmit,
-    changeForm,
     controlChangePassword,
     handleSubmitChangePassword,
-    isLoadingUserContext,
+    loadingScreenProfile,
     modalChangePassword,
-    toggleOpenModalChangePassword,
+    handleToggleOpenModalToChangePassword,
     formStateChangePassword,
     handleChangePassword,
-    isLoadingUserChangePassword,
+    loading: isLoadingUserChangePassword,
     isEnabledCity,
-    toggleCity,
+    handleToggleCity,
+    loadingUpdateFormProfile,
   } = useUserInfoProfile();
 
-  if (isLoading) {
+  if (loadingScreenProfile) {
     return (
       <CBox flex={1} alignItems="center" justifyContent="center">
         <CActivityIndicator size="large" color="bluePrimary" />
@@ -54,7 +54,7 @@ export function ProfileScreen() {
           <Switch
             trackColor={{ false: "#B3B3B3", true: "#00599950" }}
             thumbColor={!isEnabledCity ? "#8E8E8E" : "#005999"}
-            onValueChange={toggleCity}
+            onValueChange={handleToggleCity}
             value={isEnabledCity}
           />
           <CText mt="s4" fontSize={16} color="bluePrimary">
@@ -69,7 +69,7 @@ export function ProfileScreen() {
 
       <CUserProfileForm
         control={control}
-        isEnabledCity={userData?.isEnabledCity}
+        isEnabledCity={userData?.isEnabledCity || isEnabledCity}
         isEditableInput
       />
 
@@ -78,20 +78,20 @@ export function ProfileScreen() {
           mt="s12"
           preset="primary"
           title="Salvar alterações"
-          onPress={handleSubmit(changeForm)}
-          loading={isLoadingUserContext}
+          onPress={handleSubmit(handleUpdateFormProfile)}
+          loading={loadingUpdateFormProfile}
         />
         <CButton
           mt="s12"
           preset="outline"
           title="Alterar senha"
-          onPress={toggleOpenModalChangePassword}
+          onPress={handleToggleOpenModalToChangePassword}
         />
       </CBox>
 
       <CModal
         visible={modalChangePassword}
-        onClose={toggleOpenModalChangePassword}
+        onClose={handleToggleOpenModalToChangePassword}
         title="Alterar senha"
         children={
           <>

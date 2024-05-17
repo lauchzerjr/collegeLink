@@ -18,28 +18,28 @@ import { useAuthStore } from "../../stores/authStore";
 export function PostProfileScreen() {
   const {
     userData,
-    isLoading,
+    loadingScreenProfile,
     control,
     handleSubmit,
-    changeForm,
+    handleUpdateFormProfile,
     controlChangePassword,
     handleSubmitChangePassword,
-    isLoadingUserContext,
+    loadingUpdateFormProfile,
     modalChangePassword,
-    toggleOpenModalChangePassword,
+    handleToggleOpenModalToChangePassword,
     formStateChangePassword,
     handleChangePassword,
-    loading,
+    loading: loadingChangePassword,
     isEnabledCity,
-    toggleCity,
+    handleToggleCity,
   } = useUserInfoProfile();
 
   const { params } = useRoute();
-  const { user } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
 
   const isUserLoged = params?.userId === user.uid;
 
-  if (isLoading) {
+  if (loadingScreenProfile) {
     return (
       <CBox flex={1} alignItems="center" justifyContent="center">
         <CActivityIndicator size="large" color="bluePrimary" />
@@ -64,7 +64,7 @@ export function PostProfileScreen() {
             <Switch
               trackColor={{ false: "#B3B3B3", true: "#00599950" }}
               thumbColor={!isEnabledCity ? "#8E8E8E" : "#005999"}
-              onValueChange={toggleCity}
+              onValueChange={handleToggleCity}
               value={isEnabledCity}
             />
             <CText mt="s4" fontSize={16} color="bluePrimary">
@@ -90,21 +90,21 @@ export function PostProfileScreen() {
             mt="s12"
             preset="primary"
             title="Salvar alterações"
-            onPress={handleSubmit(changeForm)}
-            loading={isLoadingUserContext}
+            onPress={handleSubmit(handleUpdateFormProfile)}
+            loading={loadingUpdateFormProfile}
           />
           <CButton
             mt="s12"
             preset="outline"
             title="Alterar senha"
-            onPress={toggleOpenModalChangePassword}
+            onPress={handleToggleOpenModalToChangePassword}
           />
         </CBox>
       )}
 
       <CModal
         visible={modalChangePassword}
-        onClose={toggleOpenModalChangePassword}
+        onClose={handleToggleOpenModalToChangePassword}
         title="Alterar senha"
         children={
           <>
@@ -130,7 +130,7 @@ export function PostProfileScreen() {
               disabled={!formStateChangePassword.isValid}
               title={"Alterar senha"}
               onPress={handleSubmitChangePassword(handleChangePassword)}
-              loading={loading}
+              loading={loadingChangePassword}
               mb="s10"
             />
           </>

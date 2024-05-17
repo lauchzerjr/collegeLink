@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { UserProfileInfo } from "../../models/user.model";
-import { UserController } from "../../controllers/user.controller";
-import { useUser } from "../../hooks/useUser";
 import {
   ProfileSchema,
   profileSchema,
@@ -15,22 +13,33 @@ import {
 import { useRoute } from "@react-navigation/native";
 import { useAuthStore } from "../../stores/authStore";
 import { useController } from "../../hooks/useController";
+import { useToastStore } from "../../stores/useToastStore";
+import { Keyboard } from "react-native";
+import { useShallow } from "zustand/react/shallow";
+import { UserProfileController } from "../../controllers/user.controller";
+import { AuthController } from "../../controllers/auth.controller";
 
 export function useUserInfoProfile() {
-  const { user, loading } = useAuthStore();
-  const { authController } = useController();
+  const { user, loading } = useAuthStore(
+    useShallow((state) => ({
+      user: state.user,
+      loading: state.loading,
+    }))
+  );
+  const userProfileController = useController<UserProfileController>(
+    "UserProfileController"
+  );
+  const authController = useController<AuthController>("AuthController");
 
-  const {
-    changeUserProfileForm,
-    isLoading: isLoadingUserContext,
-    changeUserProfileCityToggle,
-  } = useUser();
+  const showToast = useToastStore((state) => state.showToast);
 
   const { params } = useRoute();
 
   const [modalChangePassword, setModalChangePassword] = useState(false);
   const [userData, setUserData] = useState<UserProfileInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loadingScreenProfile, setLoadingScreenProfile] = useState(true);
+  const [loadingUpdateFormProfile, setLoadingUpdateFormProfile] =
+    useState(false);
   const [isEnabledCity, setIsEnabledCity] = useState(userData?.isEnabledCity);
 
   const { control, formState, handleSubmit, getValues, setValue } =
@@ -60,13 +69,64 @@ export function useUserInfoProfile() {
     mode: "onChange",
   });
 
-  function toggleOpenModalChangePassword() {
+  useEffect(() => {
+    const unsubscribe = userProfileController.subscribe({
+      onSuccessGetUserProfileInfo: (userData) => {
+        if (userData) {
+          setUserData(userData);
+          setValue("name", userData?.name);
+          setValue("city", userData?.city);
+          setValue("linkedin", userData?.linkedin);
+          setValue("bio", userData?.bio);
+        }
+
+        setLoadingScreenProfile(false);
+      },
+      onSuccessChangeUserProfileCityToggle: (msg) => {
+        showToast({
+          message: msg,
+          type: "success",
+        });
+      },
+      onSuccessUpdateFormProfile(msg) {
+        showToast({
+          message: msg,
+          type: "success",
+        });
+        setLoadingUpdateFormProfile(false);
+      },
+      onError: (error) => {
+        showToast({
+          message: error,
+          type: "error",
+        });
+        setLoadingScreenProfile(false);
+        setLoadingUpdateFormProfile(false);
+      },
+      onLoadingScreenProfile: () => {
+        setLoadingScreenProfile(true);
+        setLoadingUpdateFormProfile(false);
+      },
+      onLoadingUpdateFormProfile: () => {
+        setLoadingUpdateFormProfile(true);
+        setLoadingScreenProfile(false);
+      },
+    });
+
+    userProfileController.getUserProfileInfo(params?.userId || user.uid);
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  function handleToggleOpenModalToChangePassword() {
     setModalChangePassword((prev) => !prev);
   }
 
-  async function toggleCity() {
+  async function handleToggleCity() {
     setIsEnabledCity((prev) => !prev);
-    changeUserProfileCityToggle(!isEnabledCity);
+    userProfileController.changeUserProfileCityToggle(!isEnabledCity, user);
   }
 
   const handleChangePassword = async () => {
@@ -77,59 +137,36 @@ export function useUserInfoProfile() {
     );
     reset({ oldPassword: "" });
     reset({ newPassword: "" });
-    toggleOpenModalChangePassword();
+    handleToggleOpenModalToChangePassword();
   };
 
-  const changeForm = async () => {
-    changeUserProfileForm(
+  const handleUpdateFormProfile = async () => {
+    userProfileController.updateFormProfile(
       getValues("name"),
       getValues("city"),
       getValues("linkedin"),
-      getValues("bio")
+      getValues("bio"),
+      user
     );
+    Keyboard.dismiss();
   };
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userData = await UserController.getUserProfileInfo(
-          params?.userId || user.uid
-        );
-        console.log("🚀 ~ fetchUserData ~ userData:", userData);
-
-        if (userData) {
-          setUserData(userData);
-          setValue("name", userData?.name);
-          setValue("city", userData?.city);
-          setValue("linkedin", userData?.linkedin);
-          setValue("bio", userData?.bio);
-        }
-      } catch (error) {
-        console.log("Erro ao buscar as informações de usuário:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, [params?.userId, user.uid, setValue, isEnabledCity]);
 
   return {
     userData,
-    isLoading,
+    loadingScreenProfile,
     control,
     formState,
-    isLoadingUserContext,
+    loadingUpdateFormProfile,
     modalChangePassword,
     controlChangePassword,
     formStateChangePassword,
     loading,
     isEnabledCity,
     handleSubmit,
-    toggleOpenModalChangePassword,
-    changeForm,
+    handleToggleOpenModalToChangePassword,
+    handleUpdateFormProfile,
     handleSubmitChangePassword,
     handleChangePassword,
-    toggleCity,
+    handleToggleCity,
   };
 }

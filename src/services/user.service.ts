@@ -1,21 +1,23 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import firestore, {
-  FirebaseFirestoreTypes,
-} from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import storage, { FirebaseStorageTypes } from "@react-native-firebase/storage";
+import { UserProfileInfo } from "../models/user.model";
 
 async function getUserInfos(
   userId: string
-): Promise<FirebaseFirestoreTypes.DocumentData> {
+): Promise<UserProfileInfo | undefined> {
   const userDoc = await firestore()
     .collection("usersProfiles")
     .doc(userId)
     .get();
 
-  return userDoc.data();
+  if (userDoc.exists) {
+    const userData = userDoc.data() as UserProfileInfo;
+    return userData;
+  }
 }
 
-async function changeUserProfileForm(
+async function updateFormProfile(
   user: FirebaseAuthTypes.User,
   name: string,
   city: string,
@@ -76,7 +78,7 @@ async function uploadUserProfilePhoto(
 
 export const userInfosApi = {
   getUserInfos,
-  changeUserProfileForm,
+  updateFormProfile,
   saveUserProfilePhoto,
   uploadUserProfilePhoto,
   changeUserProfileCityToggle,
