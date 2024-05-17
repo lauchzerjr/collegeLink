@@ -6,7 +6,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { LikeController } from "../../controllers/like.controller";
 import { DislikeController } from "../../controllers/dislike.controller";
 import { useNavigation } from "@react-navigation/native";
-import { useAuthStore } from "../../stores/authStore";
+import { useAuthStore } from "../../presentation/stores/authStore";
 
 interface CPostItemFooterProps {
   userId: string;

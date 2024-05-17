@@ -1,7 +1,7 @@
 import { PostController } from "../../controllers/post.controller";
 import { usePaginatedList } from "../../hooks/usePaginatedList";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
+import { useNameCollectionStore } from "../../presentation/stores/useNameCollectionStore";
 
 export const usePostList = () => {
   const { nameCollection } = useNameCollectionStore();

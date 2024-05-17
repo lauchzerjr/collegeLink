@@ -5,7 +5,7 @@ import { HomeScreen } from "../screens/HomeScreen/HomeScreen";
 import { FavoriteScreen } from "../screens/FavoriteScreen/FavoriteScreen";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { ProfileScreen } from "../screens/ProfileScreen/ProfileScreen";
-import { useAuthStore } from "../../stores/authStore";
+import { useAuthStore } from "../stores/authStore";
 import { useController } from "../../hooks/useController";
 import { AuthController } from "../../controllers/auth.controller";
 

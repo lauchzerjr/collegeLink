@@ -5,7 +5,7 @@ import { usePostCommentCreate } from "../../../../useCases/post/usePostCommentCr
 import { CTouchableOpacityBox } from "../../../../components/CBox/CBox";
 import { CTextInput } from "../../../../components/CTextInput/CTextInput";
 import { Keyboard } from "react-native";
-import { useAuthStore } from "../../../../stores/authStore";
+import { useAuthStore } from "../../../stores/authStore";
 
 interface PostCommentTextMessageProps {
   postId: string;

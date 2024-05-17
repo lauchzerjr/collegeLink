@@ -11,7 +11,7 @@ import { CActivityIndicator } from "../../../components/CActivityIndicator/CActi
 import { useNavigation } from "@react-navigation/native";
 import { transformCourse } from "../../../utils/transformCourse";
 import { CEmptyList } from "../../../components/CEmptyList/CEmptyList";
-import { useNameCollectionStore } from "../../../stores/useNameCollectionStore";
+import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
 
 export function HomeScreen() {
   const { handleChangeNameCollection, handleChangeCourseName } =

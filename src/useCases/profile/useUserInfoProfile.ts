@@ -11,9 +11,9 @@ import {
   changePasswordSchema,
 } from "../../presentation/screens/ProfileScreen/changePasswordSchema";
 import { useRoute } from "@react-navigation/native";
-import { useAuthStore } from "../../stores/authStore";
+import { useAuthStore } from "../../presentation/stores/authStore";
 import { useController } from "../../hooks/useController";
-import { useToastStore } from "../../stores/useToastStore";
+import { useToastStore } from "../../presentation/stores/useToastStore";
 import { Keyboard } from "react-native";
 import { useShallow } from "zustand/react/shallow";
 import { UserProfileController } from "../../controllers/user.controller";

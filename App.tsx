@@ -7,7 +7,7 @@ import { theme } from "./src/theme/theme";
 import { Routes } from "./src/presentation/routes";
 import { CToast } from "./src/components/CToast/CToast";
 import { authApi } from "./src/services/auth.service";
-import { useAuthStore } from "./src/stores/authStore";
+import { useAuthStore } from "./src/presentation/stores/authStore";
 
 export default function App() {
   const setUser = useAuthStore((state) => state.setUser);

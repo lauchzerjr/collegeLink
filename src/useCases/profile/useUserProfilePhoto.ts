@@ -1,8 +1,8 @@
 import { userInfosApi } from "./../../services/user.service";
 import { useCallback, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { useAuthStore } from "../../stores/authStore";
-import { useToastStore } from "../../stores/useToastStore";
+import { useAuthStore } from "../../presentation/stores/authStore";
+import { useToastStore } from "../../presentation/stores/useToastStore";
 
 interface ImageOptionsProps {
   mediaTypes: ImagePicker.MediaTypeOptions.Images;

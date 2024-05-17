@@ -13,7 +13,7 @@ import { useUserInfoProfile } from "../../../useCases/profile/useUserInfoProfile
 import { CFormPasswordInput } from "../../../components/CForm/CFormPasswordInput";
 import { Switch } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { useAuthStore } from "../../../stores/authStore";
+import { useAuthStore } from "../../stores/authStore";
 
 export function PostProfileScreen() {
   const {

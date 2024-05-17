@@ -10,9 +10,9 @@ import { postApi } from "../../services/post.service";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import { usePostList } from "./usePostList";
-import { useAuthStore } from "../../stores/authStore";
-import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
-import { useToastStore } from "../../stores/useToastStore";
+import { useAuthStore } from "../../presentation/stores/authStore";
+import { useNameCollectionStore } from "../../presentation/stores/useNameCollectionStore";
+import { useToastStore } from "../../presentation/stores/useToastStore";
 
 export function useCreatePost() {
   const user = useAuthStore((state) => state.user);
