@@ -1,12 +1,12 @@
-import { postApi } from "../services/post.service";
+import { postApi } from "../../services/post.service";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { UserPostInfos } from "../models/user.model";
+import { UserPostInfos } from "../../models/user.model";
 import { UserController } from "./user.controller";
 import { LikeController } from "./like.controller";
 import { DislikeController } from "./dislike.controller";
 import { CommentController } from "./comment.controller";
-import { PaginatedData } from "../models/paginatedData.model";
-import { CreatePost, Post } from "../models/post.model";
+import { PaginatedData } from "../../models/paginatedData.model";
+import { CreatePost, Post } from "../../models/post.model";
 
 const getPosts = async (
   nameCollection: string,

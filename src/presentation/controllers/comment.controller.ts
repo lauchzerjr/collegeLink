@@ -1,8 +1,8 @@
-import { Comment } from "../models/comment.model";
-import { commentApi } from "../services/comment.service";
+import { Comment } from "../../models/comment.model";
+import { commentApi } from "../../services/comment.service";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { UserController } from "./user.controller";
-import { UserPostCommentInfos } from "../models/user.model";
+import { UserPostCommentInfos } from "../../models/user.model";
 
 const getTotalCountPostComments = async (postId: string) => {
   return commentApi.getTotalCountComments({ postId });

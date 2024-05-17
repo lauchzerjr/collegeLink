@@ -1,5 +1,5 @@
-import { likeApi } from "../services/like.service";
-import { Like } from "../models/like.model";
+import { likeApi } from "../../services/like.service";
+import { Like } from "../../models/like.model";
 
 const getTotalCountPostLikes = async (postId: string): Promise<number> => {
   return likeApi.getTotalCountLikes(postId);

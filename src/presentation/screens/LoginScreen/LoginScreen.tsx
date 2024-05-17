@@ -21,7 +21,7 @@ import {
 import { useAuthStore } from "../../stores/authStore";
 import { useController } from "../../../presentation/hooks/useController";
 import { useToastStore } from "../../stores/useToastStore";
-import { AuthController } from "../../../controllers/auth.controller";
+import { AuthController } from "../../controllers/auth.controller";
 import { useShallow } from "zustand/react/shallow";
 
 export function LoginScreen() {

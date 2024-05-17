@@ -1,4 +1,4 @@
-import { CommentController } from "../../controllers/comment.controller";
+import { CommentController } from "../../presentation/controllers/comment.controller";
 import { useState } from "react";
 
 interface Options {
