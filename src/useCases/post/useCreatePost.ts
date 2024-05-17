@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import {
   CreatePostSchemaSchema,
   createPostSchema,
-} from "../../screens/CreatePostScreen/createPostSchema";
+} from "../../presentation/screens/CreatePostScreen/createPostSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { PostController } from "../../controllers/post.controller";

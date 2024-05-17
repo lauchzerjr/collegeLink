@@ -1,16 +1,16 @@
 import React from "react";
 
-import { CScreen } from "../../components/CScreen/CScreen";
-import { CBox } from "../../components/CBox/CBox";
-import { CText } from "../../components/CText/CText";
-import { CButton } from "../../components/CButton/CButton";
-import { CModal } from "../../components/CModal/CModal";
+import { CScreen } from "../../../components/CScreen/CScreen";
+import { CBox } from "../../../components/CBox/CBox";
+import { CText } from "../../../components/CText/CText";
+import { CButton } from "../../../components/CButton/CButton";
+import { CModal } from "../../../components/CModal/CModal";
 
-import { CActivityIndicator } from "../../components/CActivityIndicator/CActivityIndicator";
-import { CUserProfilePhoto } from "../../components/CUserProfilePhoto/CUserProfilePhoto";
-import { CUserProfileForm } from "../../components/CUserProfileForm/CUserProfileForm";
-import { useUserInfoProfile } from "../../useCases/profile/useUserInfoProfile";
-import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
+import { CActivityIndicator } from "../../../components/CActivityIndicator/CActivityIndicator";
+import { CUserProfilePhoto } from "../../../components/CUserProfilePhoto/CUserProfilePhoto";
+import { CUserProfileForm } from "../../../components/CUserProfileForm/CUserProfileForm";
+import { useUserInfoProfile } from "../../../useCases/profile/useUserInfoProfile";
+import { CFormPasswordInput } from "../../../components/CForm/CFormPasswordInput";
 import { Switch } from "react-native";
 
 export function ProfileScreen() {

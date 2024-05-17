@@ -4,13 +4,13 @@ import {
 } from "@react-navigation/stack";
 
 import { TabRoutes } from "./tab.routes";
-import { PostsScreen } from "../screens/PostsScreen/PostsScreen";
+import { PostsScreen } from "../presentation/screens/PostsScreen/PostsScreen";
 import { useAppTheme } from "../hooks/useAppTheme";
 import { CTouchableOpacityBox } from "../components/CBox/CBox";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { CreatePostScreen } from "../screens/CreatePostScreen/CreatePostScreen";
-import { PostCommentsScreen } from "../screens/PostCommentsScreen/PostCommentsScreen";
-import { PostProfileScreen } from "../screens/PostProfileScreen/PostProfileScreen";
+import { CreatePostScreen } from "../presentation/screens/CreatePostScreen/CreatePostScreen";
+import { PostCommentsScreen } from "../presentation/screens/PostCommentsScreen/PostCommentsScreen";
+import { PostProfileScreen } from "../presentation/screens/PostProfileScreen/PostProfileScreen";
 
 const { Screen, Navigator } = createStackNavigator();
 

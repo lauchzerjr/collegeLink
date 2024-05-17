@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-import { HomeScreen } from "../screens/HomeScreen/HomeScreen";
-import { FavoriteScreen } from "../screens/FavoriteScreen/FavoriteScreen";
+import { HomeScreen } from "../presentation/screens/HomeScreen/HomeScreen";
+import { FavoriteScreen } from "../presentation/screens/FavoriteScreen/FavoriteScreen";
 import { useAppTheme } from "../hooks/useAppTheme";
-import { ProfileScreen } from "../screens/ProfileScreen/ProfileScreen";
+import { ProfileScreen } from "../presentation/screens/ProfileScreen/ProfileScreen";
 import { useAuthStore } from "../stores/authStore";
 import { useController } from "../hooks/useController";
 import { AuthController } from "../controllers/auth.controller";

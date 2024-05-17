@@ -5,23 +5,23 @@ import { Keyboard } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { CText } from "../../components/CText/CText";
-import { CButton } from "../../components/CButton/CButton";
-import { CScreen } from "../../components/CScreen/CScreen";
-import { CBox } from "../../components/CBox/CBox";
+import { CText } from "../../../components/CText/CText";
+import { CButton } from "../../../components/CButton/CButton";
+import { CScreen } from "../../../components/CScreen/CScreen";
+import { CBox } from "../../../components/CBox/CBox";
 import { LoginSchema, loginSchema } from "./loginSchema";
-import { CFormTextInput } from "../../components/CForm/CFormTextInput";
-import { CFormPasswordInput } from "../../components/CForm/CFormPasswordInput";
+import { CFormTextInput } from "../../../components/CForm/CFormTextInput";
+import { CFormPasswordInput } from "../../../components/CForm/CFormPasswordInput";
 import { SignupSchema, signupSchema } from "./signupSchema";
-import { CModal } from "../../components/CModal/CModal";
+import { CModal } from "../../../components/CModal/CModal";
 import {
   ForgotPasswordSchema,
   forgotPasswordSchema,
 } from "./forgotPasswordSchema";
-import { useAuthStore } from "../../stores/authStore";
-import { useController } from "../../hooks/useController";
-import { useToastStore } from "../../stores/useToastStore";
-import { AuthController } from "../../controllers/auth.controller";
+import { useAuthStore } from "../../../stores/authStore";
+import { useController } from "../../../hooks/useController";
+import { useToastStore } from "../../../stores/useToastStore";
+import { AuthController } from "../../../controllers/auth.controller";
 import { useShallow } from "zustand/react/shallow";
 
 export function LoginScreen() {

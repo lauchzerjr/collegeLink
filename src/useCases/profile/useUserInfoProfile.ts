@@ -3,13 +3,13 @@ import { UserProfileInfo } from "../../models/user.model";
 import {
   ProfileSchema,
   profileSchema,
-} from "../../screens/ProfileScreen/profileSchema";
+} from "../../presentation/screens/ProfileScreen/profileSchema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChangePasswordSchema,
   changePasswordSchema,
-} from "../../screens/ProfileScreen/changePasswordSchema";
+} from "../../presentation/screens/ProfileScreen/changePasswordSchema";
 import { useRoute } from "@react-navigation/native";
 import { useAuthStore } from "../../stores/authStore";
 import { useController } from "../../hooks/useController";

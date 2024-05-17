@@ -1,7 +1,7 @@
 import React from "react";
-import { CScreen } from "../../components/CScreen/CScreen";
-import { CTextInput } from "../../components/CTextInput/CTextInput";
-import { CTouchableOpacityBox } from "../../components/CBox/CBox";
+import { CScreen } from "../../../components/CScreen/CScreen";
+import { CTextInput } from "../../../components/CTextInput/CTextInput";
+import { CTouchableOpacityBox } from "../../../components/CBox/CBox";
 import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import { CPostList } from "./components/CPostList";
 

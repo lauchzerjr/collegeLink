@@ -1,11 +1,11 @@
 import React from "react";
 import { FlatList } from "react-native";
-import { usePostList } from "../../../useCases/post/usePostList";
-import { CPostItem } from "../../../components/CPostItem/CPostItem";
-import { CBox } from "../../../components/CBox/CBox";
-import { useAppSafeArea } from "../../../hooks/useAppSafeArea";
-import { CActivityIndicator } from "../../../components/CActivityIndicator/CActivityIndicator";
-import { CEmptyList } from "../../../components/CEmptyList/CEmptyList";
+import { usePostList } from "../../../../useCases/post/usePostList";
+import { CPostItem } from "../../../../components/CPostItem/CPostItem";
+import { CBox } from "../../../../components/CBox/CBox";
+import { useAppSafeArea } from "../../../../hooks/useAppSafeArea";
+import { CActivityIndicator } from "../../../../components/CActivityIndicator/CActivityIndicator";
+import { CEmptyList } from "../../../../components/CEmptyList/CEmptyList";
 
 export const CPostList = () => {
   const { data, fetchMoreData, lastItem, startAfter, loading } = usePostList();
