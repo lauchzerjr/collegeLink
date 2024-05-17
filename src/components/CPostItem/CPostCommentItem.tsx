@@ -3,7 +3,7 @@ import { CBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
 import { Comment } from "../../models/comment.model";
 import { CUserProfilePhoto } from "../CUserProfilePhoto/CUserProfilePhoto";
-import { dateUtils } from "../../utils/dateIsoFormater";
+import { dateUtils } from "../../presentation/utils/dateIsoFormater";
 
 interface CPostCommentItemProps {
   item: Comment;
