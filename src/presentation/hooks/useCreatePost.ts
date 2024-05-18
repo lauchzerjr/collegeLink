@@ -5,22 +5,24 @@ import {
 } from "../screens/CreatePostScreen/createPostSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { PostController } from "../../controllers/post.controller";
 import { postApi } from "../../services/post.service";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
-import { usePostList } from "./usePostList";
 import { useAuthStore } from "../stores/authStore";
 import { useNameCollectionStore } from "../stores/useNameCollectionStore";
 import { useToastStore } from "../stores/useToastStore";
+import { useController } from "./useController";
+import { PostController } from "../../controllers/post.controller";
+// import { usePostStore } from "../stores/postStore";
 
 export function useCreatePost() {
+  const postController = useController<PostController>("PostController");
   const user = useAuthStore((state) => state.user);
+  const showToast = useToastStore((state) => state.showToast);
+  // const startAfter = usePostStore((state) => state.startAfter);
 
   const { goBack } = useNavigation();
-  const showToast = useToastStore((state) => state.showToast);
 
-  const { fetchData } = usePostList();
   const { nameCollection, courseName } = useNameCollectionStore();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -98,7 +100,7 @@ export function useCreatePost() {
         await uploadPostPhoto(selectedImage);
       }
 
-      PostController.createPost({
+      await postController.createPost({
         nameCollection,
         userId: user.uid,
         disciplinePost: getValues("disciplinePost"),
@@ -107,7 +109,8 @@ export function useCreatePost() {
         photoPost: selectedImage,
       });
 
-      fetchData();
+      // await postController.getPosts(nameCollection, startAfter);
+
       goBack();
     } catch (error) {
       showToast({
