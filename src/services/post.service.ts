@@ -62,7 +62,7 @@ async function getPosts(
   console.log("data", data);
 
   return {
-    data,
+    data: data as Post[],
     lastVisible: querySnapchot.docs[querySnapchot.docs.length - 1] || null,
   };
 }

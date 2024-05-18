@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { PaginatedData } from "src/models/paginatedData.model";
+import { PaginatedData } from "../../models/paginatedData.model";
 
 export const usePaginatedList = <Data>(
   getList: (
@@ -49,9 +49,9 @@ export const usePaginatedList = <Data>(
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   return {
     data,
