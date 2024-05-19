@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CBox } from "../../components/CBox/CBox";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CText } from "../../components/CText/CText";
@@ -9,6 +9,7 @@ import { usePostCommentList } from "../../hooks/useCommentList";
 import { useRoute } from "@react-navigation/native";
 import { CPostCommentItem } from "../../components/CPostItem/CPostCommentItem";
 import { PostCommentTextMessage } from "./components/PostCommentTextMessage";
+import { usePostStore } from "../../stores/postStore";
 
 type RouteParams = {
   postId: string;
@@ -17,10 +18,9 @@ type RouteParams = {
 export function PostCommentsScreen() {
   const route = useRoute();
   const { postId } = route.params as RouteParams;
-  const { data, fetchMoreData, lastItem, startAfter, loading, fetchData } =
+  const { fetchMoreData, lastItem, startAfter, loading, data } =
     usePostCommentList(postId);
-
-  const [hasNextPage, setHasNextPage] = React.useState(true);
+  // const postComments = usePostStore((state) => state.postComments);
 
   const renderItem = ({ item }) => {
     return <CPostCommentItem item={item} />;
@@ -92,7 +92,7 @@ export function PostCommentsScreen() {
           ListHeaderComponent={renderListHeaderComponent}
         />
 
-        <PostCommentTextMessage postId={postId} onAddComment={fetchData} />
+        <PostCommentTextMessage postId={postId} />
       </CBox>
     </CScreen>
   );

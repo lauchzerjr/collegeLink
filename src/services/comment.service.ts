@@ -38,7 +38,7 @@ async function getComments(
   console.log("data", data);
 
   return {
-    data,
+    data: data as Comment[],
     lastVisible: querySnapchot.docs[querySnapchot.docs.length - 1] || null,
   };
 }

@@ -5,9 +5,11 @@ import { PaginatedData } from "../../models/paginatedData.model";
 export const usePaginatedList = <Data>(
   getList: (
     startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
-  ) => Promise<PaginatedData<Data>>
+  ) => Promise<PaginatedData<Data>>,
+  updateGlobalState: (newData: Data[]) => void
+  // data: Data
 ) => {
-  const [data, setData] = useState<Data[]>([]);
+  // const [data, setData] = useState<Data[]>([]);
   const [loading, setLoading] = useState(true);
   const [startAfter, setStartAfter] =
     useState<FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null>(
@@ -21,7 +23,7 @@ export const usePaginatedList = <Data>(
 
       const { data, lastVisible } = await getList(startAfter);
 
-      setData(data);
+      updateGlobalState(data);
       setStartAfter(lastVisible);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -36,7 +38,7 @@ export const usePaginatedList = <Data>(
       if (!lastItem && startAfter !== null) {
         const { data, lastVisible } = await getList(startAfter);
 
-        setData((prev) => [...prev, ...data]);
+        updateGlobalState(data);
         setStartAfter(lastVisible);
         if (data.length < 10) {
           setLastItem(true);
@@ -49,12 +51,12 @@ export const usePaginatedList = <Data>(
     }
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return {
-    data,
+    // data,
     fetchData,
     fetchMoreData,
     loading,
