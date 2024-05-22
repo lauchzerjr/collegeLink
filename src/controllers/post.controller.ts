@@ -26,7 +26,7 @@ export type PostReducer = {
 export interface PostController extends SubscribableController<PostReducer> {
   getPosts: (
     nameCollection: string,
-    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
   ) => Promise<void>;
   createPost: ({
     nameCollection,
@@ -51,7 +51,7 @@ export class PostControllerImpl
 
   async getPosts(
     nameCollection: string,
-    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
   ): Promise<void> {
     try {
       this.dispatch("onLoading");

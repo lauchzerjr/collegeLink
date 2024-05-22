@@ -27,7 +27,7 @@ export interface PostCommentController
   getTotalCountPostComments: (postId: string) => Promise<number>;
   getPostComments: (
     postId: string,
-    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
   ) => Promise<void>;
   addPostComment: (
     postId: string,
@@ -57,7 +57,7 @@ export class PostCommentControllerImpl
 
   async getPostComments(
     postId: string,
-    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+    startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
   ): Promise<void> {
     // ): Promise<PostCommentResult> {
     try {

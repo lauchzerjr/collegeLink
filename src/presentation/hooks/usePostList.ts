@@ -59,7 +59,7 @@ export const usePostList = () => {
       },
     });
 
-    postController.getPosts(nameCollection, startAfter);
+    postController.getPosts(nameCollection, null);
 
     return () => {
       unsubscribe();
