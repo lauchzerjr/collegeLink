@@ -19,9 +19,9 @@ export const usePaginatedList = <Data>(
     try {
       setLoading(true);
 
-      const { data, lastVisible } = await getList(startAfter);
+      const { data: newData, lastVisible } = await getList(null);
 
-      setData(data);
+      setData(newData);
       setStartAfter(lastVisible);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -49,9 +49,9 @@ export const usePaginatedList = <Data>(
     }
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return {
     data,

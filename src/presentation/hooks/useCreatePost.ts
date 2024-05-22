@@ -7,21 +7,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../services/post.service";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
 import { useAuthStore } from "../stores/authStore";
 import { useNameCollectionStore } from "../stores/useNameCollectionStore";
 import { useToastStore } from "../stores/useToastStore";
-import { useController } from "./useController";
-import { PostController } from "../../controllers/post.controller";
-// import { usePostStore } from "../stores/postStore";
+import { postController } from "../../controllers/post.controller";
 
-export function useCreatePost() {
-  const postController = useController<PostController>("PostController");
+interface Options {
+  onSuccess?: (data) => void;
+}
+
+export function useCreatePost(options?: Options) {
   const user = useAuthStore((state) => state.user);
   const showToast = useToastStore((state) => state.showToast);
-  // const startAfter = usePostStore((state) => state.startAfter);
-
-  const { goBack } = useNavigation();
 
   const { nameCollection, courseName } = useNameCollectionStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +97,7 @@ export function useCreatePost() {
         await uploadPostPhoto(selectedImage);
       }
 
-      await postController.createPost({
+      const post = await postController.createPost({
         nameCollection,
         userId: user.uid,
         disciplinePost: getValues("disciplinePost"),
@@ -108,10 +105,6 @@ export function useCreatePost() {
         textPost: getValues("textPost"),
         photoPost: selectedImage,
       });
-
-      // await postController.getPosts(nameCollection, startAfter);
-
-      goBack();
     } catch (error) {
       showToast({
         message: "Falha ao publicar post",

@@ -17,9 +17,9 @@ async function getTotalCountComments({
 
 async function getComments(
   postId: string,
-  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
 ): Promise<PaginatedData<FirebaseFirestoreTypes.DocumentData>> {
-  let query = await firestore()
+  let query = firestore()
     .collection("postComments")
     .where("postId", "==", postId)
     .orderBy("createdAt", "desc")
@@ -31,15 +31,17 @@ async function getComments(
 
   const querySnapchot = await query.get();
 
-  const data = await querySnapchot.docs.map((doc) => ({
+  const data = querySnapchot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
-  console.log("data", data);
 
   return {
     data,
-    lastVisible: querySnapchot.docs[querySnapchot.docs.length - 1] || null,
+    lastVisible:
+      querySnapchot.docs.length > 0
+        ? querySnapchot.docs[querySnapchot.docs.length - 1]
+        : null,
   };
 }
 
@@ -47,15 +49,16 @@ async function addComment(
   postId: string,
   userId: string,
   text: string
-): Promise<void> {
-  await firestore().collection("postComments").add({
+): Promise<FirebaseFirestoreTypes.DocumentData> {
+  const commentRef = await firestore().collection("postComments").add({
     postId,
     userId,
     text,
     createdAt: new Date().toISOString(),
   });
 
-  console.log("comentario adicionado com sucesso para o post", postId);
+  const commentDoc = await commentRef.get();
+  return { id: commentRef.id, ...commentDoc.data() };
 }
 
 async function removeComment({ id }: Pick<Comment, "id">): Promise<void> {

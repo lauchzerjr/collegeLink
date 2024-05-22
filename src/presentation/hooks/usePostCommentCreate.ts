@@ -1,4 +1,4 @@
-import { CommentController } from "../../controllers/comment.controller";
+import { postCommentController } from "../../controllers/comment.controller";
 import { useState } from "react";
 
 interface Options {
@@ -15,7 +15,7 @@ export const usePostCommentCreate = (
   const createPostComment = async (comment: string) => {
     try {
       setLoading(true);
-      const postComment = await CommentController.addPostComment(
+      const postComment = await postCommentController.addPostComment(
         postId,
         userId,
         comment

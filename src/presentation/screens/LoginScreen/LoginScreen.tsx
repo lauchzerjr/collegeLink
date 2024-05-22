@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Keyboard } from "react-native";
@@ -19,14 +19,11 @@ import {
   forgotPasswordSchema,
 } from "./forgotPasswordSchema";
 import { useAuthStore } from "../../stores/authStore";
-import { useController } from "../../../presentation/hooks/useController";
 import { useToastStore } from "../../stores/useToastStore";
-import { AuthController } from "../../../controllers/auth.controller";
+import { authController } from "../../../controllers/auth.controller";
 import { useShallow } from "zustand/react/shallow";
 
 export function LoginScreen() {
-  const authController = useController<AuthController>("AuthController");
-
   const { setUser, setLoading, loading } = useAuthStore(
     useShallow((state) => ({
       setUser: state.setUser,
@@ -84,47 +81,6 @@ export function LoginScreen() {
   const submit = createAccount
     ? handleSubmit(handleSignUp)
     : handleSubmit(handleSignIn);
-
-  useEffect(() => {
-    const unsubscribe = authController.subscribe({
-      onSuccessSignIn: (user) => {
-        console.log("🚀 ~ useEffect ~ user:", user);
-        setUser(user);
-
-        setLoading(false);
-      },
-      onSuccessSignUp(msg) {
-        showToast({
-          message: msg,
-          type: "success",
-        });
-        setLoading(false);
-      },
-      onSuccessChangePassword() {},
-      onSuccessForgotPassword: (msg) => {
-        showToast({
-          message: msg,
-          type: "success",
-        });
-        setLoading(false);
-      },
-      onError: (error) => {
-        showToast({
-          message: error,
-          type: "error",
-        });
-        setLoading(false);
-      },
-      onLoading: () => {
-        console.log("loadinggggg");
-        setLoading(true);
-      },
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   return (
     <CScreen isScroll>

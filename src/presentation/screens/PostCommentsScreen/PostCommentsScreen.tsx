@@ -20,8 +20,6 @@ export function PostCommentsScreen() {
   const { data, fetchMoreData, lastItem, startAfter, loading, fetchData } =
     usePostCommentList(postId);
 
-  const [hasNextPage, setHasNextPage] = React.useState(true);
-
   const renderItem = ({ item }) => {
     return <CPostCommentItem item={item} />;
   };

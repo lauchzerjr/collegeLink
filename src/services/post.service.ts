@@ -12,8 +12,8 @@ async function createPost({
   subjectPost,
   textPost,
   photoPost,
-}: CreatePost): Promise<void> {
-  firestore().collection(nameCollection).add({
+}: CreatePost): Promise<FirebaseFirestoreTypes.DocumentData> {
+  const postRef = firestore().collection(nameCollection).add({
     userId,
     disciplinePost,
     subjectPost,
@@ -21,6 +21,9 @@ async function createPost({
     photoPost,
     createdAt: new Date().toISOString(),
   });
+
+  const postDoc = await postRef.get();
+  return { id: postRef.id, ...postDoc.data() };
 }
 
 async function uploadPostPhoto(
@@ -42,7 +45,7 @@ async function uploadPostPhoto(
 
 async function getPosts(
   nameCollection: string,
-  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
 ): Promise<PaginatedData<FirebaseFirestoreTypes.DocumentData>> {
   let query = await firestore()
     .collection(nameCollection)
@@ -59,7 +62,6 @@ async function getPosts(
     id: doc.id,
     ...doc.data(),
   }));
-  console.log("data", data);
 
   return {
     data: data as Post[],

@@ -12,12 +12,11 @@ import {
 } from "../screens/ProfileScreen/changePasswordSchema";
 import { useRoute } from "@react-navigation/native";
 import { useAuthStore } from "../stores/authStore";
-import { useController } from "./useController";
 import { useToastStore } from "../stores/useToastStore";
 import { Keyboard } from "react-native";
 import { useShallow } from "zustand/react/shallow";
-import { UserProfileController } from "../../controllers/user.controller";
-import { AuthController } from "../../controllers/auth.controller";
+import { userProfileController } from "../../controllers/user.controller";
+import { authController } from "../../controllers/auth.controller";
 
 export function useUserInfoProfile() {
   const { user, loading } = useAuthStore(
@@ -26,10 +25,6 @@ export function useUserInfoProfile() {
       loading: state.loading,
     }))
   );
-  const userProfileController = useController<UserProfileController>(
-    "UserProfileController"
-  );
-  const authController = useController<AuthController>("AuthController");
 
   const showToast = useToastStore((state) => state.showToast);
 
@@ -69,57 +64,6 @@ export function useUserInfoProfile() {
     mode: "onChange",
   });
 
-  useEffect(() => {
-    const unsubscribe = userProfileController.subscribe({
-      onSuccessGetUserProfileInfo: (userData) => {
-        if (userData) {
-          setUserData(userData);
-          setValue("name", userData?.name);
-          setValue("city", userData?.city);
-          setValue("linkedin", userData?.linkedin);
-          setValue("bio", userData?.bio);
-        }
-
-        setLoadingScreenProfile(false);
-      },
-      onSuccessChangeUserProfileCityToggle: (msg) => {
-        showToast({
-          message: msg,
-          type: "success",
-        });
-      },
-      onSuccessUpdateFormProfile(msg) {
-        showToast({
-          message: msg,
-          type: "success",
-        });
-        setLoadingUpdateFormProfile(false);
-      },
-      onError: (error) => {
-        showToast({
-          message: error,
-          type: "error",
-        });
-        setLoadingScreenProfile(false);
-        setLoadingUpdateFormProfile(false);
-      },
-      onLoadingScreenProfile: () => {
-        setLoadingScreenProfile(true);
-        setLoadingUpdateFormProfile(false);
-      },
-      onLoadingUpdateFormProfile: () => {
-        setLoadingUpdateFormProfile(true);
-        setLoadingScreenProfile(false);
-      },
-    });
-
-    userProfileController.getUserProfileInfo(params?.userId || user.uid);
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
   function handleToggleOpenModalToChangePassword() {
     setModalChangePassword((prev) => !prev);
   }
@@ -141,15 +85,45 @@ export function useUserInfoProfile() {
   };
 
   const handleUpdateFormProfile = async () => {
-    userProfileController.updateFormProfile(
-      getValues("name"),
-      getValues("city"),
-      getValues("linkedin"),
-      getValues("bio"),
-      user
-    );
-    Keyboard.dismiss();
+    try {
+      setLoadingUpdateFormProfile(true);
+      userProfileController.updateFormProfile(
+        getValues("name"),
+        getValues("city"),
+        getValues("linkedin"),
+        getValues("bio"),
+        user
+      );
+      Keyboard.dismiss();
+    } catch (error) {
+      console.log("erro:", error);
+    }
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        setLoadingScreenProfile(true);
+        const userData = await userProfileController.getUserProfileInfo(
+          params?.userId || user.uid
+        );
+
+        if (userData) {
+          setUserData(userData);
+          setValue("name", userData?.name);
+          setValue("city", userData?.city);
+          setValue("linkedin", userData?.linkedin);
+          setValue("bio", userData?.bio);
+        }
+      } catch (error) {
+        console.log("Erro ao buscar as informações de usuário:", error);
+      } finally {
+        setLoadingScreenProfile(false);
+      }
+    };
+
+    fetchUserData();
+  }, [params?.userId, user.uid, setValue, isEnabledCity]);
 
   return {
     userData,

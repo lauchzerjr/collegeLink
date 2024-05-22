@@ -1,7 +1,7 @@
 import { Comment } from "../models/comment.model";
 import { commentApi } from "../services/comment.service";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
-import { UserController } from "./user.controller";
+import { userProfileController } from "./user.controller";
 import { UserPostCommentInfos } from "../models/user.model";
 
 const getTotalCountPostComments = async (postId: string) => {
@@ -10,7 +10,7 @@ const getTotalCountPostComments = async (postId: string) => {
 
 const getPostComments = async (
   postId: string,
-  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData | null>
+  startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
 ) => {
   const { data, lastVisible } = await commentApi.getComments(
     postId,
@@ -19,7 +19,7 @@ const getPostComments = async (
 
   const postCommentsWithDetails: Comment[] = await Promise.all(
     data.map(async (postComments: Comment) => {
-      const user = (await UserController.getUserPostCommentInfo(
+      const user = (await userProfileController.getUserPostCommentInfo(
         postComments.userId
       )) as UserPostCommentInfos;
 
@@ -45,7 +45,7 @@ const removePostComment = async (id: string) => {
   return commentApi.removeComment({ id });
 };
 
-export const CommentController = {
+export const postCommentController = {
   getTotalCountPostComments,
   getPostComments,
   addPostComment,
