@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CBox } from "../../components/CBox/CBox";
 import { CScreen } from "../../components/CScreen/CScreen";
 import { CText } from "../../components/CText/CText";
@@ -9,7 +9,6 @@ import { usePostCommentList } from "../../hooks/useCommentList";
 import { useRoute } from "@react-navigation/native";
 import { CPostCommentItem } from "../../components/CPostItem/CPostCommentItem";
 import { PostCommentTextMessage } from "./components/PostCommentTextMessage";
-import { usePostStore } from "../../stores/postStore";
 
 type RouteParams = {
   postId: string;
@@ -18,16 +17,20 @@ type RouteParams = {
 export function PostCommentsScreen() {
   const route = useRoute();
   const { postId } = route.params as RouteParams;
-  const { fetchMoreData, lastItem, startAfter, loading, data } =
-    usePostCommentList(postId);
-  // const postComments = usePostStore((state) => state.postComments);
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    postComments,
+  } = usePostCommentList(postId);
 
   const renderItem = ({ item }) => {
     return <CPostCommentItem item={item} />;
   };
 
   const renderListFooterComponent = () => {
-    if (!lastItem && startAfter !== null) {
+    if (isFetchingNextPage) {
       return (
         <CBox p="s10">
           <CActivityIndicator size="small" color="bluePrimary" />
@@ -50,7 +53,13 @@ export function PostCommentsScreen() {
     );
   };
 
-  if (loading && data.length === 0) {
+  const handleEndReached = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  if (isLoading && postComments.length === 0) {
     return (
       <CBox flex={1} alignItems="center" justifyContent="center">
         <CActivityIndicator size="small" color="bluePrimary" />
@@ -70,7 +79,7 @@ export function PostCommentsScreen() {
       />
       <CBox flex={1} justifyContent="space-between">
         <FlatList
-          data={data}
+          data={postComments}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
@@ -84,7 +93,7 @@ export function PostCommentsScreen() {
               alignSelf="center"
             />
           )}
-          onEndReached={fetchMoreData}
+          onEndReached={handleEndReached}
           onEndReachedThreshold={0.1}
           ListFooterComponentStyle={{ marginTop: 10 }}
           ListFooterComponent={renderListFooterComponent}

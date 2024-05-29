@@ -14,7 +14,8 @@ export function PostCommentTextMessage({
 }: PostCommentTextMessageProps) {
   const user = useAuthStore((state) => state.user);
 
-  const { createPostComment } = usePostCommentCreate(postId, user.uid);
+  const { handleCreatePostComment, isLoadingCreatePostComment } =
+    usePostCommentCreate(postId, user.uid);
   const [postCommentText, setPostCommentText] = React.useState("");
 
   const clearSearch = () => {
@@ -28,7 +29,8 @@ export function PostCommentTextMessage({
   };
 
   const onSubmit = async () => {
-    await createPostComment(postCommentText);
+    await handleCreatePostComment(postCommentText);
+    setPostCommentText("");
   };
 
   return (
@@ -40,6 +42,7 @@ export function PostCommentTextMessage({
       onChangeText={setPostCommentText}
       iconRight={clearSearch()}
       onSubmitEditing={onSubmit}
+      editable={!isLoadingCreatePostComment}
     />
   );
 }

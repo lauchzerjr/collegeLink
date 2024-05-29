@@ -54,7 +54,7 @@ export function useCreatePost() {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["post-list", nameCollection],
-        // exact: true,
+        exact: true,
       });
 
       Keyboard.dismiss();

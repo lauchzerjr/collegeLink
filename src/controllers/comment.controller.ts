@@ -2,10 +2,6 @@ import { Comment } from "../models/comment.model";
 import { commentApi } from "../services/comment.service";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { UserPostCommentInfos } from "../models/user.model";
-import {
-  AbstractSubscribableController,
-  SubscribableController,
-} from "./AbstractSubscribableController";
 import { UserProfileController } from "./user.controller";
 
 export type PostCommentResult = {
@@ -13,22 +9,12 @@ export type PostCommentResult = {
   lastVisible: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>;
 };
 
-export type PostCommentReducer = {
-  onSuccessGetPostComments(response: {
-    data: Comment[];
-    lastVisible: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>;
-  }): void;
-  onError(msg: string): void;
-  onLoading(): void;
-};
-
-export interface PostCommentController
-  extends SubscribableController<PostCommentReducer> {
+export interface PostCommentController {
   getTotalCountPostComments: (postId: string) => Promise<number>;
   getPostComments: (
     postId: string,
     startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
-  ) => Promise<void>;
+  ) => Promise<PostCommentResult>;
   addPostComment: (
     postId: string,
     userId: string,
@@ -37,13 +23,8 @@ export interface PostCommentController
   removePostComment: (id: string) => Promise<void>;
 }
 
-export class PostCommentControllerImpl
-  extends AbstractSubscribableController<PostCommentReducer>
-  implements PostCommentController
-{
-  constructor(private readonly userProfileController: UserProfileController) {
-    super();
-  }
+export class PostCommentControllerImpl implements PostCommentController {
+  constructor(private readonly userProfileController: UserProfileController) {}
 
   async getTotalCountPostComments(postId: string): Promise<number> {
     try {
@@ -58,11 +39,8 @@ export class PostCommentControllerImpl
   async getPostComments(
     postId: string,
     startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
-  ): Promise<void> {
-    // ): Promise<PostCommentResult> {
+  ): Promise<PostCommentResult> {
     try {
-      this.dispatch("onLoading");
-
       const { data, lastVisible } = await commentApi.getComments(
         postId,
         startAfter
@@ -83,12 +61,12 @@ export class PostCommentControllerImpl
       );
       console.log("🚀 ~ postCommentsWithDetails:", postCommentsWithDetails);
 
-      this.dispatch("onSuccessGetPostComments", {
+      return {
         data: postCommentsWithDetails as Comment[],
         lastVisible,
-      });
+      };
     } catch (error) {
-      this.dispatch(
+      console.log(
         "onError",
         "Erro ao buscar comentários. Tente novamente mais tarde"
       );
@@ -101,10 +79,9 @@ export class PostCommentControllerImpl
     text: string
   ): Promise<void> {
     try {
-      this.dispatch("onLoading");
       await commentApi.addComment(postId, userId, text);
     } catch (error) {
-      this.dispatch(
+      console.log(
         "onError",
         "Erro ao adicionar comentário. Tente novamente mais tarde"
       );
@@ -113,10 +90,9 @@ export class PostCommentControllerImpl
 
   async removePostComment(id: string): Promise<void> {
     try {
-      this.dispatch("onLoading");
       await commentApi.removeComment({ id });
     } catch (error) {
-      this.dispatch(
+      console.log(
         "onError",
         "Erro ao remover comentário. Tente novamente mais tarde"
       );
