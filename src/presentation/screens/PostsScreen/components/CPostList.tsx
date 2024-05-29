@@ -8,7 +8,7 @@ import { CActivityIndicator } from "../../../components/CActivityIndicator/CActi
 import { CEmptyList } from "../../../components/CEmptyList/CEmptyList";
 
 export const CPostList = () => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, loading } =
+  const { posts, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     usePostList();
 
   const { bottom } = useAppSafeArea();
@@ -37,7 +37,7 @@ export const CPostList = () => {
     }
   };
 
-  if (loading && data?.length === 0) {
+  if (isLoading && posts?.length === 0) {
     return (
       <CBox height={"90%"} alignItems="center" justifyContent="center">
         <CActivityIndicator size="small" color="bluePrimary" />
@@ -47,7 +47,7 @@ export const CPostList = () => {
 
   return (
     <FlatList
-      data={data}
+      data={posts}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
       onEndReached={handleEndReached}
