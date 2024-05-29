@@ -5,29 +5,18 @@ import { UserProfileController } from "./user.controller";
 import { LikeController } from "./like.controller";
 import { DislikeController } from "./dislike.controller";
 import { PostCommentController } from "./comment.controller";
-import { PaginatedData } from "../models/paginatedData.model";
 import { CreatePost, Post } from "../models/post.model";
-import {
-  AbstractSubscribableController,
-  SubscribableController,
-} from "./AbstractSubscribableController";
 
 type PostResponse = {
   data: Post[];
   lastVisible: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>;
 };
 
-export type PostReducer = {
-  onSuccessGetPosts(response: PostResponse): void;
-  onError(msg: string): void;
-  onLoading(): void;
-};
-
-export interface PostController extends SubscribableController<PostReducer> {
+export interface PostController {
   getPosts: (
     nameCollection: string,
     startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
-  ) => Promise<void>;
+  ) => Promise<PostResponse>;
   createPost: ({
     nameCollection,
     userId,
@@ -35,27 +24,20 @@ export interface PostController extends SubscribableController<PostReducer> {
     subjectPost,
     textPost,
     photoPost,
-  }: CreatePost) => Promise<void>;
+  }: CreatePost) => Promise<FirebaseFirestoreTypes.DocumentData>;
 }
 
-export class PostControllerImpl
-  extends AbstractSubscribableController<PostReducer>
-  implements PostController
-{
+export class PostControllerImpl implements PostController {
   constructor(
     private readonly userProfileController: UserProfileController,
     private readonly postCommentController: PostCommentController
-  ) {
-    super();
-  }
+  ) {}
 
   async getPosts(
     nameCollection: string,
     startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
-  ): Promise<void> {
+  ): Promise<PostResponse> {
     try {
-      this.dispatch("onLoading");
-
       const { data, lastVisible } = await postApi.getPosts(
         nameCollection,
         startAfter
@@ -86,12 +68,12 @@ export class PostControllerImpl
         })
       );
 
-      this.dispatch("onSuccessGetPosts", {
+      return {
         data: postsWithDetails as Post[],
         lastVisible,
-      });
+      };
     } catch (error) {
-      this.dispatch(
+      console.log(
         "onError",
         "Erro ao buscar posts. Tente novamente mais tarde"
       );
@@ -105,11 +87,9 @@ export class PostControllerImpl
     subjectPost,
     textPost,
     photoPost,
-  }: CreatePost): Promise<void> {
+  }: CreatePost): Promise<FirebaseFirestoreTypes.DocumentData> {
     try {
-      this.dispatch("onLoading");
-
-      await postApi.createPost({
+      return postApi.createPost({
         nameCollection,
         userId,
         disciplinePost,
@@ -118,10 +98,7 @@ export class PostControllerImpl
         photoPost,
       });
     } catch (error) {
-      this.dispatch(
-        "onError",
-        "Erro ao criar post. Tente novamente mais tarde"
-      );
+      console.log("onError", "Erro ao criar post. Tente novamente mais tarde");
     }
   }
 }

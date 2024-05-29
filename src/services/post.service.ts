@@ -62,7 +62,6 @@ async function getPosts(
     id: doc.id,
     ...doc.data(),
   }));
-  console.log("data", data);
 
   return {
     data: data as Post[],

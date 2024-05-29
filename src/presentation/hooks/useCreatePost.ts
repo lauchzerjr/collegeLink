@@ -13,18 +13,18 @@ import { useNameCollectionStore } from "../stores/useNameCollectionStore";
 import { useToastStore } from "../stores/useToastStore";
 import { useController } from "./useController";
 import { PostController } from "../../controllers/post.controller";
-// import { usePostStore } from "../stores/postStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Keyboard } from "react-native";
 
 export function useCreatePost() {
   const postController = useController<PostController>("PostController");
   const user = useAuthStore((state) => state.user);
   const showToast = useToastStore((state) => state.showToast);
-  // const startAfter = usePostStore((state) => state.startAfter);
 
   const { goBack } = useNavigation();
+  const queryClient = useQueryClient();
 
   const { nameCollection, courseName } = useNameCollectionStore();
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const { control, formState, handleSubmit, getValues } =
@@ -37,6 +37,35 @@ export function useCreatePost() {
       },
       mode: "onChange",
     });
+
+  const createPost = () => {
+    return postController.createPost({
+      nameCollection,
+      userId: user.uid,
+      disciplinePost: getValues("disciplinePost"),
+      subjectPost: getValues("subjectPost"),
+      textPost: getValues("textPost"),
+      photoPost: selectedImage,
+    });
+  };
+
+  const { isPending: isLoadingCreatePost, mutate } = useMutation({
+    mutationFn: createPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["post-list", nameCollection],
+        // exact: true,
+      });
+
+      Keyboard.dismiss();
+      goBack();
+    },
+    onError: () =>
+      showToast({
+        message: "Erro ao criar post. Tente novamente mais tarde",
+        type: "error",
+      }),
+  });
 
   const uploadPostPhoto = useCallback(async (uri: string) => {
     try {
@@ -57,7 +86,7 @@ export function useCreatePost() {
 
   const pickImageGallery = async () => {
     try {
-      setIsLoading(true);
+      Keyboard.dismiss();
       if (ImagePicker.PermissionStatus.UNDETERMINED) {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       }
@@ -71,7 +100,6 @@ export function useCreatePost() {
           message: "Você não autorizou o uso da galeria",
           type: "error",
         });
-        setIsLoading(false);
         return;
       }
 
@@ -86,10 +114,7 @@ export function useCreatePost() {
       if (!result.canceled) {
         setSelectedImage(result.assets[0].uri);
       }
-
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       console.log("Erro ao abrir a galeria => ", error);
     }
   };
@@ -100,18 +125,7 @@ export function useCreatePost() {
         await uploadPostPhoto(selectedImage);
       }
 
-      await postController.createPost({
-        nameCollection,
-        userId: user.uid,
-        disciplinePost: getValues("disciplinePost"),
-        subjectPost: getValues("subjectPost"),
-        textPost: getValues("textPost"),
-        photoPost: selectedImage,
-      });
-
-      // await postController.getPosts(nameCollection, startAfter);
-
-      goBack();
+      mutate();
     } catch (error) {
       showToast({
         message: "Falha ao publicar post",
@@ -131,6 +145,6 @@ export function useCreatePost() {
     handleSubmit,
     handleCreatePost,
     pickImageGallery,
-    isLoading,
+    isLoadingCreatePost,
   };
 }

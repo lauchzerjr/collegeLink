@@ -18,6 +18,7 @@ export function CreatePostScreen() {
     selectedImage,
     setSelectedImage,
     pickImageGallery,
+    isLoadingCreatePost,
   } = useCreatePost();
 
   return (
@@ -101,6 +102,7 @@ export function CreatePostScreen() {
         onPress={handleSubmit(handleCreatePost)}
         disabled={!formState.isValid}
         marginTop="s10"
+        loading={isLoadingCreatePost}
       />
     </CScreen>
   );
