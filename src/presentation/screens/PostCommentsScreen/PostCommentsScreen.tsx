@@ -77,32 +77,23 @@ export function PostCommentsScreen() {
         borderRadius="s12"
         mb="s10"
       />
-      <CBox flex={1} justifyContent="space-between">
-        <FlatList
-          data={postComments}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 210 }}
-          ItemSeparatorComponent={() => (
-            <CBox
-              height={1}
-              width={"100%"}
-              bg="bluePrimary"
-              marginVertical="s10"
-              alignSelf="center"
-            />
-          )}
-          onEndReached={handleEndReached}
-          onEndReachedThreshold={0.1}
-          ListFooterComponentStyle={{ marginTop: 10 }}
-          ListFooterComponent={renderListFooterComponent}
-          ListEmptyComponent={renderListEmptyComponent}
-          ListHeaderComponent={renderListHeaderComponent}
-        />
+      <FlatList
+        data={postComments}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 10 }}
+        ItemSeparatorComponent={() => (
+          <CBox width={"100%"} alignSelf="center" />
+        )}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={renderListFooterComponent}
+        ListEmptyComponent={renderListEmptyComponent}
+        ListHeaderComponent={renderListHeaderComponent}
+      />
 
-        <PostCommentTextMessage postId={postId} />
-      </CBox>
+      <PostCommentTextMessage postId={postId} />
     </CScreen>
   );
 }
