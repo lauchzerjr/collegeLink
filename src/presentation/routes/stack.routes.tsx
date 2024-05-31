@@ -59,7 +59,9 @@ export const StackRoutes = () => {
         name="CreatePostScreen"
         component={CreatePostScreen}
         options={({ route, navigation }) => ({
-          title: "Criar postagem",
+          title: route?.params?.postContent
+            ? "Editar postagem"
+            : "Criar postagem",
           headerTitleStyle: { color: colors.bluePrimary },
           headerLeft: () => (
             <CTouchableOpacityBox ml="s12" onPress={() => navigation.goBack()}>

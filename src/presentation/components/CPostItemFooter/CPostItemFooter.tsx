@@ -20,6 +20,12 @@ interface CPostItemFooterProps {
   initialLikes: number;
   initialDislikes: number;
   commentsCount: number;
+  postContent: {
+    disciplinePost: string;
+    subjectPost: string;
+    textPost: string;
+    photoPost: string;
+  };
 }
 
 export function CPostItemFooter({
@@ -28,6 +34,7 @@ export function CPostItemFooter({
   initialLikes,
   initialDislikes,
   commentsCount,
+  postContent,
 }: CPostItemFooterProps) {
   const { navigate } = useNavigation();
   const { colors } = useAppTheme();
@@ -124,6 +131,13 @@ export function CPostItemFooter({
     setIsModalDeletePost((modal) => !modal);
   }
 
+  const navigateToEditPostScreen = () => {
+    navigate("CreatePostScreen", {
+      postId,
+      postContent,
+    });
+  };
+
   return (
     <CBox
       flexDirection="row"
@@ -181,7 +195,10 @@ export function CPostItemFooter({
       </CBox>
 
       {user.uid === userId && (
-        <CTouchableOpacityBox activeOpacity={0.7}>
+        <CTouchableOpacityBox
+          activeOpacity={0.7}
+          onPress={navigateToEditPostScreen}
+        >
           <FontAwesome name="edit" size={24} color={colors.bluePrimary} />
         </CTouchableOpacityBox>
       )}

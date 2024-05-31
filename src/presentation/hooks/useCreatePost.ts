@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   CreatePostSchemaSchema,
   createPostSchema,
@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../services/post.service";
 import * as ImagePicker from "expo-image-picker";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useAuthStore } from "../stores/authStore";
 import { useNameCollectionStore } from "../stores/useNameCollectionStore";
 import { useToastStore } from "../stores/useToastStore";
@@ -17,9 +17,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Keyboard } from "react-native";
 
 export function useCreatePost() {
+  const route = useRoute();
   const postController = useController<PostController>("PostController");
   const user = useAuthStore((state) => state.user);
   const showToast = useToastStore((state) => state.showToast);
+  const { postContent, postId } = route?.params || {};
+  console.log("🚀 ~ useCreatePost ~ postId:", postId);
 
   const { goBack } = useNavigation();
   const queryClient = useQueryClient();
@@ -27,13 +30,19 @@ export function useCreatePost() {
   const { nameCollection, courseName } = useNameCollectionStore();
   const [selectedImage, setSelectedImage] = useState(null);
 
+  useEffect(() => {
+    if (postContent) {
+      setSelectedImage(postContent?.photoPost);
+    }
+  }, []);
+
   const { control, formState, handleSubmit, getValues } =
     useForm<CreatePostSchemaSchema>({
       resolver: zodResolver(createPostSchema),
       defaultValues: {
-        subjectPost: "",
-        disciplinePost: "",
-        textPost: "",
+        subjectPost: postContent?.subjectPost || "",
+        disciplinePost: postContent?.disciplinePost || "",
+        textPost: postContent?.textPost || "",
       },
       mode: "onChange",
     });
@@ -49,23 +58,52 @@ export function useCreatePost() {
     });
   };
 
-  const { isPending: isLoadingCreatePost, mutate } = useMutation({
-    mutationFn: createPost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["post-list", nameCollection],
-        exact: true,
-      });
+  const { isPending: isLoadingCreatePost, mutate: mutateCeatePost } =
+    useMutation({
+      mutationFn: createPost,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["post-list", nameCollection],
+          exact: true,
+        });
 
-      Keyboard.dismiss();
-      goBack();
-    },
-    onError: () =>
-      showToast({
-        message: "Erro ao criar post. Tente novamente mais tarde",
-        type: "error",
-      }),
-  });
+        Keyboard.dismiss();
+        goBack();
+      },
+      onError: () =>
+        showToast({
+          message: "Erro ao criar post. Tente novamente mais tarde",
+          type: "error",
+        }),
+    });
+
+  const updatePost = () => {
+    return postApi.updatePost(nameCollection, postId, {
+      disciplinePost: getValues("disciplinePost"),
+      subjectPost: getValues("subjectPost"),
+      textPost: getValues("textPost"),
+      photoPost: selectedImage,
+    });
+  };
+
+  const { isPending: isLoadingUpdatePost, mutate: mutateUpdatePost } =
+    useMutation({
+      mutationFn: updatePost,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["post-list", nameCollection],
+          exact: true,
+        });
+
+        Keyboard.dismiss();
+        goBack();
+      },
+      onError: () =>
+        showToast({
+          message: "Erro ao atualizar post. Tente novamente mais tarde",
+          type: "error",
+        }),
+    });
 
   const uploadPostPhoto = useCallback(async (uri: string) => {
     try {
@@ -119,13 +157,17 @@ export function useCreatePost() {
     }
   };
 
-  const handleCreatePost = async () => {
+  const handleSubmitPost = async () => {
     try {
+      if (postContent) {
+        mutateUpdatePost();
+        return;
+      }
       if (selectedImage) {
         await uploadPostPhoto(selectedImage);
       }
 
-      mutate();
+      mutateCeatePost();
     } catch (error) {
       showToast({
         message: "Falha ao publicar post",
@@ -136,6 +178,7 @@ export function useCreatePost() {
   };
 
   return {
+    postContent,
     formState,
     courseName,
     control,
@@ -143,8 +186,9 @@ export function useCreatePost() {
     getValues,
     setSelectedImage,
     handleSubmit,
-    handleCreatePost,
+    handleSubmitPost,
     pickImageGallery,
     isLoadingCreatePost,
+    isLoadingUpdatePost,
   };
 }

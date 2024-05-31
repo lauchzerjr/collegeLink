@@ -27,6 +27,7 @@ export function CPostItem({ item }: CPostItemProps) {
         userPhoto={item?.user?.userPhoto}
         userId={item?.userId}
         createdAt={item.createdAt}
+        updatedAt={item?.updatedAt}
       />
 
       <CBox paddingVertical="s10">
@@ -53,6 +54,12 @@ export function CPostItem({ item }: CPostItemProps) {
         initialDislikes={item?.postDislikes}
         userId={item?.userId}
         postId={item?.id}
+        postContent={{
+          disciplinePost: item.disciplinePost,
+          photoPost: item.photoPost,
+          subjectPost: item.subjectPost,
+          textPost: item.textPost,
+        }}
       />
     </CBox>
   );

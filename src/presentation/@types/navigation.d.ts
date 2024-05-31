@@ -8,7 +8,15 @@ export declare global {
       PostCommentsScreen: { postId: string };
       PostProfileScreen: { userId: string };
       login: undefined;
-      CreatePostScreen: undefined;
+      CreatePostScreen: {
+        postId?: string;
+        postContent?: {
+          disciplinePost: string;
+          subjectPost: string;
+          textPost: string;
+          photoPost: string;
+        };
+      };
       PostProfileScreen: undefined;
     }
   }
