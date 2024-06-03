@@ -22,7 +22,6 @@ export function useCreatePost() {
   const user = useAuthStore((state) => state.user);
   const showToast = useToastStore((state) => state.showToast);
   const { postContent, postId } = route?.params || {};
-  console.log("🚀 ~ useCreatePost ~ postId:", postId);
 
   const { goBack } = useNavigation();
   const queryClient = useQueryClient();
