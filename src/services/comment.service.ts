@@ -19,7 +19,7 @@ async function getComments(
   postId: string,
   startAfter: FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData> | null
 ): Promise<PaginatedData<FirebaseFirestoreTypes.DocumentData>> {
-  let query = firestore()
+  let query = await firestore()
     .collection("postComments")
     .where("postId", "==", postId)
     .orderBy("createdAt", "desc")
@@ -31,17 +31,15 @@ async function getComments(
 
   const querySnapchot = await query.get();
 
-  const data = querySnapchot.docs.map((doc) => ({
+  const data = await querySnapchot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
+  console.log("data", data);
 
   return {
-    data,
-    lastVisible:
-      querySnapchot.docs.length > 0
-        ? querySnapchot.docs[querySnapchot.docs.length - 1]
-        : null,
+    data: data as Comment[],
+    lastVisible: querySnapchot.docs[querySnapchot.docs.length - 1] || null,
   };
 }
 
@@ -57,6 +55,7 @@ async function addComment(
     createdAt: new Date().toISOString(),
   });
 
+  console.log("comentario adicionado com sucesso para o post", postId);
   const commentDoc = await commentRef.get();
   return { id: commentRef.id, ...commentDoc.data() };
 }

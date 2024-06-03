@@ -17,15 +17,20 @@ type RouteParams = {
 export function PostCommentsScreen() {
   const route = useRoute();
   const { postId } = route.params as RouteParams;
-  const { data, fetchMoreData, lastItem, startAfter, loading, fetchData } =
-    usePostCommentList(postId);
+  const {
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    postComments,
+  } = usePostCommentList(postId);
 
   const renderItem = ({ item }) => {
     return <CPostCommentItem item={item} />;
   };
 
   const renderListFooterComponent = () => {
-    if (!lastItem && startAfter !== null) {
+    if (isFetchingNextPage) {
       return (
         <CBox p="s10">
           <CActivityIndicator size="small" color="bluePrimary" />
@@ -48,7 +53,13 @@ export function PostCommentsScreen() {
     );
   };
 
-  if (loading && data.length === 0) {
+  const handleEndReached = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  if (isLoading && postComments.length === 0) {
     return (
       <CBox flex={1} alignItems="center" justifyContent="center">
         <CActivityIndicator size="small" color="bluePrimary" />
@@ -66,32 +77,23 @@ export function PostCommentsScreen() {
         borderRadius="s12"
         mb="s10"
       />
-      <CBox flex={1} justifyContent="space-between">
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 210 }}
-          ItemSeparatorComponent={() => (
-            <CBox
-              height={1}
-              width={"100%"}
-              bg="bluePrimary"
-              marginVertical="s10"
-              alignSelf="center"
-            />
-          )}
-          onEndReached={fetchMoreData}
-          onEndReachedThreshold={0.1}
-          ListFooterComponentStyle={{ marginTop: 10 }}
-          ListFooterComponent={renderListFooterComponent}
-          ListEmptyComponent={renderListEmptyComponent}
-          ListHeaderComponent={renderListHeaderComponent}
-        />
+      <FlatList
+        data={postComments}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 10 }}
+        ItemSeparatorComponent={() => (
+          <CBox width={"100%"} alignSelf="center" />
+        )}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0.1}
+        ListFooterComponent={renderListFooterComponent}
+        ListEmptyComponent={renderListEmptyComponent}
+        ListHeaderComponent={renderListHeaderComponent}
+      />
 
-        <PostCommentTextMessage postId={postId} onAddComment={fetchData} />
-      </CBox>
+      <PostCommentTextMessage postId={postId} />
     </CScreen>
   );
 }

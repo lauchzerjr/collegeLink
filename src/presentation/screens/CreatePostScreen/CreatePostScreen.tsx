@@ -12,12 +12,15 @@ export function CreatePostScreen() {
   const {
     control,
     courseName,
-    handleCreatePost,
+    handleSubmitPost,
     handleSubmit,
     formState,
     selectedImage,
     setSelectedImage,
     pickImageGallery,
+    isLoadingCreatePost,
+    postContent,
+    isLoadingUpdatePost,
   } = useCreatePost();
 
   return (
@@ -97,10 +100,11 @@ export function CreatePostScreen() {
       />
 
       <CButton
-        title="Publicar"
-        onPress={handleSubmit(handleCreatePost)}
+        title={postContent ? "Salvar alterações" : "Publicar"}
+        onPress={handleSubmit(handleSubmitPost)}
         disabled={!formState.isValid}
         marginTop="s10"
+        loading={isLoadingCreatePost || isLoadingUpdatePost}
       />
     </CScreen>
   );

@@ -8,7 +8,8 @@ import { CActivityIndicator } from "../../../components/CActivityIndicator/CActi
 import { CEmptyList } from "../../../components/CEmptyList/CEmptyList";
 
 export const CPostList = () => {
-  const { data, fetchMoreData, lastItem, startAfter, loading } = usePostList();
+  const { posts, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    usePostList();
 
   const { bottom } = useAppSafeArea();
 
@@ -17,7 +18,7 @@ export const CPostList = () => {
   };
 
   const renderListFooterComponent = () => {
-    if (!lastItem && startAfter !== null) {
+    if (isFetchingNextPage) {
       return (
         <CBox p="s10">
           <CActivityIndicator size="small" color="bluePrimary" />
@@ -30,9 +31,15 @@ export const CPostList = () => {
     return <CEmptyList title="Não encontramos nenhuma postagem" />;
   };
 
-  if (loading && data.length === 0) {
+  const handleEndReached = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  if (isLoading && posts?.length === 0) {
     return (
-      <CBox flex={1} alignItems="center" justifyContent="center">
+      <CBox height={"90%"} alignItems="center" justifyContent="center">
         <CActivityIndicator size="small" color="bluePrimary" />
       </CBox>
     );
@@ -40,10 +47,10 @@ export const CPostList = () => {
 
   return (
     <FlatList
-      data={data}
+      data={posts}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
-      onEndReached={fetchMoreData}
+      onEndReached={handleEndReached}
       onEndReachedThreshold={0.1}
       ItemSeparatorComponent={() => <CBox height={10} />}
       showsVerticalScrollIndicator={false}

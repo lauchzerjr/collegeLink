@@ -13,6 +13,7 @@ interface CPostItemHeaderProps {
   disciplinePost: string;
   userId: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export function CPostItemHeader({
@@ -22,6 +23,7 @@ export function CPostItemHeader({
   userPhoto,
   userId,
   createdAt,
+  updatedAt,
 }: CPostItemHeaderProps) {
   const { colors } = useAppTheme();
 
@@ -34,7 +36,11 @@ export function CPostItemHeader({
           <CText fontWeight="bold">{name}</CText>
           <CText>{email}</CText>
           <CText>Disciplina: {disciplinePost}</CText>
-          <CText>postado há: {dateUtils.formatRelative(createdAt)}</CText>
+          <CText>
+            {updatedAt
+              ? `atualizado há: ${dateUtils.formatRelative(updatedAt)}`
+              : `postado há: ${dateUtils.formatRelative(createdAt)}`}
+          </CText>
         </CBox>
       </CBox>
 

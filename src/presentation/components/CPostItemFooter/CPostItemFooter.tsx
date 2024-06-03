@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAppTheme } from "../../hooks/useAppTheme";
 import { CBox, CTouchableOpacityBox } from "../CBox/CBox";
 import { CText } from "../CText/CText";
@@ -7,6 +7,12 @@ import { LikeController } from "../../../controllers/like.controller";
 import { DislikeController } from "../../../controllers/dislike.controller";
 import { useNavigation } from "@react-navigation/native";
 import { useAuthStore } from "../../stores/authStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { postApi } from "../../../services/post.service";
+import { useNameCollectionStore } from "../../stores/useNameCollectionStore";
+import { useToastStore } from "../../stores/useToastStore";
+import { CModal } from "../CModal/CModal";
+import { CButton } from "../CButton/CButton";
 
 interface CPostItemFooterProps {
   userId: string;
@@ -14,6 +20,12 @@ interface CPostItemFooterProps {
   initialLikes: number;
   initialDislikes: number;
   commentsCount: number;
+  postContent: {
+    disciplinePost: string;
+    subjectPost: string;
+    textPost: string;
+    photoPost: string;
+  };
 }
 
 export function CPostItemFooter({
@@ -22,15 +34,44 @@ export function CPostItemFooter({
   initialLikes,
   initialDislikes,
   commentsCount,
+  postContent,
 }: CPostItemFooterProps) {
   const { navigate } = useNavigation();
   const { colors } = useAppTheme();
   const user = useAuthStore((state) => state.user);
 
-  const [likes, setLikes] = React.useState(initialLikes);
-  const [hasLiked, setHasLiked] = React.useState(false);
-  const [dislikes, setDislikes] = React.useState(initialDislikes);
-  const [hasDisliked, setHasDisliked] = React.useState(false);
+  const [likes, setLikes] = useState(initialLikes);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [dislikes, setDislikes] = useState(initialDislikes);
+  const [hasDisliked, setHasDisliked] = useState(false);
+  const [isModalDeletePost, setIsModalDeletePost] = useState(false);
+  const nameCollection = useNameCollectionStore(
+    (state) => state.nameCollection
+  );
+  const showToast = useToastStore((state) => state.showToast);
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: () => postApi.deletePost(nameCollection, postId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["post-list", nameCollection],
+        exact: true,
+      });
+
+      toggleModalDeletePost();
+
+      showToast({
+        message: "Postagem deletada com sucesso",
+        type: "success",
+      });
+    },
+    onError: () =>
+      showToast({
+        message: "Erro ao deletar postagem. Tente novamente mais tarde",
+        type: "error",
+      }),
+  });
 
   const navigateToPostCommentScreen = () => {
     navigate("PostCommentsScreen", { postId });
@@ -81,6 +122,21 @@ export function CPostItemFooter({
       console.error("Erro ao lidar com o like:", error);
     }
   }, [hasDisliked, dislikes, postId, userId, user.uid]);
+
+  function handleDeletePost() {
+    mutate();
+  }
+
+  function toggleModalDeletePost() {
+    setIsModalDeletePost((modal) => !modal);
+  }
+
+  const navigateToEditPostScreen = () => {
+    navigate("CreatePostScreen", {
+      postId,
+      postContent,
+    });
+  };
 
   return (
     <CBox
@@ -139,16 +195,39 @@ export function CPostItemFooter({
       </CBox>
 
       {user.uid === userId && (
-        <CTouchableOpacityBox activeOpacity={0.7}>
+        <CTouchableOpacityBox
+          activeOpacity={0.7}
+          onPress={navigateToEditPostScreen}
+        >
           <FontAwesome name="edit" size={24} color={colors.bluePrimary} />
         </CTouchableOpacityBox>
       )}
 
       {user.uid === userId && (
-        <CTouchableOpacityBox activeOpacity={0.7}>
+        <CTouchableOpacityBox
+          activeOpacity={0.7}
+          onPress={toggleModalDeletePost}
+        >
           <FontAwesome name="trash-o" size={24} color={colors.bluePrimary} />
         </CTouchableOpacityBox>
       )}
+
+      <CModal
+        title={"Deseja excluir a postagem?"}
+        visible={isModalDeletePost}
+        onClose={toggleModalDeletePost}
+        children={
+          <>
+            <CButton
+              title={"Sim"}
+              onPress={handleDeletePost}
+              mb="s10"
+              mt="s10"
+            />
+            <CButton title={"Não"} onPress={toggleModalDeletePost} mb="s10" />
+          </>
+        }
+      />
     </CBox>
   );
 }

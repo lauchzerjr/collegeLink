@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   CreatePostSchemaSchema,
   createPostSchema,
@@ -7,32 +7,101 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../services/post.service";
 import * as ImagePicker from "expo-image-picker";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useAuthStore } from "../stores/authStore";
 import { useNameCollectionStore } from "../stores/useNameCollectionStore";
 import { useToastStore } from "../stores/useToastStore";
-import { postController } from "../../controllers/post.controller";
+import { useController } from "./useController";
+import { PostController } from "../../controllers/post.controller";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Keyboard } from "react-native";
 
-interface Options {
-  onSuccess?: (data) => void;
-}
-
-export function useCreatePost(options?: Options) {
+export function useCreatePost() {
+  const route = useRoute();
+  const postController = useController<PostController>("PostController");
   const user = useAuthStore((state) => state.user);
   const showToast = useToastStore((state) => state.showToast);
+  const { postContent, postId } = route?.params || {};
+
+  const { goBack } = useNavigation();
+  const queryClient = useQueryClient();
 
   const { nameCollection, courseName } = useNameCollectionStore();
-  const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    if (postContent) {
+      setSelectedImage(postContent?.photoPost);
+    }
+  }, []);
 
   const { control, formState, handleSubmit, getValues } =
     useForm<CreatePostSchemaSchema>({
       resolver: zodResolver(createPostSchema),
       defaultValues: {
-        subjectPost: "",
-        disciplinePost: "",
-        textPost: "",
+        subjectPost: postContent?.subjectPost || "",
+        disciplinePost: postContent?.disciplinePost || "",
+        textPost: postContent?.textPost || "",
       },
       mode: "onChange",
+    });
+
+  const createPost = () => {
+    return postController.createPost({
+      nameCollection,
+      userId: user.uid,
+      disciplinePost: getValues("disciplinePost"),
+      subjectPost: getValues("subjectPost"),
+      textPost: getValues("textPost"),
+      photoPost: selectedImage,
+    });
+  };
+
+  const { isPending: isLoadingCreatePost, mutate: mutateCeatePost } =
+    useMutation({
+      mutationFn: createPost,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["post-list", nameCollection],
+          exact: true,
+        });
+
+        Keyboard.dismiss();
+        goBack();
+      },
+      onError: () =>
+        showToast({
+          message: "Erro ao criar post. Tente novamente mais tarde",
+          type: "error",
+        }),
+    });
+
+  const updatePost = () => {
+    return postApi.updatePost(nameCollection, postId, {
+      disciplinePost: getValues("disciplinePost"),
+      subjectPost: getValues("subjectPost"),
+      textPost: getValues("textPost"),
+      photoPost: selectedImage,
+    });
+  };
+
+  const { isPending: isLoadingUpdatePost, mutate: mutateUpdatePost } =
+    useMutation({
+      mutationFn: updatePost,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["post-list", nameCollection],
+          exact: true,
+        });
+
+        Keyboard.dismiss();
+        goBack();
+      },
+      onError: () =>
+        showToast({
+          message: "Erro ao atualizar post. Tente novamente mais tarde",
+          type: "error",
+        }),
     });
 
   const uploadPostPhoto = useCallback(async (uri: string) => {
@@ -54,7 +123,7 @@ export function useCreatePost(options?: Options) {
 
   const pickImageGallery = async () => {
     try {
-      setIsLoading(true);
+      Keyboard.dismiss();
       if (ImagePicker.PermissionStatus.UNDETERMINED) {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       }
@@ -68,7 +137,6 @@ export function useCreatePost(options?: Options) {
           message: "Você não autorizou o uso da galeria",
           type: "error",
         });
-        setIsLoading(false);
         return;
       }
 
@@ -83,28 +151,22 @@ export function useCreatePost(options?: Options) {
       if (!result.canceled) {
         setSelectedImage(result.assets[0].uri);
       }
-
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       console.log("Erro ao abrir a galeria => ", error);
     }
   };
 
-  const handleCreatePost = async () => {
+  const handleSubmitPost = async () => {
     try {
+      if (postContent) {
+        mutateUpdatePost();
+        return;
+      }
       if (selectedImage) {
         await uploadPostPhoto(selectedImage);
       }
 
-      const post = await postController.createPost({
-        nameCollection,
-        userId: user.uid,
-        disciplinePost: getValues("disciplinePost"),
-        subjectPost: getValues("subjectPost"),
-        textPost: getValues("textPost"),
-        photoPost: selectedImage,
-      });
+      mutateCeatePost();
     } catch (error) {
       showToast({
         message: "Falha ao publicar post",
@@ -115,6 +177,7 @@ export function useCreatePost(options?: Options) {
   };
 
   return {
+    postContent,
     formState,
     courseName,
     control,
@@ -122,8 +185,9 @@ export function useCreatePost(options?: Options) {
     getValues,
     setSelectedImage,
     handleSubmit,
-    handleCreatePost,
+    handleSubmitPost,
     pickImageGallery,
-    isLoading,
+    isLoadingCreatePost,
+    isLoadingUpdatePost,
   };
 }

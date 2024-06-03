@@ -6,13 +6,16 @@ import { FavoriteScreen } from "../screens/FavoriteScreen/FavoriteScreen";
 import { useAppTheme } from "../../presentation/hooks/useAppTheme";
 import { ProfileScreen } from "../screens/ProfileScreen/ProfileScreen";
 import { useAuthStore } from "../stores/authStore";
-import { authController } from "../../controllers/auth.controller";
+import { useController } from "../../presentation/hooks/useController";
+import { AuthController } from "../../../controllers/auth.controller";
 
 const { Screen, Navigator } = createBottomTabNavigator();
 
 export const TabRoutes = () => {
   const { colors } = useAppTheme();
   const setUser = useAuthStore((state) => state.setUser);
+
+  const authController = useController<AuthController>("AuthController");
 
   const handleSignOut = async () => {
     await authController.signOut();

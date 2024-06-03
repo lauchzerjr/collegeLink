@@ -1,33 +1,59 @@
-import { postCommentController } from "../../controllers/comment.controller";
-import { useState } from "react";
+import { PostCommentController } from "../../controllers/comment.controller";
+import { useController } from "./useController";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToastStore } from "../stores/useToastStore";
+import { Keyboard } from "react-native";
 
-interface Options {
-  onSuccess?: (data) => void;
-}
-
-export const usePostCommentCreate = (
-  postId: string,
-  userId: string,
-  options?: Options
-) => {
-  const [loading, setLoading] = useState(false);
+export const usePostCommentCreate = (postId: string, userId: string) => {
+  const postCommentController = useController<PostCommentController>(
+    "PostCommentController"
+  );
+  const showToast = useToastStore((state) => state.showToast);
+  const queryClient = useQueryClient();
 
   const createPostComment = async (comment: string) => {
     try {
-      setLoading(true);
-      const postComment = await postCommentController.addPostComment(
-        postId,
-        userId,
-        comment
-      );
-      if (options?.onSuccess) {
-        options.onSuccess(postComment);
-      }
+      return postCommentController.addPostComment(postId, userId, comment);
     } catch (error) {
-    } finally {
-      setLoading(false);
+      showToast({
+        message: "Erro ao criar comentário. Tente novamente mais tarde",
+        type: "error",
+      });
     }
   };
 
-  return { createPostComment, loading };
+  const { isPending: isLoadingCreatePostComment, mutate } = useMutation({
+    mutationFn: createPostComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["post-comment-list"],
+        exact: true,
+      });
+
+      Keyboard.dismiss();
+      showToast({
+        message: "Comentário adicionado com sucesso",
+        type: "success",
+      });
+    },
+    onError: () =>
+      showToast({
+        message: "Erro ao criar comentário. Tente novamente mais tarde",
+        type: "error",
+      }),
+  });
+
+  const handleCreatePostComment = async (comment: string) => {
+    try {
+      mutate(comment);
+    } catch (error) {
+      showToast({
+        message: "Falha ao publicar comentário",
+        type: "error",
+      });
+      console.log("Erro ao criar post => ", error);
+    }
+  };
+
+  return { handleCreatePostComment, isLoadingCreatePostComment };
 };

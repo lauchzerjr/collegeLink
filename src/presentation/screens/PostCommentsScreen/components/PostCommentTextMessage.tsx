@@ -3,27 +3,19 @@ import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import { usePostCommentCreate } from "../../../hooks/usePostCommentCreate";
 import { CTouchableOpacityBox } from "../../../components/CBox/CBox";
 import { CTextInput } from "../../../components/CTextInput/CTextInput";
-import { Keyboard } from "react-native";
 import { useAuthStore } from "../../../stores/authStore";
 
 interface PostCommentTextMessageProps {
   postId: string;
-  onAddComment: () => void;
 }
 
 export function PostCommentTextMessage({
   postId,
-  onAddComment,
 }: PostCommentTextMessageProps) {
   const user = useAuthStore((state) => state.user);
 
-  const { createPostComment } = usePostCommentCreate(postId, user.uid, {
-    onSuccess: () => {
-      onAddComment();
-      setPostCommentText("");
-      Keyboard.dismiss();
-    },
-  });
+  const { handleCreatePostComment, isLoadingCreatePostComment } =
+    usePostCommentCreate(postId, user.uid);
   const [postCommentText, setPostCommentText] = React.useState("");
 
   const clearSearch = () => {
@@ -37,7 +29,8 @@ export function PostCommentTextMessage({
   };
 
   const onSubmit = async () => {
-    await createPostComment(postCommentText);
+    await handleCreatePostComment(postCommentText);
+    setPostCommentText("");
   };
 
   return (
@@ -49,6 +42,7 @@ export function PostCommentTextMessage({
       onChangeText={setPostCommentText}
       iconRight={clearSearch()}
       onSubmitEditing={onSubmit}
+      editable={!isLoadingCreatePostComment}
     />
   );
 }

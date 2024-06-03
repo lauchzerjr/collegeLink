@@ -13,7 +13,7 @@ async function createPost({
   textPost,
   photoPost,
 }: CreatePost): Promise<FirebaseFirestoreTypes.DocumentData> {
-  const postRef = firestore().collection(nameCollection).add({
+  const postRef = await firestore().collection(nameCollection).add({
     userId,
     disciplinePost,
     subjectPost,
@@ -69,8 +69,31 @@ async function getPosts(
   };
 }
 
+async function deletePost(
+  nameCollection: string,
+  postId: string
+): Promise<void> {
+  await firestore().collection(nameCollection).doc(postId).delete();
+}
+
+async function updatePost(
+  nameCollection: string,
+  postId: string,
+  updatedData: Partial<CreatePost>
+): Promise<void> {
+  await firestore()
+    .collection(nameCollection)
+    .doc(postId)
+    .update({
+      ...updatedData,
+      updatedAt: new Date().toISOString(),
+    });
+}
+
 export const postApi = {
   createPost,
   uploadPostPhoto,
   getPosts,
+  deletePost,
+  updatePost,
 };

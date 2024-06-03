@@ -11,6 +11,7 @@ export interface Post {
   textPost?: string;
   photoPost?: string;
   createdAt: string;
+  updatedAt: string;
   postLikes: number;
   postDislikes: number;
   postComments: number;

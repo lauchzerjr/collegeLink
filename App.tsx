@@ -8,6 +8,9 @@ import { Routes } from "./src/presentation/routes";
 import { CToast } from "./src/presentation/components/CToast/CToast";
 import { authApi } from "./src/services/auth.service";
 import { useAuthStore } from "./src/presentation/stores/authStore";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const setUser = useAuthStore((state) => state.setUser);
@@ -26,8 +29,10 @@ export default function App() {
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
         <StatusBar style="dark" backgroundColor="white" translucent />
-        <Routes />
-        <CToast />
+        <QueryClientProvider client={queryClient}>
+          <Routes />
+          <CToast />
+        </QueryClientProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
