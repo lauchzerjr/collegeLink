@@ -59,7 +59,7 @@ export const CPostList = ({ searchText }: CPostListProps) => {
 
   return (
     <FlatList
-      data={filteredPosts}
+      data={posts || filteredPosts}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
       onEndReached={handleEndReached}
