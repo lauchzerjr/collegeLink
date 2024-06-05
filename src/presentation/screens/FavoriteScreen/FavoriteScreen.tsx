@@ -27,20 +27,13 @@ export function FavoriteScreen() {
     return { data, lastVisible };
   };
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isError,
-    error,
-  } = useInfiniteQuery({
-    queryKey: ["favorite-list"],
-    queryFn: fetchPostList,
-    initialPageParam: null,
-    getNextPageParam: ({ lastVisible }) => lastVisible ?? null,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ["favorite-list"],
+      queryFn: fetchPostList,
+      initialPageParam: null,
+      getNextPageParam: ({ lastVisible }) => lastVisible ?? null,
+    });
 
   const favoriteList = data?.pages.flatMap((page) => page.data) || [];
 
