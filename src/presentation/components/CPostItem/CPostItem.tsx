@@ -28,6 +28,7 @@ export function CPostItem({ item }: CPostItemProps) {
         userId={item?.userId}
         createdAt={item.createdAt}
         updatedAt={item?.updatedAt}
+        postId={item.id}
       />
 
       <CBox paddingVertical="s10">
