@@ -29,7 +29,7 @@ export function PostsScreen() {
         iconRight={clearSearch()}
       />
 
-      <CPostList />
+      <CPostList searchText={searchText} />
     </CScreen>
   );
 }

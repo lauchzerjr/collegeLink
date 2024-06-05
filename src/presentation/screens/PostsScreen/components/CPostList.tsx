@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { FlatList } from "react-native";
 import { usePostList } from "../../../hooks/usePostList";
 import { CPostItem } from "../../../components/CPostItem/CPostItem";
@@ -7,11 +7,23 @@ import { useAppSafeArea } from "../../../../presentation/hooks/useAppSafeArea";
 import { CActivityIndicator } from "../../../components/CActivityIndicator/CActivityIndicator";
 import { CEmptyList } from "../../../components/CEmptyList/CEmptyList";
 
-export const CPostList = () => {
+type CPostListProps = {
+  searchText: string;
+};
+
+export const CPostList = ({ searchText }: CPostListProps) => {
   const { posts, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     usePostList();
 
   const { bottom } = useAppSafeArea();
+
+  const filteredPosts = useMemo(() => {
+    const lowerSearch = searchText.toLowerCase();
+
+    return posts.filter((post) =>
+      post.disciplinePost.toLowerCase().includes(lowerSearch)
+    );
+  }, [searchText]);
 
   const renderItem = ({ item }) => {
     return <CPostItem item={item} />;
@@ -47,7 +59,7 @@ export const CPostList = () => {
 
   return (
     <FlatList
-      data={posts}
+      data={filteredPosts}
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
       onEndReached={handleEndReached}
